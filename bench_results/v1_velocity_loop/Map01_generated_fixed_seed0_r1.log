@@ -1,0 +1,36 @@
+QWindowsContext: OleInitialize() failed:  "COM error 0x80010106: �޷��������߳�ģʽ�������Ը��ġ�"
+The team 'SkySaviors' n��6, with tom, alice, bob, lea
+Default team mode: <not set>
+Evaluation Plan (from file: map01_smoke.yml):
+==================================================
+Config ID: 1
+  Map: Map01
+  Zones: none
+  Number of Rounds: 1
+  Weight: 1
+  Team mode (scenario): rescue
+  Number of drones (scenario): 10
+--------------------------------------------------
+Default team mode: <not set>
+Time score: full marks at or before 30% of the timestep limit
+--------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+* Map: Map01, mode: rescue, special zones: none, round: 1/1
+Drone 6 destroyed, too much collision !
+Drone 3 destroyed, too much collision !
+Drone 9 destroyed, too much collision !
+Drone 2 destroyed, too much collision !
+count_reachable v3 = 928138
+	* Round n��1/1: 
+		rescued nb: 0/10 (disposal score: 0.0%), health return score: 21.6%, time score: 0.0%, explor. score: 39.0% (weight 0%), walltime elapsed: 38s/90s, elapse timestep: 2000/2000 steps, time to dispose all: 0 steps.
+		score breakdown (competition weights): disposal 0.0 x 60% = 0.0, health 21.6 x 20% = 4.3, time 0.0 x 20% = 0.0, total 4.3/100.
+		percentage of drones destroyed: 40.0 %, mean percentage of drones health : 21.6 %.
+		round score: 4.3%, frequency: 53.25 steps/s.
+--------------------------------------------------------------------------------------------
+
+A new evaluation report is available here: E:\code\fusai\swarm-eod-main\results_swarm_rescue/team006_261115_21h04min20s/team006_report.pdf
+
+Data for the website:
+6,none,0,39,22,0,0%,4.32

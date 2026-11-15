@@ -1,0 +1,259 @@
+Exception ignored from cffi callback <function ext_cpCollisionPreSolveFunc at 0x000001CB04EE8860>:
+Traceback (most recent call last):
+  File "E:\envs\swarm_rescue\Lib\site-packages\pymunk\_callbacks.py", line 187, in ext_cpCollisionPreSolveFunc
+    x = handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 38, in grasper_grasps_bomb
+    grasper, bomb = get_colliding_entities(playground, arbiter)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 27, in get_colliding_entities
+    entity_1 = playground.get_entity_from_shape(shape_1)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\playground.py", line 970, in get_entity_from_shape
+    assert shape in self._shapes_to_entities
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 
+Exception ignored from cffi callback <function ext_cpCollisionPreSolveFunc at 0x000001CB04EE8860>:
+Traceback (most recent call last):
+  File "E:\envs\swarm_rescue\Lib\site-packages\pymunk\_callbacks.py", line 187, in ext_cpCollisionPreSolveFunc
+    x = handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\elements\sensor_disablers.py", line 41, in disabler_zone_disables_device
+    disabler_zone, device = get_colliding_entities(playground, arbiter)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 28, in get_colliding_entities
+    entity_2 = playground.get_entity_from_shape(shape_2)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\playground.py", line 970, in get_entity_from_shape
+    assert shape in self._shapes_to_entities
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 
+Exception ignored from cffi callback <function ext_cpCollisionPreSolveFunc at 0x000001CB04EE8860>:
+Traceback (most recent call last):
+  File "E:\envs\swarm_rescue\Lib\site-packages\pymunk\_callbacks.py", line 187, in ext_cpCollisionPreSolveFunc
+    x = handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\elements\sensor_disablers.py", line 41, in disabler_zone_disables_device
+    disabler_zone, device = get_colliding_entities(playground, arbiter)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 28, in get_colliding_entities
+    entity_2 = playground.get_entity_from_shape(shape_2)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\playground.py", line 970, in get_entity_from_shape
+    assert shape in self._shapes_to_entities
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 
+Exception ignored from cffi callback <function ext_cpCollisionPreSolveFunc at 0x000001CB04EE8860>:
+Traceback (most recent call last):
+  File "E:\envs\swarm_rescue\Lib\site-packages\pymunk\_callbacks.py", line 187, in ext_cpCollisionPreSolveFunc
+    x = handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\elements\sensor_disablers.py", line 41, in disabler_zone_disables_device
+    disabler_zone, device = get_colliding_entities(playground, arbiter)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 28, in get_colliding_entities
+    entity_2 = playground.get_entity_from_shape(shape_2)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\playground.py", line 970, in get_entity_from_shape
+    assert shape in self._shapes_to_entities
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 
+Exception ignored from cffi callback <function ext_cpCollisionPreSolveFunc at 0x000001CB04EE8860>:
+Traceback (most recent call last):
+  File "E:\envs\swarm_rescue\Lib\site-packages\pymunk\_callbacks.py", line 187, in ext_cpCollisionPreSolveFunc
+    x = handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\elements\sensor_disablers.py", line 41, in disabler_zone_disables_device
+    disabler_zone, device = get_colliding_entities(playground, arbiter)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 28, in get_colliding_entities
+    entity_2 = playground.get_entity_from_shape(shape_2)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\playground.py", line 970, in get_entity_from_shape
+    assert shape in self._shapes_to_entities
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 
+Exception ignored from cffi callback <function ext_cpCollisionPreSolveFunc at 0x000001CB04EE8860>:
+Traceback (most recent call last):
+  File "E:\envs\swarm_rescue\Lib\site-packages\pymunk\_callbacks.py", line 187, in ext_cpCollisionPreSolveFunc
+    x = handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\elements\sensor_disablers.py", line 41, in disabler_zone_disables_device
+    disabler_zone, device = get_colliding_entities(playground, arbiter)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 28, in get_colliding_entities
+    entity_2 = playground.get_entity_from_shape(shape_2)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\playground.py", line 970, in get_entity_from_shape
+    assert shape in self._shapes_to_entities
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 
+Exception ignored from cffi callback <function ext_cpCollisionPreSolveFunc at 0x000001CB04EE8860>:
+Traceback (most recent call last):
+  File "E:\envs\swarm_rescue\Lib\site-packages\pymunk\_callbacks.py", line 187, in ext_cpCollisionPreSolveFunc
+    x = handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\elements\sensor_disablers.py", line 41, in disabler_zone_disables_device
+    disabler_zone, device = get_colliding_entities(playground, arbiter)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 28, in get_colliding_entities
+    entity_2 = playground.get_entity_from_shape(shape_2)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\playground.py", line 970, in get_entity_from_shape
+    assert shape in self._shapes_to_entities
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 
+Exception ignored from cffi callback <function ext_cpCollisionPreSolveFunc at 0x000001CB04EE8860>:
+Traceback (most recent call last):
+  File "E:\envs\swarm_rescue\Lib\site-packages\pymunk\_callbacks.py", line 187, in ext_cpCollisionPreSolveFunc
+    x = handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\elements\sensor_disablers.py", line 41, in disabler_zone_disables_device
+    disabler_zone, device = get_colliding_entities(playground, arbiter)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 28, in get_colliding_entities
+    entity_2 = playground.get_entity_from_shape(shape_2)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\playground.py", line 970, in get_entity_from_shape
+    assert shape in self._shapes_to_entities
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 
+Exception ignored from cffi callback <function ext_cpCollisionPreSolveFunc at 0x000001CB04EE8860>:
+Traceback (most recent call last):
+  File "E:\envs\swarm_rescue\Lib\site-packages\pymunk\_callbacks.py", line 187, in ext_cpCollisionPreSolveFunc
+    x = handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\elements\sensor_disablers.py", line 41, in disabler_zone_disables_device
+    disabler_zone, device = get_colliding_entities(playground, arbiter)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 28, in get_colliding_entities
+    entity_2 = playground.get_entity_from_shape(shape_2)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\playground.py", line 970, in get_entity_from_shape
+    assert shape in self._shapes_to_entities
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 
+Exception ignored from cffi callback <function ext_cpCollisionPreSolveFunc at 0x000001CB04EE8860>:
+Traceback (most recent call last):
+  File "E:\envs\swarm_rescue\Lib\site-packages\pymunk\_callbacks.py", line 187, in ext_cpCollisionPreSolveFunc
+    x = handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\elements\sensor_disablers.py", line 41, in disabler_zone_disables_device
+    disabler_zone, device = get_colliding_entities(playground, arbiter)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 28, in get_colliding_entities
+    entity_2 = playground.get_entity_from_shape(shape_2)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\playground.py", line 970, in get_entity_from_shape
+    assert shape in self._shapes_to_entities
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 
+Exception ignored from cffi callback <function ext_cpCollisionPreSolveFunc at 0x000001CB04EE8860>:
+Traceback (most recent call last):
+  File "E:\envs\swarm_rescue\Lib\site-packages\pymunk\_callbacks.py", line 187, in ext_cpCollisionPreSolveFunc
+    x = handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\elements\sensor_disablers.py", line 41, in disabler_zone_disables_device
+    disabler_zone, device = get_colliding_entities(playground, arbiter)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 28, in get_colliding_entities
+    entity_2 = playground.get_entity_from_shape(shape_2)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\playground.py", line 970, in get_entity_from_shape
+    assert shape in self._shapes_to_entities
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 
+The team 'SkySaviors' n��6, with tom, alice, bob, lea
+Default team mode: <not set>
+Evaluation Plan (from file: config_Map06.yml):
+==================================================
+Config ID: 1
+  Map: Map06
+  Zones: no_com_zone
+  Number of Rounds: 1
+  Weight: 1
+  Team mode (scenario): rescue
+  Number of drones (scenario): 10
+--------------------------------------------------
+Default team mode: <not set>
+Time score: full marks at or before 30% of the timestep limit
+--------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+* Map: Map06, mode: rescue, special zones: no_com_zone, round: 1/1
+BLUE_EVENT pickup drone=0 tick=55 pos=(620.3590091464849, -118.07003497504529)
+BLUE_EVENT pickup drone=2 tick=64 pos=(677.2221281201432, -115.0845669271423)
+BLUE_EVENT pickup drone=3 tick=134 pos=(809.2232385119294, -116.28491831741961)
+BLUE_EVENT pickup drone=7 tick=141 pos=(422.11025310946405, -22.08894274872067)
+BLUE_EVENT pickup drone=5 tick=164 pos=(332.46354046782847, 27.610854835200747)
+BLUE_EVENT pickup drone=1 tick=168 pos=(801.6972864545367, -197.03939878057528)
+BLUE_EVENT pickup drone=9 tick=186 pos=(353.52208028146845, 26.119517591318363)
+BLUE_EVENT release drone=7 tick=332 pos=(693.7599619204123, 123.49879309096228) near_center=True
+BLUE_EVENT carry drone=0 tick=400 pos=(622.9571204550998, -32.54633644753703) target=(781, 21) waypoint=(698.0, 86.0) path=15 docking=False velocity=(0.22065088418247206, 1.211447347783797)
+BLUE_EVENT carry drone=1 tick=400 pos=(703.2644360420093, -16.5763021736855) target=(781, 21) waypoint=(781, 21) path=17 docking=True velocity=(0.17613391487265173, 1.6903869811585417)
+BLUE_EVENT carry drone=2 tick=400 pos=(660.3295443931574, -23.622594287914495) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(0.1777947365018414, 1.0317051943868814)
+BLUE_EVENT carry drone=3 tick=400 pos=(648.615281712592, -57.598506216326925) target=(781, 21) waypoint=(674.0, -34.0) path=16 docking=False velocity=(-0.19123434385893728, 0.9222025315319855)
+BLUE_EVENT pickup drone=4 tick=400 pos=(811.2688153274618, -248.09023642335234)
+BLUE_EVENT carry drone=4 tick=400 pos=(811.2688153274618, -248.09023642335234) target=(781, 21) waypoint=(746.0, -154.0) path=23 docking=False velocity=(3.5209954914072785, -2.282372448502225)
+BLUE_EVENT carry drone=5 tick=400 pos=(686.6876102710642, 129.1749231136713) target=(781, 21) waypoint=(781, 21) path=10 docking=True velocity=(1.0053065603720723, 0.6997694138848513)
+BLUE_EVENT carry drone=9 tick=400 pos=(698.9527266316329, 90.90536039651735) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(-0.042352535841453195, 0.31318283261877145)
+BLUE_EVENT release drone=1 tick=404 pos=(702.0877143060659, -11.455360944850739) near_center=True
+BLUE_EVENT pickup drone=6 tick=640 pos=(54.323546794130046, -96.64716221332071)
+BLUE_EVENT release drone=4 tick=711 pos=(691.3440973955242, 3.3399290049184875) near_center=True
+BLUE_EVENT carry drone=0 tick=800 pos=(666.7658840510454, 5.824001846238419) target=(781, 21) waypoint=(781, 21) path=11 docking=True velocity=(0.7173713490977945, -1.9323142709041257)
+BLUE_EVENT carry drone=2 tick=800 pos=(706.0818316698318, 33.88175915516273) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(0.06836126469085832, -0.4435405613747803)
+BLUE_EVENT carry drone=3 tick=800 pos=(699.7701494217057, -7.983227039828365) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(0.07031339972436255, -0.6396119327381828)
+BLUE_EVENT carry drone=5 tick=800 pos=(702.2396382553278, 129.235087379214) target=(781, 21) waypoint=(781, 21) path=7 docking=True velocity=(-0.2648921614096607, -1.084744650602929)
+BLUE_EVENT carry drone=6 tick=800 pos=(329.30849883828887, -85.29622352294676) target=(781, 21) waypoint=(458.0, -82.0) path=25 docking=False velocity=(1.8259083361602138, 0.36479278074230664)
+BLUE_EVENT carry drone=9 tick=800 pos=(686.1759016844416, 94.38811536472629) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(0.38822087496836133, -1.0120302039184477)
+Drone 0 destroyed, too much collision !
+BLUE_EVENT carry drone=2 tick=1200 pos=(681.3397940001433, -45.99338332612733) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(-0.31183594869810516, 0.8299083284646542)
+BLUE_EVENT carry drone=3 tick=1200 pos=(649.2730523515754, -60.62414417421424) target=(781, 21) waypoint=(722.0, -106.0) path=8 docking=False velocity=(-0.10832167551610011, 1.7030367794789998)
+BLUE_EVENT carry drone=5 tick=1200 pos=(699.3626218720009, 20.65854232104824) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(0.3957952560753628, 1.155322770998563)
+BLUE_EVENT carry drone=6 tick=1200 pos=(626.7356973226846, -65.94532441062306) target=(781, 21) waypoint=(698.0, 38.0) path=17 docking=False velocity=(-0.27029987233183217, 0.9571560694990157)
+BLUE_EVENT carry drone=9 tick=1200 pos=(698.7264970642711, -11.718027239805282) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(0.16910432896570282, 1.7309891985712742)
+BLUE_EVENT pickup drone=7 tick=1203 pos=(-820.8136607697093, 253.67808327042306)
+Drone 3 destroyed, too much collision !
+Drone 9 destroyed, too much collision !
+BLUE_EVENT pickup drone=4 tick=1301 pos=(-505.32542102031016, -430.32492003104437)
+Drone 2 destroyed, too much collision !
+BLUE_EVENT release drone=6 tick=1345 pos=(747.7731432978389, 148.01937231021236) near_center=True
+BLUE_EVENT carry drone=4 tick=1600 pos=(18.162897094680222, -355.9479283629473) target=(781, 21) waypoint=(74.0, -346.0) path=36 docking=False velocity=(1.9621154189048766, 0.3677211017131664)
+BLUE_EVENT carry drone=5 tick=1600 pos=(695.36146590801, -29.566459586115755) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(-0.036197599704651535, 0.6488002508396865)
+BLUE_EVENT carry drone=7 tick=1600 pos=(-188.6363679444518, 386.1996045572847) target=(781, 21) waypoint=(-46.0, 374.0) path=45 docking=False velocity=(1.932912205422867, 0.6070052741501344)
+Drone 8 destroyed, too much collision !
+BLUE_EVENT carry drone=4 tick=2000 pos=(545.9282196456659, -338.3904185430367) target=(781, 21) waypoint=(578.0, -346.0) path=29 docking=False velocity=(1.2623625897133062, 0.03364940941743593)
+BLUE_EVENT carry drone=5 tick=2000 pos=(712.494745673812, -36.88273486415207) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(-0.1081793064215313, 0.927501655663582)
+BLUE_EVENT carry drone=7 tick=2000 pos=(566.080199976183, 171.10902963633518) target=(781, 21) waypoint=(698.0, 158.0) path=14 docking=False velocity=(2.1495207137229384, -0.0996675696869671)
+BLUE_EVENT release drone=7 tick=2077 pos=(691.091207446868, 140.71053046698788) near_center=True
+BLUE_EVENT pickup drone=7 tick=2178 pos=(632.2478549620124, -88.04361192020363)
+BLUE_EVENT pickup drone=6 tick=2309 pos=(-498.0257814013329, 64.04854430572466)
+BLUE_EVENT carry drone=4 tick=2400 pos=(711.0751048767859, -16.621569787249705) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(-0.061878865374735324, 0.4778485084228737)
+BLUE_EVENT carry drone=5 tick=2400 pos=(674.4495312839101, 23.15085756939388) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(-0.08657298045915053, 0.4868687072713266)
+BLUE_EVENT carry drone=6 tick=2400 pos=(-328.96859228858443, 108.17214737788953) target=(781, 21) waypoint=(-190.0, 110.0) path=42 docking=False velocity=(2.1933311236186817, -0.19566703041497588)
+BLUE_EVENT carry drone=7 tick=2400 pos=(660.6445851851018, 0.8334671367449983) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(-0.16264981118263241, 0.5487143771827563)
+BLUE_EVENT carry drone=4 tick=2800 pos=(709.2674455107147, -26.24095216083355) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(-0.11481753601301588, -0.3633327461809848)
+BLUE_EVENT carry drone=5 tick=2800 pos=(667.1447699358873, 32.2021207108133) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(0.0028118127130493014, -1.2296352687452037)
+BLUE_EVENT carry drone=6 tick=2800 pos=(468.5365221662718, 86.32475688528885) target=(781, 21) waypoint=(602.0, 86.0) path=9 docking=False velocity=(2.080668934210645, 0.9588126487886814)
+BLUE_EVENT carry drone=7 tick=2800 pos=(706.5596024362112, 9.978667706772459) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(-0.1937528329715745, -1.2293526489112234)
+Drone 5 destroyed, too much collision !
+Drone 4 destroyed, too much collision !
+BLUE_EVENT release drone=6 tick=2930 pos=(686.7682009571166, 23.52125697508862) near_center=True
+Drone 1 destroyed, too much collision !
+BLUE_EVENT carry drone=7 tick=3200 pos=(696.2961525683202, 1.5925468356586505) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(-0.4523165257543373, 1.6007963554865754)
+BLUE_EVENT pickup drone=6 tick=3382 pos=(627.8736793083035, -110.02817232930502)
+BLUE_EVENT release drone=6 tick=3503 pos=(706.4793791889026, -36.13589243631756) near_center=True
+BLUE_EVENT carry drone=7 tick=3600 pos=(698.291884370339, -46.7487382052379) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(0.06040811276835539, 0.8206008788570944)
+BLUE_EVENT carry drone=7 tick=4000 pos=(699.5738097863616, -78.23305863945862) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(-0.09810959023524343, 0.4278524548822415)
+Drone 6 destroyed, too much collision !
+BLUE_EVENT carry drone=7 tick=4400 pos=(697.2250600404357, -74.32365323229385) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(-0.11747418743228293, -1.156853346878884)
+BLUE_EVENT carry drone=7 tick=4800 pos=(697.4128854956074, -20.53756215091661) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(0.522586048112262, -2.0233763417792137)
+BLUE_EVENT carry drone=7 tick=5200 pos=(692.3876308461179, 44.78467793569945) target=(781, 21) waypoint=(781, 21) path=0 docking=True velocity=(-0.08750181209057027, -2.0685733024545825)
+count_reachable v3 = 1714757
+	* Round n��1/1: 
+		rescued nb: 7/10 (disposal score: 70.0%), health return score: 2.8%, time score: 0.0%, explor. score: 88.7% (weight 0%), walltime elapsed: 46s/180s, elapse timestep: 5400/5400 steps, time to dispose all: 0 steps.
+		score breakdown (competition weights): disposal 70.0 x 60% = 42.0, health 2.8 x 20% = 0.6, time 0.0 x 20% = 0.0, total 42.6/100.
+		percentage of drones destroyed: 90.0 %, mean percentage of drones health : 2.8 %.
+		round score: 42.6%, frequency: 117.61 steps/s.
+--------------------------------------------------------------------------------------------

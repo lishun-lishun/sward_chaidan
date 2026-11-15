@@ -1,0 +1,47 @@
+QWindowsContext: OleInitialize() failed:  "COM error 0x80010106: �޷��������߳�ģʽ�������Ը��ġ�"
+The team 'SkySaviors' n��6, with tom, alice, bob, lea
+Default team mode: <not set>
+Evaluation Plan (from file: map01_smoke.yml):
+==================================================
+Config ID: 1
+  Map: Map01
+  Zones: none
+  Number of Rounds: 1
+  Weight: 1
+  Team mode (scenario): rescue
+  Number of drones (scenario): 10
+--------------------------------------------------
+Default team mode: <not set>
+Time score: full marks at or before 30% of the timestep limit
+--------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+* Map: Map01, mode: rescue, special zones: none, round: 1/1
+BLUE_EVENT pickup drone=6 tick=115 pos=(-314.7462362887724, 24.91841214322698)
+BLUE_EVENT pickup drone=7 tick=183 pos=(-281.87679777251225, 145.78438356362804)
+BLUE_EVENT pickup drone=5 tick=191 pos=(-338.30684925276506, 64.89570056608248)
+BLUE_EVENT pickup drone=8 tick=295 pos=(-302.53036163147925, 110.22909457657812)
+BLUE_EVENT pickup drone=9 tick=483 pos=(-330.60166417531343, 221.97935944122707)
+Drone 6 destroyed, too much collision !
+Drone 5 destroyed, too much collision !
+BLUE_EVENT pickup drone=0 tick=1005 pos=(-451.1621759673394, 141.23289029762856)
+Drone 8 destroyed, too much collision !
+BLUE_EVENT pickup drone=3 tick=1141 pos=(-394.3261541570992, 160.41377103240515)
+BLUE_EVENT pickup drone=1 tick=1643 pos=(-468.56039197567117, 126.58509267899501)
+Drone 1 destroyed, too much collision !
+BLUE_EVENT pickup drone=4 tick=1913 pos=(-439.74074702861094, 154.4347299979446)
+
+State recording: 2000 frames, 10 drones, 10 bombs -> E:\code\fusai\swarm-eod-main\results_swarm_rescue/team006_261115_21h05min55s/recordings/team006_Map01_none_rd1.npz
+count_reachable v3 = 928138
+	* Round n��1/1: 
+		rescued nb: 0/10 (disposal score: 0.0%), health return score: 14.0%, time score: 0.0%, explor. score: 37.9% (weight 0%), walltime elapsed: 35s/90s, elapse timestep: 2000/2000 steps, time to dispose all: 0 steps.
+		score breakdown (competition weights): disposal 0.0 x 60% = 0.0, health 14.0 x 20% = 2.8, time 0.0 x 20% = 0.0, total 2.8/100.
+		percentage of drones destroyed: 40.0 %, mean percentage of drones health : 14.0 %.
+		round score: 2.8%, frequency: 56.56 steps/s.
+--------------------------------------------------------------------------------------------
+
+A new evaluation report is available here: E:\code\fusai\swarm-eod-main\results_swarm_rescue/team006_261115_21h05min55s/team006_report.pdf
+
+Data for the website:
+6,none,0,38,14,0,0%,2.80

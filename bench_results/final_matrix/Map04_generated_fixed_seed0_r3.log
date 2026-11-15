@@ -1,0 +1,87 @@
+The team 'SkySaviors' n��6, with tom, alice, bob, lea
+Default team mode: <not set>
+Evaluation Plan (from file: config_Map04.yml):
+==================================================
+Config ID: 1
+  Map: Map04
+  Zones: none
+  Number of Rounds: 1
+  Weight: 1
+  Team mode (scenario): rescue
+  Number of drones (scenario): 10
+--------------------------------------------------
+Default team mode: <not set>
+Time score: full marks at or before 30% of the timestep limit
+--------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+* Map: Map04, mode: rescue, special zones: none, round: 1/1
+BLUE_EVENT pickup drone=0 tick=64 pos=(-546.9659984735413, -451.44080203648736)
+BLUE_EVENT pickup drone=3 tick=102 pos=(-56.58070936766535, -289.1118793793074)
+BLUE_EVENT pickup drone=4 tick=291 pos=(85.36575713580191, 65.97250411459783)
+BLUE_EVENT carry drone=3 tick=400 pos=(-33.99111774430151, -368.5718369958203) target=(13, -476) waypoint=(13, -476) path=0 docking=True velocity=(1.8786430530938, 0.6061582611342452)
+BLUE_EVENT carry drone=4 tick=400 pos=(63.28724288735774, -104.7509387748267) target=(13, -476) waypoint=(70.0, -237.0) path=18 docking=False velocity=(-0.3340679758000821, -2.0531923932512344)
+BLUE_EVENT release drone=0 tick=417 pos=(-105.44549652638285, -385.62089949670775) near_center=True
+BLUE_EVENT pickup drone=5 tick=442 pos=(326.9448281387371, 92.00895490049592)
+BLUE_EVENT pickup drone=9 tick=452 pos=(-580.9768338496606, 337.49266131054287)
+BLUE_EVENT pickup drone=8 tick=537 pos=(742.9419656547267, -396.3634980282667)
+BLUE_EVENT release drone=4 tick=600 pos=(161.47156231082639, -496.38009944681824) near_center=True
+BLUE_EVENT carry drone=5 tick=800 pos=(314.44867940052984, -273.1467565857864) target=(13, -476) waypoint=(214.0, -357.0) path=12 docking=False velocity=(-1.7414783620166108, -1.2793714374223955)
+BLUE_EVENT carry drone=8 tick=800 pos=(334.00103317632863, -386.79929175997165) target=(13, -476) waypoint=(214.0, -453.0) path=13 docking=False velocity=(-2.0716604523701063, -0.7551834714362695)
+BLUE_EVENT carry drone=9 tick=800 pos=(-308.6495071283443, 50.63007294930606) target=(13, -476) waypoint=(-266.0, -21.0) path=22 docking=False velocity=(0.4005981779014367, -2.4985885545929403)
+BLUE_EVENT release drone=5 tick=958 pos=(56.556243434928994, -372.7065298661414) near_center=True
+BLUE_EVENT pickup drone=4 tick=1034 pos=(749.2994512939966, 41.152737012689954)
+BLUE_EVENT release drone=8 tick=1037 pos=(88.79242969624924, -376.5702737357486) near_center=True
+BLUE_EVENT pickup drone=0 tick=1070 pos=(-754.7518267613787, -235.24900216519686)
+BLUE_EVENT pickup drone=5 tick=1125 pos=(-80.71068219846546, 259.1927096861872)
+BLUE_EVENT carry drone=0 tick=1200 pos=(-680.7375655391306, -152.51899398151488) target=(13, -476) waypoint=(-626.0, -117.0) path=37 docking=False velocity=(0.7107944910646725, 0.8781350120460061)
+BLUE_EVENT carry drone=3 tick=1200 pos=(60.57483095268681, -377.8930409975594) target=(13, -476) waypoint=(13, -476) path=7 docking=True velocity=(0.1652364283514417, 0.018551261299298998)
+BLUE_EVENT carry drone=4 tick=1200 pos=(566.3172774236386, -72.7158927794698) target=(13, -476) waypoint=(502.0, -165.0) path=25 docking=False velocity=(-1.6312264820179723, -0.575398777883512)
+BLUE_EVENT carry drone=5 tick=1200 pos=(-82.62011907115019, 187.48436772455514) target=(13, -476) waypoint=(-74.0, 51.0) path=23 docking=False velocity=(-0.0685685371238061, -2.4606520210611147)
+BLUE_EVENT carry drone=9 tick=1200 pos=(-158.51711192222683, -400.87917286773256) target=(13, -476) waypoint=(-74.0, -381.0) path=12 docking=False velocity=(1.010235851146311, 0.038459326044916343)
+BLUE_EVENT pickup drone=6 tick=1253 pos=(509.0822713161073, -503.8086135844658)
+BLUE_EVENT carry drone=0 tick=1600 pos=(-275.1328301161999, -348.92483497919415) target=(13, -476) waypoint=(-146.0, -357.0) path=20 docking=False velocity=(1.915486925147526, -0.11750669630427997)
+BLUE_EVENT carry drone=3 tick=1600 pos=(-20.171506344403813, -370.59758081002195) target=(13, -476) waypoint=(13, -476) path=0 docking=True velocity=(1.549917124707612, -0.08762433950650675)
+BLUE_EVENT carry drone=4 tick=1600 pos=(54.346964598957875, -337.26851190123807) target=(13, -476) waypoint=(13, -476) path=0 docking=True velocity=(-0.21767355242782144, 0.3320455449192195)
+BLUE_EVENT carry drone=5 tick=1600 pos=(-0.6751903572943491, -299.6281241198515) target=(13, -476) waypoint=(-26.0, -333.0) path=4 docking=False velocity=(2.171253584678128, -0.35010712036659214)
+BLUE_EVENT carry drone=6 tick=1600 pos=(51.7737491736241, -375.1964920125574) target=(13, -476) waypoint=(13, -476) path=3 docking=True velocity=(-0.6576842482206204, -0.04525115090638471)
+BLUE_EVENT carry drone=9 tick=1600 pos=(15.744975932657267, -364.27779403241857) target=(13, -476) waypoint=(13, -476) path=0 docking=True velocity=(1.4525592091394628, 1.0030670742129948)
+Drone 1 destroyed, too much collision !
+BLUE_EVENT release drone=0 tick=1985 pos=(41.667401372013266, -379.1977667892574) near_center=True
+BLUE_EVENT carry drone=3 tick=2000 pos=(-116.36495898983198, -361.72717234216617) target=(13, -476) waypoint=(-122.0, -429.0) path=9 docking=False velocity=(-1.5750520700711754, -1.0218680399713536)
+BLUE_EVENT carry drone=4 tick=2000 pos=(53.28304699327448, -358.1110209673286) target=(13, -476) waypoint=(13, -476) path=0 docking=True velocity=(-1.411774545753794, -0.26883456542433404)
+BLUE_EVENT carry drone=5 tick=2000 pos=(-49.058556528070895, -374.1938347005191) target=(13, -476) waypoint=(13, -476) path=0 docking=True velocity=(1.7696250983028654, 0.3030715247013378)
+BLUE_EVENT carry drone=6 tick=2000 pos=(33.33721204584735, -327.1726121676662) target=(13, -476) waypoint=(22.0, -381.0) path=2 docking=False velocity=(-2.224200747523189, -0.9085250751049571)
+BLUE_EVENT carry drone=9 tick=2000 pos=(-77.92098465932003, -374.6819047658509) target=(13, -476) waypoint=(13, -476) path=0 docking=True velocity=(1.1279578261239553, 0.7647712524305812)
+BLUE_EVENT release drone=3 tick=2026 pos=(-132.45023005317725, -393.53209133399207) near_center=True
+BLUE_EVENT release drone=6 tick=2149 pos=(72.00205477437282, -386.61770113880425) near_center=True
+Drone 7 destroyed, too much collision !
+BLUE_EVENT carry drone=4 tick=2400 pos=(117.99695426147247, -385.73002288997685) target=(13, -476) waypoint=(13, -476) path=2 docking=True velocity=(1.074318358968224, 0.12289959375526283)
+BLUE_EVENT carry drone=5 tick=2400 pos=(-96.37386860156904, -385.3914349963351) target=(13, -476) waypoint=(13, -476) path=0 docking=True velocity=(-0.45325848852452355, -0.1561008476137943)
+BLUE_EVENT carry drone=9 tick=2400 pos=(-21.80442266785655, -359.2169349088548) target=(13, -476) waypoint=(13, -476) path=1 docking=True velocity=(0.011382082735929581, -0.321574572885768)
+Drone 2 destroyed, too much collision !
+BLUE_EVENT release drone=9 tick=2431 pos=(-15.526851301264298, -377.88745145802903) near_center=True
+BLUE_EVENT carry drone=4 tick=2800 pos=(49.84676800619854, -380.5269764613913) target=(13, -476) waypoint=(13, -476) path=0 docking=True velocity=(-1.636327681992266, -0.1443109591774879)
+BLUE_EVENT carry drone=5 tick=2800 pos=(-33.666169611479376, -390.13092942167685) target=(13, -476) waypoint=(13, -476) path=0 docking=True velocity=(-1.370206567740954, -0.12683176149004255)
+Drone 6 destroyed, too much collision !
+BLUE_EVENT carry drone=4 tick=3200 pos=(66.67666410508531, -383.9022201362603) target=(13, -476) waypoint=(13, -476) path=3 docking=True velocity=(-0.14945948301618522, 0.057320146717041706)
+BLUE_EVENT carry drone=5 tick=3200 pos=(21.965783635171302, -370.5814949702054) target=(13, -476) waypoint=(13, -476) path=0 docking=True velocity=(-1.264582431252688, 0.08382835072147898)
+Drone 0 destroyed, too much collision !
+Drone 8 destroyed, too much collision !
+Drone 9 destroyed, too much collision !
+Drone 3 destroyed, too much collision !
+BLUE_EVENT carry drone=5 tick=3600 pos=(-17.15580647289883, -360.8310568462924) target=(13, -476) waypoint=(13, -476) path=2 docking=True velocity=(2.30773946238486, 0.24537413344341816)
+BLUE_EVENT carry drone=4 tick=4000 pos=(35.60628665337633, -382.5880294050967) target=(13, -476) waypoint=(13, -476) path=14 docking=True velocity=(1.5354615635502022, -0.2642611027971875)
+BLUE_EVENT carry drone=5 tick=4000 pos=(-76.09094153312267, -370.24205740950913) target=(13, -476) waypoint=(13, -476) path=2 docking=True velocity=(1.3154223676862928, 0.5452879668705098)
+BLUE_EVENT carry drone=4 tick=4400 pos=(130.68067305479866, -368.4719431941995) target=(13, -476) waypoint=(46.0, -381.0) path=7 docking=False velocity=(0.2043914117433836, 1.1979793883640857)
+BLUE_EVENT carry drone=5 tick=4400 pos=(-87.63555927185823, -373.85844893244905) target=(13, -476) waypoint=(13, -476) path=0 docking=True velocity=(-0.5683612442373721, -0.027730485373507117)
+BLUE_EVENT release drone=4 tick=4477 pos=(52.42999362657911, -370.98986632350255) near_center=True
+BLUE_EVENT carry drone=5 tick=4800 pos=(-15.911343928650485, -381.6646138671503) target=(13, -476) waypoint=(13, -476) path=0 docking=True velocity=(-1.6701498934465115, 0.3898653516739685)
+count_reachable v3 = 1681332
+	* Round n��1/1: 
+		rescued nb: 9/10 (disposal score: 90.0%), health return score: 10.4%, time score: 0.0%, explor. score: 99.5% (weight 0%), walltime elapsed: 40s/180s, elapse timestep: 5000/5000 steps, time to dispose all: 0 steps.
+		score breakdown (competition weights): disposal 90.0 x 60% = 54.0, health 10.4 x 20% = 2.1, time 0.0 x 20% = 0.0, total 56.1/100.
+		percentage of drones destroyed: 80.0 %, mean percentage of drones health : 10.4 %.
+		round score: 56.1%, frequency: 123.88 steps/s.
+--------------------------------------------------------------------------------------------

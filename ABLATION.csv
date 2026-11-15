@@ -1,0 +1,9 @@
+version,change,case,runs,disposed,score,steps,mean_health_percent,destroyed,interpretation
+attachment_initial,provided candidate before velocity loop,Map01_generated_fixed_seed0,1,2,12.8,2000,4.0,7,initial valid run
+v1_velocity_loop,legal odometer velocity feedback and conservative force,Map01_generated_fixed_seed0,1,0,4.3,2000,21.6,4,health improved but delivery regressed
+v1_diagnostic,same controller diagnostic rerun,Map01_generated_fixed_seed0,1,0,2.8,2000,14.0,4,large stochastic variance
+v2_stable_claims,larger track association and stable owner leases,Map01_generated_fixed_seed0,1,1,21.1,2000,75.6,1,duplicate pickup reduced
+v2_diagnostic,same stable claim controller rerun,Map01_generated_fixed_seed0,1,1,22.8,2000,84.0,0,health substantially improved
+v3_loaded_force,higher force for drone plus 100-mass bomb,Map01_generated_fixed_seed0,1,7,55.4,2000,66.8,0,transport throughput improved
+v4_fast_sweep,faster unloaded exploration and tangential center sweep,Map01_generated_fixed_seed0,1,7,54.7,2000,63.6,1,no demonstrated improvement
+
