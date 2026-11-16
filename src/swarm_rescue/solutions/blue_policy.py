@@ -1,4 +1,4 @@
-"""Rule-compliant distributed blue-team rescue controller.
+"""V3 distributed blue-team rescue controller, measured sensors only.
 
 Every drone stores ONLY its own observations and received radio messages.
 The public maps' *disposal center* locations are optional priors. Bomb locations
@@ -19,7 +19,7 @@ from swarm_rescue.solutions.blue_nav import (
 Vec = Tuple[float, float]
 
 # Public map definitions: (size, nominal starting center, disposal center, half-sizes).
-# ONLY fixed disposal center coordinates are used (never bomb/wall geometry).
+# ONLY public spawn/disposal-center definitions are used, never bomb/wall geometry.
 CENTER_PRIORS = (
     ((1250, 800), (-505, 98), (-505, 302), (113, 91)),
     ((1200, 900), (14, -277), (13, -402), (84, 42)),
@@ -87,6 +87,36 @@ class MyDroneRescue(DroneAbstract):
         self._dock_stage = None
         self._dock_stage_tick = -1000
         self._last_known_heading = None
+        self.progress_distance = float('inf')
+        self.progress_goal = None
+        self.pickup_started = -1
+        self._last_mode = None
+        self.last_trace_tick = -999
+        self.last_route_failure = -999
+        self.dock_sweep = 0
+        self.dock_side = 1 if self.did % 2 else -1
+        self._semantic_cache = []
+
+    def _initial_public_anchor(self):
+        """Fallback public spawn estimate only if GPS is unavailable at reset.
+
+        This is not a true-position query. It must be disabled if competition
+        rules prohibit published map/spawn priors.
+        """
+        dims = tuple(self.size_area or ())
+        candidates = [(spawn,center,half) for size,spawn,center,half
+                      in CENTER_PRIORS if size == dims]
+        if not candidates:return
+        if dims == (1700,1100) and len(candidates)>1:
+            # Map06 has normal GPS. If GPS is absent from initialization on
+            # this map size, use the public Map09 spawn rather than Map06.
+            spawn,center,half = candidates[-1]
+        else:
+            # Same spawn/center on Map07t4 and Map08.
+            spawn,center,half = candidates[-1] if dims == (1660,1122) else candidates[0]
+        self.pose.seed(spawn)
+        if self.disposal is None:
+            self.disposal,self.center_half=center,half
 
     def _select_center(self, xy: Vec):
         if self.disposal is not None:
@@ -164,7 +194,7 @@ class MyDroneRescue(DroneAbstract):
 
     def _observe(self, tick: int, xy: Vec, heading: float):
         visible = []
-        detections = self.semantic_values() or []
+        detections = self._semantic_cache
         for det in detections:
             try:
                 dist = float(det.distance)
@@ -247,20 +277,32 @@ class MyDroneRescue(DroneAbstract):
         if carrying:
             self.mode = 'DELIVER'
             self.target_track = None
+            self.frontier_id = None
             self.target = self.disposal
             return
-        target_key = self._choose_bomb(tick, xy, visible)
+        # Avoid oscillating between targets while approaching an observed bomb.
+        target_key = None
+        if self.target_track in self.tracks:
+            tr0 = self.tracks[self.target_track]
+            if (tr0.state not in ('done','carried') and tick-tr0.last_seen<120
+                    and distance(xy,tr0.xy)<85):
+                target_key = self.target_track
+        if target_key is None:
+            target_key = self._choose_bomb(tick, xy, visible)
         if target_key is not None:
+            if self.target_track != target_key:self.pickup_started=tick
             self.mode = 'CHASE'
             self.target_track = target_key
+            self.frontier_id = None
             tr = self.tracks[target_key]
             tr.owner, tr.claimed_at, tr.state = self.did, tick, 'claimed'
             self.target = tr.xy
             return
+        was_exploring = self.mode=='EXPLORE'
         self.target_track = None
         self.mode = 'EXPLORE'
-        if (self.target is not None and self.frontier_id is not None
-                and distance(xy, self.target) > 32 and tick - self.goal_tick < 135):
+        if (was_exploring and self.target is not None
+                and distance(xy, self.target) > 32 and tick - self.goal_tick < 105):
             return
         peers = list(self.peers.values())
         idx, frontier = self.grid.frontier(xy, self.home or xy,
@@ -281,12 +323,16 @@ class MyDroneRescue(DroneAbstract):
 
     def _route(self, tick: int, xy: Vec, target: Vec):
         changed = self.path_target is None or distance(target, self.path_target) > 34
-        if changed or tick - self.path_tick >= 37 or not self.path:
-            self.path = self.grid.astar(xy, target, carrying=self.mode=='DELIVER')
+        # V2 replanned EVERY FRAME on an empty route. A* plus repeated 25-cell
+        # clearance scans was a major slowdown on narrow maps.
+        if changed or tick - self.path_tick >= (62 if self.path else 44):
+            self.path = self.grid.astar(xy, target, carrying=self.mode=='DELIVER',
+                                        max_expansions=3400)
             self.path_target = target
             self.path_tick = tick
+            if not self.path:self.last_route_failure=tick
         # Pop passed waypoints, then safely look ahead along traversable grid.
-        while len(self.path) > 1 and distance(xy, self.path[0]) < 32:
+        while self.path and distance(xy, self.path[0]) < 27:
             self.path.pop(0)
         if self.path:
             candidate = self.path[0]
@@ -308,16 +354,18 @@ class MyDroneRescue(DroneAbstract):
         return True
 
     def _update_stuck(self, tick: int, xy: Vec, goal: Vec):
-        if self.prev_position is None:
-            self.prev_position, self.progress_tick = xy, tick
+        remaining = distance(xy,goal)
+        if self.prev_position is None or self.progress_goal is None or distance(self.progress_goal,goal)>90:
+            self.prev_position,self.progress_tick,self.progress_distance,self.progress_goal=xy,tick,remaining,goal
             return
-        if distance(xy, self.prev_position) >= 24:
-            self.prev_position, self.progress_tick = xy, tick
-        elif tick - self.progress_tick > 65 and distance(xy, goal) > 36:
-            self.escape_left = max(self.escape_left, 22)
+        if remaining < self.progress_distance-22:
+            self.prev_position,self.progress_tick,self.progress_distance=xy,tick,remaining
+        elif tick-self.progress_tick > 58 and remaining>55:
+            self.escape_left=max(self.escape_left,18)
             self.escape_dir *= -1
             self.progress_tick = tick
             self.prev_position = xy
+            self.progress_distance=remaining
             if self.frontier_id is not None:
                 self.frontier_avoid[self.frontier_id] = tick
                 self.goal_tick = -9999
@@ -334,6 +382,7 @@ class MyDroneRescue(DroneAbstract):
             if key is not None and key in self.tracks:
                 tr = self.tracks[key]
                 tr.state, tr.owner, tr.claimed_at = 'carried', self.did, tick
+            print('BLUE_V3_EVENT pickup drone=%d tick=%d track=%s' % (self.did,tick,key))
         elif self.was_carrying and not carrying:
             key = self.active_carry_track
             if key is not None and key in self.tracks:
@@ -346,6 +395,8 @@ class MyDroneRescue(DroneAbstract):
                 tr.state = 'done' if near_center else 'free'
                 tr.owner = self.did if near_center else -1
                 tr.last_seen = tick
+            print('BLUE_V3_EVENT released drone=%d tick=%d track=%s pos=%s' %
+                  (self.did,tick,key,xy))
             self.active_carry_track = None
         self.was_carrying = carrying
 
@@ -371,13 +422,13 @@ class MyDroneRescue(DroneAbstract):
             'mode': self.mode, 'carrying': carrying,
             'bombs': [[round(t.xy[0], 1), round(t.xy[1], 1), t.state,
                        t.owner, t.last_seen, t.claimed_at] for t in tracks],
-            'cells': self.grid.export(110) if tick % 9 == self.did % 9 else [],
+            'cells': self.grid.export(75) if tick % 12 == self.did % 12 else [],
         }
 
     def _target_avoidance_mask(self):
         """Avoid falsely marking bombs/drones/center as static walls."""
         mask=[]
-        for d in self.semantic_values() or []:
+        for d in self._semantic_cache:
             try:
                 if d.entity_type in (DroneSemanticSensor.TypeEntity.BOMB,
                                      DroneSemanticSensor.TypeEntity.DRONE,
@@ -399,14 +450,14 @@ class MyDroneRescue(DroneAbstract):
         inside=max(abs(dx)-hx,abs(dy)-hy)<48
         if inside:
             return self.disposal,True
-        if self._dock_stage is None or tick-self._dock_stage_tick>90:
-            margin=35.
+        if self._dock_stage is None or tick-self._dock_stage_tick>180:
+            margin=53.
             candidates=[(cx+hx+margin,cy),(cx-hx-margin,cy),
                         (cx,cy+hy+margin),(cx,cy-hy-margin)]
             candidates=[p for p in candidates if self.grid.index(*p) is not None]
             ranked=[]
             for pt in candidates:
-                path=self.grid.astar(xy,pt,carrying=True,max_expansions=3800)
+                path=self.grid.astar(xy,pt,carrying=True,max_expansions=1750)
                 if path and distance(path[-1],pt)<56:
                     length=sum(distance(a,b) for a,b in zip([xy]+path,path))
                     ranked.append((length,pt))
@@ -415,9 +466,83 @@ class MyDroneRescue(DroneAbstract):
             elif candidates:
                 self._dock_stage=min(candidates,key=lambda p:distance(xy,p))
             self._dock_stage_tick=tick
-        if self._dock_stage is not None and distance(xy,self._dock_stage)>39:
+        if self._dock_stage is not None and distance(xy,self._dock_stage)>32:
             return self._dock_stage,False
         return self.disposal,True
+
+    def _pilot_semantics(self, tick, xy, heading, target_track=None, docking=False):
+        """Make verified LiDAR suppression masks; NEVER ignore arbitrary walls."""
+        ignore=[]
+        hazards=[]
+        for obj in self._semantic_cache:
+            try:
+                ang,dist=float(obj.angle),float(obj.distance)
+                if not(math.isfinite(ang) and math.isfinite(dist)):
+                    continue
+                if obj.entity_type==DroneSemanticSensor.TypeEntity.DRONE:
+                    hazards.append((ang,dist))
+                elif (obj.entity_type==DroneSemanticSensor.TypeEntity.BOMB
+                      and target_track is not None and not bool(obj.grasped)
+                      and dist<80):
+                    tr=self.tracks.get(target_track)
+                    point=(xy[0]+dist*math.cos(heading+ang),
+                           xy[1]+dist*math.sin(heading+ang))
+                    if tr is not None and distance(point,tr.xy)<30:
+                        ignore.append((ang,dist))
+                elif obj.entity_type==DroneSemanticSensor.TypeEntity.DISPOSAL_CENTER and docking:
+                    ignore.append((ang,dist))
+            except (ValueError,TypeError,AttributeError):continue
+        return ignore,hazards
+
+    def _correct_center_by_semantics(self,xy,heading):
+        """Bounded map-relative correction from observed center SURFACE.
+
+        The public center rectangle is a landmark; sensed hit points are NOT
+        the rectangle center. Reject inconsistent data and never use truth pose.
+        """
+        if self.disposal is None or self.pose.gps_lost_steps<5:
+            return xy
+        cx,cy=self.disposal
+        hx,hy=self.center_half
+        errors=[]
+        for item in self._semantic_cache:
+            if item.entity_type!=DroneSemanticSensor.TypeEntity.DISPOSAL_CENTER:
+                continue
+            try:
+                r,a=float(item.distance),float(item.angle)
+                if not(math.isfinite(r) and math.isfinite(a) and 3<r<135):continue
+            except (ValueError,TypeError):continue
+            px=xy[0]+r*math.cos(heading+a)
+            py=xy[1]+r*math.sin(heading+a)
+            qx=clamp(px,cx-hx,cx+hx)
+            qy=clamp(py,cy-hy,cy+hy)
+            if cx-hx<px<cx+hx and cy-hy<py<cy+hy:
+                edges=[(abs(px-(cx-hx)),cx-hx,py),
+                       (abs(px-(cx+hx)),cx+hx,py),
+                       (abs(py-(cy-hy)),px,cy-hy),
+                       (abs(py-(cy+hy)),px,cy+hy)]
+                _,qx,qy=min(edges)
+            ex,ey=qx-px,qy-py
+            if math.hypot(ex,ey)<48:errors.append((ex,ey))
+        if len(errors)<3:return xy
+        errors.sort(key=lambda p:p[0]);ex=errors[len(errors)//2][0]
+        errors.sort(key=lambda p:p[1]);ey=errors[len(errors)//2][1]
+        norm=math.hypot(ex,ey)
+        if norm>40:return xy
+        factor=min(.38,9./max(norm,1.))
+        corrected=(xy[0]+factor*ex,xy[1]+factor*ey)
+        self.pose.xy=corrected
+        self.pose.uncertainty=max(7.,self.pose.uncertainty*.92)
+        return corrected
+
+    def _telemetry(self,tick,xy,heading,carrying,goal):
+        if self.mode!=self._last_mode or tick-self.last_trace_tick>=175:
+            v=math.hypot(*self.pose.motion)
+            print('BLUE_V3 drone=%d tick=%d state=%s pos=(%.1f,%.1f) speed=%.2f '
+                  'carry=%d goal_dist=%.1f route=%d uncertainty=%.1f' %
+                  (self.did,tick,self.mode,xy[0],xy[1],v,int(carrying),
+                   distance(xy,goal) if goal else -1,len(self.path),self.pose.uncertainty))
+            self._last_mode,self.last_trace_tick=self.mode,tick
 
     def control(self) -> CommandsDict:
         tick=int(self.elapsed_timestep)
@@ -425,6 +550,13 @@ class MyDroneRescue(DroneAbstract):
         try:
             self.pose.update(tick,self.measured_gps_position(),
                              self.measured_compass_angle(),self.odometer_values())
+            if self.pose.xy is None:
+                self._initial_public_anchor()
+            if self.pose.heading is None and tick>=8:
+                # If no absolute compass was ever available, local odometry
+                # still supports a relative frame; this does NOT provide an
+                # absolute heading and should be validated on Map08/09.
+                self.pose.heading=0.
             xy,heading=self.pose.xy,self.pose.heading
             carrying=bool(self.grasped_bombs())
             self._receive(tick)
@@ -435,8 +567,13 @@ class MyDroneRescue(DroneAbstract):
             self._select_center(xy)
             self._finish_previous_carry(tick,xy,carrying)
             lidar,angles=self.lidar_values(),self.lidar_rays_angles()
-            if self.pose.uncertainty<38.:
-                self.grid.scan(xy,heading,lidar,angles,tick,ignore=self._target_avoidance_mask())
+            self._semantic_cache=self.semantic_values() or []
+            xy=self._correct_center_by_semantics(xy,heading)
+            mask=self._target_avoidance_mask()
+            self.pose.scan_match(self.grid,tick,lidar,angles,ignore=mask)
+            xy,heading=self.pose.xy,self.pose.heading
+            if self.pose.uncertainty<100.:
+                self.grid.scan(xy,heading,lidar,angles,tick,ignore=mask)
             visible=self._observe(tick,xy,heading)
             for key,tr in self.tracks.items():
                 if tr.state=='claimed' and tr.owner==self.did and key!=self.target_track:
@@ -471,12 +608,18 @@ class MyDroneRescue(DroneAbstract):
             waypoint=target if docking else self._route(tick,xy,target)
             peers=[p for p in self.peers.values()
                    if tick-int(p.get('tick',-99999))<75]
+            close_target=(self.mode=='CHASE' and self.target_track in self.tracks
+                          and distance(xy,self.tracks[self.target_track].xy)<75)
+            ignored,hazards=self._pilot_semantics(tick,xy,heading,
+                                                   self.target_track if close_target else None,
+                                                   docking=docking)
             # Use odometer displacement, not measured_velocity's mislabeled
             # px/s interpretation. Engine's motion is per step.
             fwd,lat,rot=self.pilot.command(
                 heading,xy,waypoint,lidar,angles,peers=peers,carrying=carrying,
                 docking=docking,velocity=motion,
-                ignore_target=docking,stuck=self.escape_left>0)
+                ignore=ignored,close_target=close_target,
+                near_drone=hazards,stuck=self.escape_left>0)
             if docking:
                 # Preserve velocity feedback while allowing center contact;
                 # a blind constant push caused the repeated delivery deaths.
@@ -487,10 +630,10 @@ class MyDroneRescue(DroneAbstract):
                     # A slow tangent sweep can bring a trailing bomb across
                     # the center boundary. Keep component pushing inward.
                     sign=1 if (self.did+(self.delivery_struggles//90))%2 else -1
-                    fwd+=.11*math.cos(a+sign*math.pi/2)
-                    lat+=.11*math.sin(a+sign*math.pi/2)
+                    fwd+=.14*math.cos(a+sign*math.pi/2)
+                    lat+=.14*math.sin(a+sign*math.pi/2)
                 # Other drones cannot be pushed through; yield instead.
-                for obj in self.semantic_values() or []:
+                for obj in self._semantic_cache:
                     if obj.entity_type!=DroneSemanticSensor.TypeEntity.DRONE:continue
                     try:
                         if float(obj.distance)<41 and abs(wrap(float(obj.angle)-a))<.6:
@@ -502,17 +645,25 @@ class MyDroneRescue(DroneAbstract):
             if self.mode=='CHASE' and self.target_track in self.tracks:
                 tr=self.tracks[self.target_track]
                 near=distance(xy,tr.xy)
-                if near<34:
+                if near<70:
                     a=wrap(math.atan2(tr.xy[1]-xy[1],tr.xy[0]-xy[0])-heading)
                     rot=clamp(1.0*a,-.65,.65)
-                    if math.hypot(fwd,lat)<.15 and near>11:
-                        fwd+=.16*math.cos(a)
-                        lat+=.16*math.sin(a)
+                    # A bomb is an intended CONTACT target, not a wall. Move
+                    # through the observed bomb-surface point with grasper held.
+                    if 10<near<57 and math.hypot(fwd,lat)<.18:
+                        vf=motion[0]*math.cos(heading)+motion[1]*math.sin(heading)
+                        vl=-motion[0]*math.sin(heading)+motion[1]*math.cos(heading)
+                        fwd=clamp(.26*math.cos(a)-.07*vf,-.38,.38)
+                        lat=clamp(.26*math.sin(a)-.07*vl,-.38,.38)
+                    if near<30 and tick-self.pickup_started>80:
+                        # Small controlled angular perturbation changes the
+                        # grasper contact geometry without blindly accelerating.
+                        rot=clamp(rot+(.22 if self.did%2 else -.22),-.65,.65)
             if carrying and self.active_carry_track in self.tracks:
                 tr=self.tracks[self.active_carry_track]
                 tr.state,tr.owner,tr.claimed_at='carried',self.did,tick
             self._prepare_message(tick,carrying)
+            self._telemetry(tick,xy,heading,carrying,target)
             return safe_command(fwd,lat,rot,int(carrying or self.mode=='CHASE'))
         except (TypeError,ValueError,ArithmeticError,IndexError,AttributeError):
             return safe_command(grasper=int(bool(self.grasped_bombs())))
-

@@ -1,0 +1,364 @@
+The team 'SkySaviors' n��6, with tom, alice, bob, lea
+Default team mode: <not set>
+Evaluation Plan (from file: config_Map07.yml):
+==================================================
+Config ID: 1
+  Map: Map07
+  Zones: none
+  Number of Rounds: 1
+  Weight: 1
+  Team mode (scenario): rescue
+  Number of drones (scenario): 10
+--------------------------------------------------
+Default team mode: <not set>
+Time score: full marks at or before 30% of the timestep limit
+--------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+* Map: Map07, mode: rescue, special zones: none, round: 1/1
+BLUE_V3 drone=0 tick=8 state=EXPLORE pos=(-582.3,-470.2) speed=0.02 carry=0 goal_dist=121.2 route=6 uncertainty=4.5
+BLUE_V3 drone=1 tick=13 state=EXPLORE pos=(-544.0,-475.2) speed=0.00 carry=0 goal_dist=125.5 route=4 uncertainty=4.5
+BLUE_V3 drone=2 tick=18 state=EXPLORE pos=(-502.3,-474.4) speed=0.35 carry=0 goal_dist=123.7 route=5 uncertainty=4.5
+BLUE_V3 drone=3 tick=23 state=EXPLORE pos=(-462.5,-464.9) speed=0.00 carry=0 goal_dist=114.8 route=4 uncertainty=4.5
+BLUE_V3 drone=4 tick=28 state=EXPLORE pos=(-582.1,-429.0) speed=0.11 carry=0 goal_dist=116.8 route=6 uncertainty=4.5
+BLUE_V3 drone=5 tick=33 state=EXPLORE pos=(-531.8,-438.8) speed=0.00 carry=0 goal_dist=125.8 route=5 uncertainty=4.5
+BLUE_V3 drone=6 tick=38 state=EXPLORE pos=(-496.3,-433.4) speed=0.12 carry=0 goal_dist=104.2 route=4 uncertainty=4.5
+BLUE_V3 drone=7 tick=43 state=EXPLORE pos=(-457.7,-423.8) speed=0.00 carry=0 goal_dist=82.2 route=4 uncertainty=4.5
+BLUE_V3 drone=8 tick=48 state=EXPLORE pos=(-579.7,-395.3) speed=0.00 carry=0 goal_dist=114.9 route=4 uncertainty=4.5
+BLUE_V3 drone=9 tick=53 state=EXPLORE pos=(-532.4,-389.0) speed=0.15 carry=0 goal_dist=113.6 route=5 uncertainty=4.5
+BLUE_V3 drone=7 tick=116 state=CHASE pos=(-238.9,-505.5) speed=7.99 carry=0 goal_dist=128.9 route=5 uncertainty=4.5
+BLUE_V3 drone=9 tick=116 state=CHASE pos=(-285.1,-383.4) speed=6.74 carry=0 goal_dist=117.0 route=5 uncertainty=4.5
+BLUE_V3 drone=3 tick=120 state=CHASE pos=(-408.9,-335.0) speed=3.43 carry=0 goal_dist=261.0 route=12 uncertainty=4.5
+BLUE_V3 drone=1 tick=122 state=CHASE pos=(-407.2,-412.0) speed=3.33 carry=0 goal_dist=249.6 route=11 uncertainty=4.5
+BLUE_V3 drone=2 tick=122 state=CHASE pos=(-374.9,-357.8) speed=3.57 carry=0 goal_dist=222.5 route=10 uncertainty=4.5
+BLUE_V3 drone=1 tick=123 state=EXPLORE pos=(-404.7,-414.8) speed=3.58 carry=0 goal_dist=333.0 route=13 uncertainty=4.5
+BLUE_V3 drone=2 tick=123 state=EXPLORE pos=(-371.5,-357.5) speed=3.49 carry=0 goal_dist=282.9 route=12 uncertainty=4.5
+BLUE_V3 drone=3 tick=124 state=EXPLORE pos=(-400.9,-326.3) speed=2.83 carry=0 goal_dist=305.7 route=14 uncertainty=4.5
+BLUE_V3 drone=3 tick=125 state=CHASE pos=(-398.5,-324.8) speed=3.06 carry=0 goal_dist=254.1 route=12 uncertainty=4.5
+BLUE_V3 drone=3 tick=132 state=EXPLORE pos=(-386.7,-318.5) speed=0.96 carry=0 goal_dist=329.3 route=13 uncertainty=4.5
+BLUE_V3 drone=7 tick=139 state=EXPLORE pos=(-139.4,-436.5) speed=3.37 carry=0 goal_dist=212.4 route=9 uncertainty=4.5
+BLUE_V3_EVENT pickup drone=9 tick=139 track=0
+BLUE_V3 drone=9 tick=139 state=DELIVER pos=(-164.7,-382.4) speed=2.06 carry=1 goal_dist=399.9 route=17 uncertainty=4.5
+BLUE_V3 drone=0 tick=141 state=CHASE pos=(-230.4,-518.3) speed=7.95 carry=0 goal_dist=146.5 route=6 uncertainty=4.5
+BLUE_V3 drone=2 tick=141 state=CHASE pos=(-296.4,-354.1) speed=2.74 carry=0 goal_dist=132.0 route=6 uncertainty=4.5
+BLUE_V3 drone=8 tick=141 state=CHASE pos=(-273.3,-364.8) speed=3.44 carry=0 goal_dist=107.2 route=5 uncertainty=4.5
+BLUE_V3 drone=0 tick=143 state=EXPLORE pos=(-216.7,-516.2) speed=6.73 carry=0 goal_dist=263.1 route=12 uncertainty=4.5
+BLUE_V3 drone=2 tick=143 state=EXPLORE pos=(-290.7,-351.1) speed=3.11 carry=0 goal_dist=368.5 route=14 uncertainty=4.5
+BLUE_V3 drone=8 tick=143 state=EXPLORE pos=(-267.9,-363.8) speed=3.53 carry=0 goal_dist=342.5 route=14 uncertainty=4.5
+BLUE_V3 drone=4 tick=203 state=EXPLORE pos=(-123.4,-455.6) speed=1.61 carry=0 goal_dist=70.7 route=2 uncertainty=4.5
+BLUE_V3 drone=0 tick=208 state=CHASE pos=(263.3,-382.6) speed=7.86 carry=0 goal_dist=120.7 route=5 uncertainty=4.5
+BLUE_V3 drone=5 tick=208 state=EXPLORE pos=(-193.9,-469.0) speed=1.50 carry=0 goal_dist=341.9 route=14 uncertainty=4.5
+BLUE_V3 drone=6 tick=213 state=EXPLORE pos=(-166.4,-363.8) speed=4.91 carry=0 goal_dist=219.3 route=15 uncertainty=4.5
+BLUE_V3 drone=8 tick=223 state=CHASE pos=(132.7,-461.3) speed=7.00 carry=0 goal_dist=273.3 route=11 uncertainty=4.5
+BLUE_V3_EVENT pickup drone=0 tick=225 track=2
+BLUE_V3 drone=0 tick=225 state=DELIVER pos=(358.0,-347.8) speed=2.16 carry=1 goal_dist=923.5 route=38 uncertainty=4.5
+BLUE_V3 drone=8 tick=227 state=EXPLORE pos=(158.2,-448.4) speed=7.28 carry=0 goal_dist=296.5 route=13 uncertainty=4.5
+BLUE_V3 drone=8 tick=248 state=CHASE pos=(311.0,-429.2) speed=7.88 carry=0 goal_dist=123.7 route=5 uncertainty=4.5
+BLUE_V3 drone=3 tick=269 state=CHASE pos=(142.7,-448.0) speed=7.12 carry=0 goal_dist=257.9 route=11 uncertainty=4.5
+BLUE_V3 drone=5 tick=269 state=CHASE pos=(101.9,-383.2) speed=8.07 carry=0 goal_dist=319.2 route=14 uncertainty=4.5
+BLUE_V3 drone=1 tick=270 state=CHASE pos=(126.0,-375.2) speed=6.81 carry=0 goal_dist=301.3 route=12 uncertainty=4.5
+BLUE_V3 drone=1 tick=271 state=EXPLORE pos=(132.7,-377.5) speed=6.89 carry=0 goal_dist=206.2 route=9 uncertainty=4.5
+BLUE_V3 drone=5 tick=271 state=EXPLORE pos=(117.9,-385.0) speed=8.33 carry=0 goal_dist=240.1 route=10 uncertainty=4.5
+BLUE_V3_EVENT pickup drone=8 tick=273 track=7
+BLUE_V3 drone=8 tick=273 state=DELIVER pos=(389.9,-495.6) speed=1.51 carry=1 goal_dist=954.3 route=40 uncertainty=4.5
+BLUE_V3 drone=3 tick=277 state=EXPLORE pos=(201.8,-451.8) speed=7.14 carry=0 goal_dist=205.8 route=9 uncertainty=4.5
+BLUE_V3 drone=7 tick=306 state=CHASE pos=(527.1,-347.0) speed=7.42 carry=0 goal_dist=123.9 route=5 uncertainty=4.5
+BLUE_V3 drone=2 tick=307 state=CHASE pos=(475.7,-375.6) speed=7.13 carry=0 goal_dist=126.4 route=6 uncertainty=4.5
+BLUE_V3 drone=6 tick=312 state=CHASE pos=(168.3,-327.6) speed=5.03 carry=0 goal_dist=441.8 route=19 uncertainty=4.5
+BLUE_V3 drone=7 tick=312 state=EXPLORE pos=(562.4,-348.3) speed=5.10 carry=0 goal_dist=207.7 route=9 uncertainty=4.5
+BLUE_V3 drone=9 tick=314 state=DELIVER pos=(-416.8,-425.1) speed=2.30 carry=1 goal_dist=145.2 route=6 uncertainty=4.5
+BLUE_V3_EVENT pickup drone=2 tick=331 track=12
+BLUE_V3 drone=2 tick=331 state=DELIVER pos=(568.9,-440.1) speed=2.23 carry=1 goal_dist=1131.0 route=48 uncertainty=4.5
+BLUE_V3 drone=1 tick=333 state=CHASE pos=(521.7,-335.1) speed=5.35 carry=0 goal_dist=130.6 route=7 uncertainty=4.5
+BLUE_V3 drone=3 tick=343 state=CHASE pos=(552.7,-462.4) speed=1.89 carry=0 goal_dist=23.0 route=0 uncertainty=4.5
+BLUE_V3 drone=3 tick=344 state=EXPLORE pos=(553.2,-460.8) speed=1.90 carry=0 goal_dist=297.6 route=11 uncertainty=4.5
+BLUE_V3 drone=1 tick=345 state=EXPLORE pos=(550.3,-368.2) speed=4.19 carry=0 goal_dist=263.5 route=9 uncertainty=4.5
+BLUE_V3 drone=6 tick=352 state=EXPLORE pos=(374.5,-420.3) speed=3.72 carry=0 goal_dist=207.8 route=8 uncertainty=4.5
+BLUE_V3 drone=5 tick=364 state=CHASE pos=(710.8,-333.6) speed=5.25 carry=0 goal_dist=123.6 route=5 uncertainty=4.5
+BLUE_V3 drone=6 tick=368 state=CHASE pos=(434.5,-410.2) speed=5.03 carry=0 goal_dist=372.7 route=15 uncertainty=4.5
+BLUE_V3 drone=4 tick=378 state=EXPLORE pos=(198.2,-354.1) speed=3.75 carry=0 goal_dist=304.5 route=13 uncertainty=4.5
+BLUE_V3 drone=7 tick=380 state=CHASE pos=(621.8,-44.2) speed=2.75 carry=0 goal_dist=131.1 route=6 uncertainty=4.5
+BLUE_V3_EVENT pickup drone=5 tick=387 track=19
+BLUE_V3 drone=5 tick=387 state=DELIVER pos=(755.5,-236.9) speed=1.30 carry=1 goal_dist=1331.3 route=55 uncertainty=4.5
+BLUE_V3 drone=6 tick=391 state=EXPLORE pos=(569.1,-363.0) speed=7.14 carry=0 goal_dist=271.6 route=12 uncertainty=4.5
+BLUE_V3 drone=6 tick=395 state=CHASE pos=(590.6,-358.9) speed=4.96 carry=0 goal_dist=352.2 route=14 uncertainty=4.5
+BLUE_V3 drone=3 tick=397 state=CHASE pos=(616.9,-317.6) speed=6.00 carry=0 goal_dist=303.4 route=12 uncertainty=4.5
+BLUE_V3 drone=6 tick=399 state=EXPLORE pos=(608.8,-354.2) speed=5.38 carry=0 goal_dist=261.4 route=11 uncertainty=4.5
+BLUE_V3 drone=0 tick=400 state=DELIVER pos=(79.2,-401.0) speed=2.44 carry=1 goal_dist=641.7 route=27 uncertainty=4.5
+BLUE_V3 drone=4 tick=404 state=CHASE pos=(353.0,-343.6) speed=7.63 carry=0 goal_dist=497.6 route=18 uncertainty=4.5
+BLUE_V3_EVENT pickup drone=7 tick=407 track=15
+BLUE_V3 drone=7 tick=407 state=DELIVER pos=(732.5,-46.1) speed=2.87 carry=1 goal_dist=1349.6 route=62 uncertainty=4.5
+BLUE_V3 drone=3 tick=409 state=EXPLORE pos=(674.6,-290.5) speed=5.51 carry=0 goal_dist=272.9 route=12 uncertainty=4.5
+BLUE_V3 drone=4 tick=417 state=EXPLORE pos=(445.7,-326.9) speed=6.32 carry=0 goal_dist=188.3 route=9 uncertainty=4.5
+BLUE_V3_EVENT released drone=9 tick=434 track=0 pos=(-605.7038570217994, -415.8477103468536)
+BLUE_V3 drone=9 tick=434 state=EXPLORE pos=(-605.7,-415.8) speed=0.39 carry=0 goal_dist=711.8 route=31 uncertainty=4.5
+BLUE_V3 drone=8 tick=448 state=DELIVER pos=(50.5,-444.3) speed=2.00 carry=1 goal_dist=612.7 route=26 uncertainty=4.5
+BLUE_V3 drone=2 tick=506 state=DELIVER pos=(270.2,-427.6) speed=2.37 carry=1 goal_dist=832.2 route=35 uncertainty=4.5
+BLUE_V3 drone=1 tick=520 state=EXPLORE pos=(299.9,43.4) speed=5.19 carry=0 goal_dist=179.6 route=8 uncertainty=4.5
+BLUE_V3 drone=6 tick=537 state=CHASE pos=(602.8,332.7) speed=6.94 carry=0 goal_dist=121.4 route=6 uncertainty=4.5
+BLUE_V3_EVENT pickup drone=6 tick=558 track=37
+BLUE_V3 drone=6 tick=558 state=DELIVER pos=(485.8,342.1) speed=3.58 carry=1 goal_dist=1300.4 route=78 uncertainty=4.5
+BLUE_V3 drone=5 tick=562 state=DELIVER pos=(480.8,-367.7) speed=2.51 carry=1 goal_dist=1044.6 route=44 uncertainty=4.5
+BLUE_V3 drone=0 tick=575 state=DELIVER pos=(-342.1,-437.0) speed=2.19 carry=1 goal_dist=220.1 route=9 uncertainty=4.5
+BLUE_V3 drone=7 tick=582 state=DELIVER pos=(690.6,-55.9) speed=1.29 carry=1 goal_dist=1306.7 route=61 uncertainty=4.5
+BLUE_V3 drone=3 tick=584 state=EXPLORE pos=(347.4,206.5) speed=5.82 carry=0 goal_dist=275.3 route=13 uncertainty=4.5
+BLUE_V3 drone=4 tick=592 state=EXPLORE pos=(578.9,-95.9) speed=7.18 carry=0 goal_dist=192.8 route=13 uncertainty=4.5
+BLUE_V3 drone=9 tick=609 state=EXPLORE pos=(555.1,-336.7) speed=7.52 carry=0 goal_dist=67.2 route=3 uncertainty=4.5
+BLUE_V3 drone=8 tick=623 state=DELIVER pos=(-342.5,-409.7) speed=2.32 carry=1 goal_dist=220.3 route=9 uncertainty=4.5
+BLUE_V3 drone=2 tick=681 state=DELIVER pos=(-138.7,-374.2) speed=2.11 carry=1 goal_dist=426.7 route=19 uncertainty=4.5
+BLUE_V3 drone=1 tick=695 state=EXPLORE pos=(711.5,286.1) speed=2.07 carry=0 goal_dist=679.6 route=25 uncertainty=4.5
+BLUE_V3 drone=3 tick=718 state=CHASE pos=(76.3,222.2) speed=4.82 carry=0 goal_dist=127.4 route=6 uncertainty=4.5
+BLUE_V3_EVENT released drone=0 tick=732 track=2 pos=(-596.457373569159, -425.1111397844785)
+BLUE_V3 drone=0 tick=732 state=EXPLORE pos=(-596.5,-425.1) speed=0.43 carry=0 goal_dist=1229.5 route=51 uncertainty=4.5
+BLUE_V3 drone=6 tick=733 state=DELIVER pos=(510.0,-1.2) speed=2.12 carry=1 goal_dist=1153.8 route=63 uncertainty=4.5
+BLUE_V3 drone=5 tick=737 state=DELIVER pos=(76.5,-396.0) speed=2.43 carry=1 goal_dist=639.3 route=27 uncertainty=4.5
+BLUE_V3_EVENT pickup drone=3 tick=742 track=56
+BLUE_V3 drone=3 tick=742 state=DELIVER pos=(-35.2,185.1) speed=3.09 carry=1 goal_dist=810.2 route=31 uncertainty=4.5
+BLUE_V3 drone=7 tick=757 state=DELIVER pos=(612.4,-250.7) speed=2.19 carry=1 goal_dist=1187.8 route=53 uncertainty=4.5
+BLUE_V3 drone=4 tick=767 state=EXPLORE pos=(161.7,308.5) speed=0.38 carry=0 goal_dist=158.0 route=7 uncertainty=4.5
+BLUE_V3 drone=9 tick=784 state=EXPLORE pos=(-107.0,-51.9) speed=5.41 carry=0 goal_dist=127.2 route=9 uncertainty=4.5
+BLUE_V3 drone=8 tick=798 state=DELIVER pos=(-546.6,-412.4) speed=1.14 carry=1 goal_dist=174.1 route=0 uncertainty=4.5
+BLUE_V3 drone=2 tick=856 state=DELIVER pos=(-524.9,-431.9) speed=1.96 carry=1 goal_dist=37.3 route=2 uncertainty=4.5
+BLUE_V3 drone=1 tick=870 state=EXPLORE pos=(-23.3,0.7) speed=7.44 carry=0 goal_dist=148.7 route=12 uncertainty=4.5
+BLUE_V3 drone=4 tick=871 state=CHASE pos=(270.5,507.9) speed=3.37 carry=0 goal_dist=453.2 route=24 uncertainty=4.5
+BLUE_V3 drone=0 tick=907 state=EXPLORE pos=(428.6,-401.1) speed=0.46 carry=0 goal_dist=238.8 route=19 uncertainty=4.5
+BLUE_V3 drone=6 tick=908 state=DELIVER pos=(582.4,-262.6) speed=1.97 carry=1 goal_dist=1156.3 route=53 uncertainty=4.5
+BLUE_V3 drone=5 tick=912 state=DELIVER pos=(-324.3,-388.0) speed=2.61 carry=1 goal_dist=241.0 route=10 uncertainty=4.5
+BLUE_V3 drone=3 tick=917 state=DELIVER pos=(-76.6,-106.8) speed=1.81 carry=1 goal_dist=658.8 route=35 uncertainty=4.5
+BLUE_V3 drone=7 tick=932 state=DELIVER pos=(261.9,-352.4) speed=2.67 carry=1 goal_dist=827.3 route=35 uncertainty=4.5
+BLUE_V3_EVENT released drone=2 tick=956 track=12 pos=(-589.7759899675902, -441.24978413949555)
+BLUE_V3 drone=2 tick=956 state=EXPLORE pos=(-589.8,-441.2) speed=0.07 carry=0 goal_dist=998.2 route=60 uncertainty=4.5
+BLUE_V3 drone=9 tick=959 state=EXPLORE pos=(-303.0,391.3) speed=6.00 carry=0 goal_dist=327.5 route=17 uncertainty=4.5
+BLUE_V3 drone=8 tick=982 state=DELIVER pos=(-541.6,-379.6) speed=1.26 carry=1 goal_dist=52.5 route=3 uncertainty=4.5
+BLUE_V3 drone=4 tick=1004 state=EXPLORE pos=(-53.4,186.0) speed=0.56 carry=0 goal_dist=215.9 route=9 uncertainty=4.5
+BLUE_V3 drone=1 tick=1045 state=EXPLORE pos=(-464.5,399.3) speed=3.80 carry=0 goal_dist=416.0 route=21 uncertainty=4.5
+BLUE_V3 drone=0 tick=1082 state=EXPLORE pos=(135.9,69.0) speed=5.95 carry=0 goal_dist=197.3 route=8 uncertainty=4.5
+BLUE_V3 drone=6 tick=1083 state=DELIVER pos=(566.5,-305.9) speed=0.62 carry=1 goal_dist=1135.1 route=47 uncertainty=4.5
+BLUE_V3 drone=3 tick=1092 state=DELIVER pos=(-90.1,-117.0) speed=2.55 carry=1 goal_dist=643.4 route=27 uncertainty=4.5
+BLUE_V3 drone=5 tick=1092 state=DELIVER pos=(-516.7,-438.3) speed=1.79 carry=1 goal_dist=46.5 route=2 uncertainty=4.5
+BLUE_V3_EVENT released drone=8 tick=1101 track=7 pos=(-594.9330478872253, -391.3942042857452)
+BLUE_V3 drone=7 tick=1107 state=DELIVER pos=(-106.1,-361.2) speed=2.00 carry=1 goal_dist=460.8 route=24 uncertainty=4.5
+BLUE_V3 drone=8 tick=1119 state=EXPLORE pos=(-579.4,-371.0) speed=1.91 carry=0 goal_dist=1156.6 route=51 uncertainty=4.5
+BLUE_V3 drone=2 tick=1131 state=EXPLORE pos=(549.2,-336.3) speed=1.83 carry=0 goal_dist=207.7 route=12 uncertainty=4.5
+BLUE_V3 drone=9 tick=1134 state=EXPLORE pos=(-22.5,225.9) speed=4.59 carry=0 goal_dist=199.4 route=13 uncertainty=4.5
+BLUE_V3 drone=4 tick=1179 state=EXPLORE pos=(-491.8,380.1) speed=2.85 carry=0 goal_dist=42.3 route=39 uncertainty=4.5
+BLUE_V3 drone=1 tick=1220 state=EXPLORE pos=(-229.3,-84.1) speed=4.00 carry=0 goal_dist=90.9 route=4 uncertainty=4.5
+BLUE_V3 drone=1 tick=1243 state=CHASE pos=(-353.8,-123.5) speed=6.74 carry=0 goal_dist=126.8 route=9 uncertainty=4.5
+BLUE_V3 drone=0 tick=1257 state=EXPLORE pos=(-76.0,120.4) speed=5.32 carry=0 goal_dist=144.5 route=9 uncertainty=4.5
+BLUE_V3 drone=6 tick=1258 state=DELIVER pos=(506.1,-237.6) speed=2.91 carry=1 goal_dist=1084.9 route=46 uncertainty=4.5
+BLUE_V3_EVENT pickup drone=1 tick=1265 track=77
+BLUE_V3 drone=1 tick=1265 state=DELIVER pos=(-476.2,-92.4) speed=2.56 carry=1 goal_dist=289.2 route=11 uncertainty=4.5
+BLUE_V3 drone=3 tick=1267 state=DELIVER pos=(27.3,-15.7) speed=1.57 carry=1 goal_dist=719.2 route=40 uncertainty=4.5
+BLUE_V3 drone=5 tick=1267 state=DELIVER pos=(-579.4,-471.1) speed=0.07 carry=1 goal_dist=147.1 route=0 uncertainty=4.5
+BLUE_V3 drone=7 tick=1282 state=DELIVER pos=(-497.1,-421.4) speed=2.30 carry=1 goal_dist=65.2 route=3 uncertainty=4.5
+BLUE_V3 drone=8 tick=1294 state=EXPLORE pos=(613.1,-156.1) speed=7.89 carry=0 goal_dist=87.5 route=10 uncertainty=4.5
+BLUE_V3 drone=2 tick=1306 state=EXPLORE pos=(268.0,33.1) speed=5.06 carry=0 goal_dist=190.8 route=8 uncertainty=4.5
+BLUE_V3 drone=9 tick=1309 state=EXPLORE pos=(129.8,393.7) speed=6.32 carry=0 goal_dist=479.8 route=23 uncertainty=4.5
+BLUE_V3_EVENT released drone=5 tick=1327 track=19 pos=(-590.9824026539591, -493.9386715141202)
+BLUE_V3 drone=4 tick=1345 state=CHASE pos=(-389.5,-101.3) speed=6.11 carry=0 goal_dist=186.1 route=8 uncertainty=4.5
+BLUE_V3 drone=5 tick=1345 state=EXPLORE pos=(-584.5,-515.1) speed=1.67 carry=0 goal_dist=1012.6 route=59 uncertainty=4.5
+BLUE_V3_EVENT released drone=7 tick=1365 track=15 pos=(-596.0426548231806, -408.56444020173257)
+BLUE_V3 drone=7 tick=1365 state=EXPLORE pos=(-596.0,-408.6) speed=0.33 carry=0 goal_dist=995.1 route=52 uncertainty=4.5
+BLUE_V3_EVENT pickup drone=4 tick=1378 track=77
+BLUE_V3 drone=4 tick=1378 state=DELIVER pos=(-563.7,-132.2) speed=2.19 carry=1 goal_dist=194.5 route=10 uncertainty=4.5
+BLUE_V3 drone=0 tick=1432 state=EXPLORE pos=(-196.1,71.8) speed=7.33 carry=0 goal_dist=322.8 route=16 uncertainty=4.5
+BLUE_V3 drone=6 tick=1433 state=DELIVER pos=(515.8,-232.1) speed=0.56 carry=1 goal_dist=1095.5 route=0 uncertainty=4.5
+BLUE_V3 drone=1 tick=1440 state=DELIVER pos=(-665.5,-134.3) speed=1.96 carry=1 goal_dist=126.1 route=9 uncertainty=4.5
+BLUE_V3 drone=3 tick=1442 state=DELIVER pos=(46.9,-45.8) speed=2.95 carry=1 goal_dist=718.9 route=79 uncertainty=4.5
+BLUE_V3 drone=8 tick=1469 state=EXPLORE pos=(81.5,236.6) speed=1.11 carry=0 goal_dist=198.8 route=10 uncertainty=4.5
+BLUE_V3 drone=2 tick=1481 state=EXPLORE pos=(-90.3,-118.2) speed=7.23 carry=0 goal_dist=320.7 route=26 uncertainty=4.5
+BLUE_V3 drone=9 tick=1484 state=EXPLORE pos=(537.6,436.6) speed=6.83 carry=0 goal_dist=216.5 route=10 uncertainty=4.5
+BLUE_V3 drone=5 tick=1520 state=EXPLORE pos=(632.5,-244.6) speed=6.16 carry=0 goal_dist=319.8 route=21 uncertainty=4.5
+BLUE_V3 drone=7 tick=1540 state=EXPLORE pos=(344.4,-329.5) speed=5.02 carry=0 goal_dist=164.8 route=23 uncertainty=4.5
+BLUE_V3 drone=4 tick=1553 state=DELIVER pos=(-615.2,-121.3) speed=1.37 carry=1 goal_dist=164.4 route=9 uncertainty=4.5
+BLUE_V3 drone=0 tick=1607 state=EXPLORE pos=(-451.8,388.0) speed=3.59 carry=0 goal_dist=434.0 route=24 uncertainty=4.5
+BLUE_V3 drone=6 tick=1608 state=DELIVER pos=(441.1,-232.6) speed=2.84 carry=1 goal_dist=1022.0 route=46 uncertainty=4.5
+BLUE_V3 drone=1 tick=1615 state=DELIVER pos=(-703.3,-250.4) speed=0.25 carry=1 goal_dist=178.4 route=0 uncertainty=4.5
+BLUE_V3 drone=3 tick=1617 state=DELIVER pos=(-99.4,-157.9) speed=2.73 carry=1 goal_dist=627.1 route=33 uncertainty=4.5
+BLUE_V3 drone=8 tick=1644 state=EXPLORE pos=(-94.4,440.3) speed=0.02 carry=0 goal_dist=255.6 route=11 uncertainty=4.5
+BLUE_V3 drone=2 tick=1656 state=EXPLORE pos=(-208.4,15.3) speed=6.37 carry=0 goal_dist=204.8 route=13 uncertainty=4.5
+BLUE_V3 drone=9 tick=1659 state=EXPLORE pos=(322.4,236.7) speed=5.73 carry=0 goal_dist=674.5 route=28 uncertainty=4.5
+BLUE_V3 drone=5 tick=1695 state=EXPLORE pos=(538.5,391.2) speed=7.33 carry=0 goal_dist=157.8 route=7 uncertainty=4.5
+BLUE_V3 drone=7 tick=1715 state=EXPLORE pos=(133.0,38.8) speed=8.07 carry=0 goal_dist=238.6 route=10 uncertainty=4.5
+BLUE_V3 drone=4 tick=1728 state=DELIVER pos=(-666.6,-126.7) speed=0.55 carry=1 goal_dist=132.5 route=6 uncertainty=4.5
+BLUE_V3 drone=0 tick=1782 state=EXPLORE pos=(-56.5,215.7) speed=2.78 carry=0 goal_dist=212.2 route=9 uncertainty=4.5
+BLUE_V3 drone=6 tick=1783 state=DELIVER pos=(512.6,-202.5) speed=0.49 carry=1 goal_dist=1098.0 route=57 uncertainty=4.5
+BLUE_V3 drone=1 tick=1790 state=DELIVER pos=(-668.0,-263.9) speed=0.02 carry=1 goal_dist=172.2 route=0 uncertainty=4.5
+BLUE_V3 drone=3 tick=1792 state=DELIVER pos=(-40.0,-78.7) speed=2.06 carry=1 goal_dist=700.8 route=40 uncertainty=4.5
+BLUE_V3 drone=8 tick=1819 state=EXPLORE pos=(-509.9,443.1) speed=0.93 carry=0 goal_dist=556.1 route=27 uncertainty=4.5
+BLUE_V3 drone=2 tick=1831 state=EXPLORE pos=(-373.6,-17.7) speed=0.33 carry=0 goal_dist=271.8 route=10 uncertainty=4.5
+BLUE_V3 drone=9 tick=1834 state=EXPLORE pos=(-160.0,-221.9) speed=1.22 carry=0 goal_dist=149.1 route=0 uncertainty=4.5
+BLUE_V3 drone=5 tick=1870 state=EXPLORE pos=(66.9,161.7) speed=3.87 carry=0 goal_dist=216.4 route=16 uncertainty=4.5
+BLUE_V3 drone=7 tick=1890 state=EXPLORE pos=(157.6,230.7) speed=1.81 carry=0 goal_dist=60.9 route=2 uncertainty=4.5
+BLUE_V3 drone=4 tick=1903 state=DELIVER pos=(-716.4,-262.6) speed=0.00 carry=1 goal_dist=165.4 route=1 uncertainty=4.5
+BLUE_V3 drone=0 tick=1957 state=EXPLORE pos=(146.9,482.1) speed=1.97 carry=0 goal_dist=285.1 route=14 uncertainty=4.5
+BLUE_V3 drone=6 tick=1959 state=DELIVER pos=(567.9,-291.5) speed=0.62 carry=1 goal_dist=1138.1 route=50 uncertainty=4.5
+BLUE_V3 drone=1 tick=1965 state=DELIVER pos=(-668.3,-265.4) speed=0.31 carry=1 goal_dist=170.6 route=0 uncertainty=4.5
+BLUE_V3 drone=3 tick=1967 state=DELIVER pos=(-114.0,214.1) speed=0.69 carry=1 goal_dist=762.1 route=36 uncertainty=4.5
+BLUE_V3 drone=8 tick=1994 state=EXPLORE pos=(-158.7,14.9) speed=6.03 carry=0 goal_dist=103.7 route=24 uncertainty=4.5
+BLUE_V3 drone=9 tick=2009 state=EXPLORE pos=(225.7,-265.7) speed=0.98 carry=0 goal_dist=46.2 route=3 uncertainty=4.5
+BLUE_V3 drone=2 tick=2017 state=EXPLORE pos=(-463.5,10.6) speed=1.85 carry=0 goal_dist=165.6 route=16 uncertainty=4.5
+BLUE_V3 drone=5 tick=2045 state=EXPLORE pos=(-137.5,-177.8) speed=3.18 carry=0 goal_dist=209.5 route=16 uncertainty=4.5
+BLUE_V3 drone=7 tick=2065 state=EXPLORE pos=(-118.6,312.1) speed=5.22 carry=0 goal_dist=201.9 route=10 uncertainty=4.5
+BLUE_V3 drone=4 tick=2078 state=DELIVER pos=(-703.2,-231.1) speed=1.26 carry=1 goal_dist=197.6 route=2 uncertainty=4.5
+BLUE_V3 drone=0 tick=2132 state=EXPLORE pos=(701.7,92.6) speed=6.09 carry=0 goal_dist=463.1 route=17 uncertainty=4.5
+BLUE_V3 drone=6 tick=2136 state=DELIVER pos=(560.9,-276.5) speed=1.09 carry=1 goal_dist=1133.1 route=50 uncertainty=4.5
+BLUE_V3 drone=1 tick=2140 state=DELIVER pos=(-664.0,-263.2) speed=0.06 carry=1 goal_dist=174.0 route=0 uncertainty=4.5
+BLUE_V3 drone=3 tick=2142 state=DELIVER pos=(-142.1,190.9) speed=0.98 carry=1 goal_dist=725.7 route=34 uncertainty=4.5
+BLUE_V3 drone=8 tick=2169 state=EXPLORE pos=(-593.2,-26.2) speed=6.98 carry=0 goal_dist=126.1 route=10 uncertainty=4.5
+BLUE_V3 drone=9 tick=2184 state=EXPLORE pos=(287.3,6.9) speed=6.84 carry=0 goal_dist=562.2 route=38 uncertainty=4.5
+BLUE_V3 drone=2 tick=2192 state=EXPLORE pos=(-375.6,-73.9) speed=6.54 carry=0 goal_dist=244.1 route=10 uncertainty=4.5
+Drone 1 destroyed, too much collision !
+BLUE_V3 drone=5 tick=2220 state=EXPLORE pos=(-209.9,175.4) speed=2.68 carry=0 goal_dist=235.8 route=12 uncertainty=4.5
+BLUE_V3 drone=2 tick=2238 state=CHASE pos=(-624.0,-138.2) speed=2.58 carry=0 goal_dist=124.4 route=10 uncertainty=4.5
+BLUE_V3 drone=7 tick=2240 state=EXPLORE pos=(-488.1,480.1) speed=4.31 carry=0 goal_dist=258.1 route=44 uncertainty=4.5
+BLUE_V3 drone=4 tick=2253 state=DELIVER pos=(-700.1,-236.2) speed=0.16 carry=1 goal_dist=192.8 route=2 uncertainty=4.5
+BLUE_V3 drone=0 tick=2307 state=EXPLORE pos=(107.0,108.5) speed=8.30 carry=0 goal_dist=608.6 route=34 uncertainty=4.5
+BLUE_V3 drone=6 tick=2313 state=DELIVER pos=(567.3,-277.4) speed=0.83 carry=1 goal_dist=1139.3 route=51 uncertainty=4.5
+BLUE_V3 drone=3 tick=2317 state=DELIVER pos=(-338.5,-69.8) speed=2.57 carry=1 goal_dist=421.1 route=22 uncertainty=4.5
+BLUE_V3_EVENT pickup drone=2 tick=2332 track=123
+BLUE_V3 drone=2 tick=2332 state=DELIVER pos=(-679.4,-211.4) speed=1.27 carry=1 goal_dist=54.7 route=2 uncertainty=4.5
+BLUE_V3 drone=8 tick=2344 state=EXPLORE pos=(-406.0,170.7) speed=5.35 carry=0 goal_dist=565.5 route=42 uncertainty=4.5
+BLUE_V3 drone=9 tick=2359 state=EXPLORE pos=(-139.4,200.9) speed=4.88 carry=0 goal_dist=342.2 route=15 uncertainty=4.5
+BLUE_V3 drone=5 tick=2395 state=EXPLORE pos=(-445.7,405.0) speed=2.72 carry=0 goal_dist=182.6 route=19 uncertainty=4.5
+BLUE_V3 drone=7 tick=2415 state=EXPLORE pos=(-174.7,-13.8) speed=7.48 carry=0 goal_dist=451.4 route=20 uncertainty=4.5
+BLUE_V3 drone=4 tick=2428 state=DELIVER pos=(-660.3,-260.2) speed=0.00 carry=1 goal_dist=178.1 route=0 uncertainty=4.5
+BLUE_V3 drone=0 tick=2482 state=EXPLORE pos=(-365.1,-23.5) speed=5.36 carry=0 goal_dist=267.3 route=14 uncertainty=4.5
+BLUE_V3 drone=6 tick=2490 state=DELIVER pos=(562.8,-268.7) speed=1.13 carry=1 goal_dist=1136.1 route=53 uncertainty=4.5
+BLUE_V3 drone=3 tick=2492 state=DELIVER pos=(-633.6,-120.3) speed=0.97 carry=1 goal_dist=154.2 route=11 uncertainty=4.5Exception ignored from cffi callback <function ext_cpCollisionPreSolveFunc at 0x00000208039F8860>:
+Traceback (most recent call last):
+  File "E:\envs\swarm_rescue\Lib\site-packages\pymunk\_callbacks.py", line 187, in ext_cpCollisionPreSolveFunc
+    x = handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 38, in grasper_grasps_bomb
+    grasper, bomb = get_colliding_entities(playground, arbiter)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 27, in get_colliding_entities
+    entity_1 = playground.get_entity_from_shape(shape_1)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\playground.py", line 970, in get_entity_from_shape
+    assert shape in self._shapes_to_entities
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 
+Exception ignored from cffi callback <function ext_cpCollisionPreSolveFunc at 0x00000208039F8860>:
+Traceback (most recent call last):
+  File "E:\envs\swarm_rescue\Lib\site-packages\pymunk\_callbacks.py", line 187, in ext_cpCollisionPreSolveFunc
+    x = handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 38, in grasper_grasps_bomb
+    grasper, bomb = get_colliding_entities(playground, arbiter)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 27, in get_colliding_entities
+    entity_1 = playground.get_entity_from_shape(shape_1)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\playground.py", line 970, in get_entity_from_shape
+    assert shape in self._shapes_to_entities
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 
+
+BLUE_V3 drone=2 tick=2507 state=DELIVER pos=(-696.6,-255.5) speed=0.49 carry=1 goal_dist=174.1 route=0 uncertainty=4.5
+BLUE_V3 drone=8 tick=2519 state=EXPLORE pos=(-157.4,134.0) speed=5.06 carry=0 goal_dist=443.0 route=23 uncertainty=4.5
+BLUE_V3 drone=9 tick=2534 state=EXPLORE pos=(-418.5,53.0) speed=1.18 carry=0 goal_dist=152.5 route=22 uncertainty=4.5
+BLUE_V3 drone=5 tick=2570 state=EXPLORE pos=(-443.0,500.3) speed=4.78 carry=0 goal_dist=358.9 route=43 uncertainty=4.5
+BLUE_V3 drone=7 tick=2590 state=EXPLORE pos=(-584.1,67.1) speed=0.73 carry=0 goal_dist=188.7 route=10 uncertainty=4.5
+BLUE_V3 drone=4 tick=2603 state=DELIVER pos=(-651.4,-263.8) speed=0.52 carry=1 goal_dist=177.9 route=0 uncertainty=4.5
+BLUE_V3 drone=0 tick=2657 state=EXPLORE pos=(-676.4,385.3) speed=3.30 carry=0 goal_dist=454.3 route=23 uncertainty=4.5
+BLUE_V3 drone=3 tick=2667 state=DELIVER pos=(-659.3,-115.8) speed=0.48 carry=1 goal_dist=145.4 route=8 uncertainty=4.5
+BLUE_V3 drone=6 tick=2667 state=DELIVER pos=(580.0,-286.8) speed=0.61 carry=1 goal_dist=1150.7 route=52 uncertainty=4.5
+BLUE_V3 drone=2 tick=2682 state=DELIVER pos=(-709.5,-257.0) speed=0.39 carry=1 goal_dist=171.3 route=0 uncertainty=4.5
+BLUE_V3 drone=8 tick=2694 state=EXPLORE pos=(113.4,400.6) speed=1.12 carry=0 goal_dist=39.4 route=2 uncertainty=4.5
+BLUE_V3 drone=9 tick=2709 state=EXPLORE pos=(-711.4,-84.4) speed=4.67 carry=0 goal_dist=234.5 route=12 uncertainty=4.5
+BLUE_V3 drone=5 tick=2745 state=EXPLORE pos=(-203.5,302.7) speed=6.29 carry=0 goal_dist=481.3 route=42 uncertainty=4.5
+BLUE_V3 drone=7 tick=2765 state=EXPLORE pos=(-730.6,205.7) speed=2.99 carry=0 goal_dist=209.1 route=19 uncertainty=4.5
+BLUE_V3 drone=4 tick=2778 state=DELIVER pos=(-665.9,-265.8) speed=0.17 carry=1 goal_dist=171.0 route=0 uncertainty=4.5
+BLUE_V3 drone=0 tick=2832 state=EXPLORE pos=(-694.2,-219.5) speed=0.44 carry=0 goal_dist=68.5 route=3 uncertainty=4.5
+BLUE_V3 drone=3 tick=2842 state=DELIVER pos=(-696.3,-156.2) speed=1.73 carry=1 goal_dist=94.8 route=5 uncertainty=4.5
+BLUE_V3 drone=6 tick=2842 state=DELIVER pos=(350.8,-237.5) speed=0.33 carry=1 goal_dist=932.5 route=42 uncertainty=4.5
+BLUE_V3 drone=2 tick=2857 state=DELIVER pos=(-701.3,-252.5) speed=0.20 carry=1 goal_dist=176.4 route=0 uncertainty=4.5
+BLUE_V3 drone=8 tick=2869 state=EXPLORE pos=(395.3,489.1) speed=7.37 carry=0 goal_dist=165.9 route=8 uncertainty=4.5
+BLUE_V3 drone=9 tick=2902 state=EXPLORE pos=(-697.0,392.0) speed=1.72 carry=0 goal_dist=115.4 route=7 uncertainty=4.5
+Drone 4 destroyed, too much collision !
+BLUE_V3 drone=5 tick=2920 state=EXPLORE pos=(-206.5,-38.2) speed=4.18 carry=0 goal_dist=487.2 route=23 uncertainty=4.5
+BLUE_V3 drone=7 tick=2940 state=EXPLORE pos=(-304.8,143.3) speed=1.31 carry=0 goal_dist=650.7 route=57 uncertainty=4.5
+BLUE_V3 drone=0 tick=3002 state=CHASE pos=(-503.2,-203.0) speed=6.50 carry=0 goal_dist=148.1 route=6 uncertainty=4.5
+BLUE_V3 drone=3 tick=3017 state=DELIVER pos=(-711.8,-258.2) speed=0.00 carry=1 goal_dist=170.0 route=0 uncertainty=4.5
+BLUE_V3 drone=6 tick=3029 state=DELIVER pos=(553.7,-278.8) speed=0.46 carry=1 goal_dist=1125.7 route=50 uncertainty=4.5
+BLUE_V3 drone=2 tick=3032 state=DELIVER pos=(-681.2,-219.8) speed=2.09 carry=1 goal_dist=48.0 route=2 uncertainty=4.5
+BLUE_V3 drone=8 tick=3044 state=EXPLORE pos=(76.8,-131.4) speed=6.82 carry=0 goal_dist=91.4 route=4 uncertainty=4.5
+BLUE_V3 drone=9 tick=3077 state=EXPLORE pos=(-558.6,228.7) speed=6.55 carry=0 goal_dist=112.0 route=15 uncertainty=4.5
+BLUE_V3 drone=5 tick=3095 state=EXPLORE pos=(-620.7,227.2) speed=2.60 carry=0 goal_dist=446.9 route=19 uncertainty=4.5
+BLUE_V3 drone=7 tick=3115 state=EXPLORE pos=(-464.5,-215.3) speed=3.68 carry=0 goal_dist=764.6 route=52 uncertainty=4.5
+BLUE_V3 drone=5 tick=3137 state=CHASE pos=(-584.4,29.4) speed=7.80 carry=0 goal_dist=276.9 route=12 uncertainty=4.5
+BLUE_V3 drone=5 tick=3150 state=EXPLORE pos=(-606.5,-71.4) speed=8.23 carry=0 goal_dist=502.2 route=24 uncertainty=4.5
+BLUE_V3 drone=0 tick=3155 state=EXPLORE pos=(-620.8,-247.8) speed=0.45 carry=0 goal_dist=763.0 route=57 uncertainty=4.5
+BLUE_V3 drone=3 tick=3192 state=DELIVER pos=(-661.8,-267.5) speed=0.16 carry=1 goal_dist=170.7 route=0 uncertainty=4.5
+BLUE_V3 drone=6 tick=3206 state=DELIVER pos=(580.7,-284.5) speed=0.92 carry=1 goal_dist=1151.7 route=48 uncertainty=4.5
+BLUE_V3 drone=2 tick=3207 state=DELIVER pos=(-733.7,-251.0) speed=0.54 carry=1 goal_dist=177.5 route=0 uncertainty=4.5
+BLUE_V3 drone=8 tick=3219 state=EXPLORE pos=(126.1,-115.8) speed=0.88 carry=0 goal_dist=39.9 route=2 uncertainty=4.5
+BLUE_V3 drone=9 tick=3252 state=EXPLORE pos=(-554.1,39.5) speed=6.76 carry=0 goal_dist=247.9 route=15 uncertainty=4.5
+BLUE_V3 drone=7 tick=3290 state=EXPLORE pos=(-60.8,453.3) speed=1.23 carry=0 goal_dist=54.8 route=1 uncertainty=4.5
+BLUE_V3 drone=5 tick=3325 state=EXPLORE pos=(-672.2,410.2) speed=5.66 carry=0 goal_dist=96.8 route=11 uncertainty=4.5
+BLUE_V3 drone=0 tick=3330 state=EXPLORE pos=(-175.9,212.8) speed=2.97 carry=0 goal_dist=395.5 route=20 uncertainty=4.5
+BLUE_V3 drone=3 tick=3367 state=DELIVER pos=(-668.3,-261.8) speed=0.00 carry=1 goal_dist=174.1 route=0 uncertainty=4.5
+BLUE_V3 drone=2 tick=3382 state=DELIVER pos=(-700.0,-261.4) speed=0.40 carry=1 goal_dist=167.8 route=0 uncertainty=4.5
+BLUE_V3 drone=6 tick=3383 state=DELIVER pos=(559.3,-282.2) speed=0.94 carry=1 goal_dist=1130.7 route=47 uncertainty=4.5
+BLUE_V3 drone=8 tick=3394 state=EXPLORE pos=(147.6,-264.6) speed=4.29 carry=0 goal_dist=138.4 route=6 uncertainty=4.5
+BLUE_V3 drone=9 tick=3427 state=EXPLORE pos=(-502.0,-95.6) speed=5.40 carry=0 goal_dist=661.0 route=39 uncertainty=4.5
+BLUE_V3 drone=7 tick=3465 state=EXPLORE pos=(364.3,440.9) speed=2.87 carry=0 goal_dist=209.8 route=10 uncertainty=4.5
+BLUE_V3 drone=5 tick=3500 state=EXPLORE pos=(-444.8,320.8) speed=2.58 carry=0 goal_dist=411.0 route=22 uncertainty=4.5
+Drone 3 destroyed, too much collision !
+BLUE_V3 drone=0 tick=3522 state=EXPLORE pos=(116.5,458.1) speed=0.15 carry=0 goal_dist=105.8 route=0 uncertainty=4.5
+BLUE_V3 drone=2 tick=3557 state=DELIVER pos=(-680.2,-235.6) speed=0.89 carry=1 goal_dist=41.7 route=2 uncertainty=4.5
+BLUE_V3 drone=6 tick=3567 state=DELIVER pos=(518.3,-241.8) speed=0.29 carry=1 goal_dist=1096.2 route=55 uncertainty=4.5
+BLUE_V3 drone=8 tick=3569 state=EXPLORE pos=(581.8,-238.5) speed=1.87 carry=0 goal_dist=274.6 route=10 uncertainty=4.5
+Drone 0 destroyed, too much collision !
+BLUE_V3 drone=9 tick=3602 state=EXPLORE pos=(-151.6,236.6) speed=6.02 carry=0 goal_dist=421.2 route=19 uncertainty=4.5
+Drone 9 destroyed, too much collision !
+BLUE_V3 drone=7 tick=3640 state=EXPLORE pos=(224.6,511.2) speed=0.47 carry=0 goal_dist=164.6 route=9 uncertainty=4.5
+BLUE_V3 drone=5 tick=3675 state=EXPLORE pos=(-431.2,324.2) speed=3.31 carry=0 goal_dist=565.5 route=37 uncertainty=4.5
+BLUE_V3 drone=2 tick=3732 state=DELIVER pos=(-680.1,-255.3) speed=0.00 carry=1 goal_dist=177.2 route=0 uncertainty=4.5
+BLUE_V3 drone=6 tick=3744 state=DELIVER pos=(578.3,-260.1) speed=0.96 carry=1 goal_dist=1152.6 route=53 uncertainty=4.5
+BLUE_V3 drone=8 tick=3744 state=EXPLORE pos=(-49.2,-338.4) speed=8.48 carry=0 goal_dist=157.7 route=9 uncertainty=4.5
+BLUE_V3 drone=7 tick=3815 state=EXPLORE pos=(8.4,515.4) speed=1.89 carry=0 goal_dist=1083.6 route=55 uncertainty=4.5
+BLUE_V3 drone=5 tick=3850 state=EXPLORE pos=(-411.1,152.6) speed=2.29 carry=0 goal_dist=458.4 route=36 uncertainty=4.5
+BLUE_V3 drone=2 tick=3907 state=DELIVER pos=(-696.7,-224.4) speed=1.39 carry=1 goal_dist=33.1 route=0 uncertainty=4.5
+BLUE_V3 drone=6 tick=3919 state=DELIVER pos=(400.8,-251.7) speed=0.48 carry=1 goal_dist=978.9 route=43 uncertainty=4.5
+BLUE_V3 drone=8 tick=3919 state=EXPLORE pos=(-37.6,-335.6) speed=5.30 carry=0 goal_dist=152.0 route=9 uncertainty=4.5
+BLUE_V3 drone=7 tick=3990 state=EXPLORE pos=(-316.5,-129.0) speed=3.65 carry=0 goal_dist=434.4 route=31 uncertainty=4.5
+Drone 5 destroyed, too much collision !
+BLUE_V3 drone=7 tick=4057 state=CHASE pos=(-688.4,-137.9) speed=5.71 carry=0 goal_dist=123.7 route=6 uncertainty=4.5
+BLUE_V3 drone=2 tick=4082 state=DELIVER pos=(-681.5,-267.3) speed=0.00 carry=1 goal_dist=165.2 route=0 uncertainty=4.5
+BLUE_V3_EVENT pickup drone=7 tick=4092 track=100
+BLUE_V3 drone=7 tick=4092 state=DELIVER pos=(-680.3,-235.9) speed=0.96 carry=1 goal_dist=41.5 route=2 uncertainty=4.5
+BLUE_V3 drone=6 tick=4094 state=DELIVER pos=(558.0,-172.2) speed=1.28 carry=1 goal_dist=1148.9 route=56 uncertainty=4.5
+BLUE_V3 drone=8 tick=4094 state=EXPLORE pos=(-207.6,-318.0) speed=0.57 carry=0 goal_dist=544.4 route=29 uncertainty=4.5
+BLUE_V3 drone=2 tick=4257 state=DELIVER pos=(-672.2,-218.3) speed=1.65 carry=1 goal_dist=56.3 route=3 uncertainty=4.5
+BLUE_V3 drone=7 tick=4267 state=DELIVER pos=(-707.4,-263.2) speed=0.50 carry=1 goal_dist=165.3 route=1 uncertainty=4.5
+BLUE_V3 drone=6 tick=4269 state=DELIVER pos=(550.9,-310.0) speed=0.90 carry=1 goal_dist=1119.1 route=46 uncertainty=4.5
+BLUE_V3 drone=8 tick=4276 state=EXPLORE pos=(347.5,-330.6) speed=1.48 carry=0 goal_dist=332.6 route=20 uncertainty=4.5
+BLUE_V3 drone=2 tick=4432 state=DELIVER pos=(-713.1,-191.3) speed=0.70 carry=1 goal_dist=57.1 route=0 uncertainty=4.5
+Drone 7 destroyed, too much collision !
+BLUE_V3 drone=6 tick=4444 state=DELIVER pos=(121.8,-364.6) speed=2.54 carry=1 goal_dist=686.7 route=29 uncertainty=4.5
+BLUE_V3 drone=8 tick=4451 state=EXPLORE pos=(74.4,-342.6) speed=0.67 carry=0 goal_dist=257.6 route=57 uncertainty=4.5
+BLUE_V3 drone=2 tick=4607 state=DELIVER pos=(-680.2,-268.2) speed=0.30 carry=1 goal_dist=164.7 route=0 uncertainty=4.5
+BLUE_V3 drone=6 tick=4619 state=DELIVER pos=(-246.0,-384.4) speed=2.37 carry=1 goal_dist=319.0 route=13 uncertainty=4.5
+BLUE_V3 drone=8 tick=4626 state=EXPLORE pos=(387.0,-365.0) speed=8.90 carry=0 goal_dist=571.5 route=44 uncertainty=4.5
+Drone 8 destroyed, too much collision !
+BLUE_V3 drone=2 tick=4782 state=DELIVER pos=(-685.2,-263.2) speed=0.00 carry=1 goal_dist=168.4 route=0 uncertainty=4.5
+BLUE_V3 drone=6 tick=4794 state=DELIVER pos=(-582.8,-417.4) speed=0.77 carry=1 goal_dist=137.6 route=2 uncertainty=4.5
+BLUE_V3_EVENT released drone=6 tick=4804 track=37 pos=(-592.0677451762989, -419.00757820839743)
+BLUE_V3 drone=6 tick=4804 state=EXPLORE pos=(-592.1,-419.0) speed=0.86 carry=0 goal_dist=942.3 route=38 uncertainty=4.5
+BLUE_V3 drone=2 tick=4975 state=DELIVER pos=(-683.9,-245.5) speed=0.44 carry=1 goal_dist=36.2 route=2 uncertainty=4.5
+BLUE_V3 drone=6 tick=4986 state=EXPLORE pos=(-91.0,-339.2) speed=1.67 carry=0 goal_dist=492.3 route=20 uncertainty=4.5
+BLUE_V3 drone=2 tick=5150 state=DELIVER pos=(-695.1,-262.6) speed=0.19 carry=1 goal_dist=167.2 route=0 uncertainty=4.5
+BLUE_V3 drone=6 tick=5161 state=EXPLORE pos=(303.5,-355.4) speed=4.06 carry=0 goal_dist=200.3 route=32 uncertainty=4.5
+BLUE_V3 drone=2 tick=5325 state=DELIVER pos=(-690.1,-255.0) speed=0.01 carry=1 goal_dist=175.6 route=0 uncertainty=4.5
+BLUE_V3 drone=6 tick=5336 state=EXPLORE pos=(574.6,-342.2) speed=1.40 carry=0 goal_dist=511.1 route=24 uncertainty=4.5
+count_reachable v3 = 1626915
+	* Round n��1/1: 
+		rescued nb: 7/10 (disposal score: 70.0%), health return score: 8.4%, time score: 0.0%, explor. score: 100.0% (weight 0%), walltime elapsed: 80s/180s, elapse timestep: 5400/5400 steps, time to dispose all: 0 steps.
+		score breakdown (competition weights): disposal 70.0 x 60% = 42.0, health 8.4 x 20% = 1.7, time 0.0 x 20% = 0.0, total 43.7/100.
+		percentage of drones destroyed: 80.0 %, mean percentage of drones health : 8.4 %.
+		round score: 43.7%, frequency: 67.70 steps/s.
+--------------------------------------------------------------------------------------------

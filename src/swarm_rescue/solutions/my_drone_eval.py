@@ -8,4 +8,3 @@ def drone_class_for_mode(mode: str):
     if TeamMode.from_string(mode) == TeamMode.PLACE:
         return MyDronePlaceExample
     return MyDroneRescue
-
