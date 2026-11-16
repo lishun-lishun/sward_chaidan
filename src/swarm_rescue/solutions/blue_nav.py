@@ -1,4 +1,4 @@
-"""Swarm-Rescue V3: independent, legal-sensor navigation.
+"""Swarm-Rescue V6: independent, legal-sensor navigation.
 
 Sensors: LiDAR, compass/GPS, odometry, semantic detections and received radio.
 No engine truth, static map geometry, or bomb placements are ever read.
@@ -375,6 +375,39 @@ class Occupancy:
             route.append(goal)
         return route
 
+    def safe_local_waypoint(self,pos,goal,depth=4):
+        """Collision-aware local fallback when A* cannot find a route.
+
+        Never steer straight through a known occupied cell merely because
+        A* failed. The result is a reachable, *observed or unknown* local
+        waypoint chosen from the grid; it is not a map-file prior.
+        """
+        source=self.index(*pos)
+        if source is None:
+            return pos
+        self._rebuild_clearance()
+        queue=deque([(source,0)])
+        visited={source}
+        candidates=[]
+        while queue:
+            node,steps=queue.popleft()
+            if node!=source and self.passable(node):
+                xy=self.center(node)
+                d=distance(xy,goal)
+                # Prefer progress, but retreat from a wall when no progress is
+                # possible; the clearance term prevents repetitive wall hits.
+                score=d + 15.*self.visits[node] + 140./(1+self._dist[node])
+                candidates.append((score,xy))
+            if steps>=depth:
+                continue
+            for nxt,_ in self._neighbors(node):
+                if nxt not in visited:
+                    visited.add(nxt)
+                    queue.append((nxt,steps+1))
+        if not candidates:
+            return pos
+        return min(candidates,key=lambda z:z[0])[1]
+
     def frontier(self,pos,home,ident,peers,avoided,tick):
         self._rebuild_clearance()
         choices=[]
@@ -468,7 +501,7 @@ class LocalPilot:
 
     def command(self,heading,xy,waypoint,ranges,angles,peers=(),carrying=False,
                 docking=False,stuck=False,velocity=None,ignore=(),
-                close_target=False,force_speed=None,near_drone=()):
+                close_target=False,force_speed=None,near_drone=(),speed_scale=1.0):
         dx,dy=waypoint[0]-xy[0],waypoint[1]-xy[1]
         dist=math.hypot(dx,dy)
         desired=wrap(math.atan2(dy,dx)-heading) if dist>1 else 0.
@@ -513,6 +546,9 @@ class LocalPilot:
         if docking:cruise=4.8
         if close_target:cruise=4.8
         if force_speed is not None:cruise=float(force_speed)
+        # Use the officially exposed own-health signal to slow down only for a
+        # short period after confirmed collisions; normal cruise is unchanged.
+        cruise *= clamp(speed_scale, .50, 1.0)
         # Velocity envelope from stopping distance: v_safe <= sqrt(2*a*d).
         allowed=max(0.,free-safe-9.)
         # Never accelerate through the dynamic stopping envelope of the
@@ -534,6 +570,11 @@ class LocalPilot:
         if stuck and free>safe+20:
             direction=wrap(direction+(.9 if self.last_dir>=0 else -.9))
             desired_speed=min(desired_speed,3.)
+        # Dynamic obstacles are visible in semantic rays; reduce approach
+        # velocity rather than relying only on direction-sample penalties.
+        for a,d in near_drone:
+            if d < 58 and abs(wrap(a-direction)) < .75:
+                desired_speed *= clamp((d-22.)/36., 0.0, 1.0)
         target_f,target_l=desired_speed*math.cos(direction),desired_speed*math.sin(direction)
         # Physical force = gain*(desired body speed - measured body speed).
         gain=.11 if carrying else .10
@@ -551,159 +592,198 @@ class LocalPilot:
 
 
 class CenterDockController:
-    """Tow a pivot-jointed bomb across the disposal surface.
+    """V6 progress-/health-aware controller for a pivot-jointed bomb.
 
-    A successful rescue is contact by the BOMB, not by the drone.  Holding the
-    drone stationary against the rectangle keeps a trailing bomb outside.
-    This class first obtains normal contact and then moves along a fixed face
-    with controlled inward pressure and periodic direction changes.
+    State: 0 approach, 1 tangential tow, 2 reverse tow, 3 back away.
+    It NEVER releases the grasper. The real disposal event is only produced
+    by the simulator after bomb/center collision; this controller does not
+    infer or report a disposal from distance alone.
 
-    Geometry is either the PUBLIC center rectangle or a directly observed
-    semantic surface point (for local-frame/no-GPS operation).  It never
-    queries objects or geometry from the simulator.
+    Controls are fractions of a body-frame force, not instantaneous velocities.
+    Only public center dimensions or measured semantic hits are used.
     """
 
+    APPROACH, SWEEP, REVERSE, RECOVER = range(4)
+
     def __init__(self, identifier=0):
-        self.identifier = int(identifier)
-        self.entered = None
-        self.phase = -1
-        self.tangent_sign = 1. if self.identifier % 2 else -1.
-        self.face = None
-        self.last_phase_tick = -9999
-        self.reversals = 0
-        self.last_target = None
+        self.identifier=int(identifier)
+        self.reset()
 
     def reset(self):
-        self.entered = None
-        self.phase = -1
-        self.face = None
-        self.last_phase_tick = -9999
-        self.reversals = 0
-        self.last_target = None
+        self.entered=None
+        self.phase=-1
+        self.phase_tick=-9999
+        self.tangent_sign=1. if self.identifier%2 else -1.
+        self.face=None
+        self.reversals=0
+        self.recoveries=0
+        self.damage_pressure=0.
+        self.last_tick=None
+        self.movement_position=None
+        self.last_movement_tick=-999
+        self.last_gap=None
+        self.last_speed=0.
+        self.last_progress=False
 
     @staticmethod
     def _normal_and_gap(xy, center, half, relative=False):
-        dx,dy = xy[0]-center[0], xy[1]-center[1]
+        dx,dy=xy[0]-center[0],xy[1]-center[1]
         if relative or half is None:
-            r = math.hypot(dx,dy)
-            if r < 1.e-4:
-                return (1.,0.),0.,None
-            return (dx/r,dy/r),r,None
-        hx,hy = half
-        # Select the outward normal of the most exposed rectangle face.
-        # If the drone is near a corner, use its farther exterior side.
-        gap_x = abs(dx)-hx
-        gap_y = abs(dy)-hy
-        if gap_x > gap_y:
-            sx=1. if dx>=0 else -1.
-            return (sx,0.),gap_x,('x',sx)
-        sy=1. if dy>=0 else -1.
-        return (0.,sy),gap_y,('y',sy)
+            d=math.hypot(dx,dy)
+            if d<1.e-6:return (1.,0.),0.,None
+            return (dx/d,dy/d),d,None
+        hx,hy=half
+        gx,gy=abs(dx)-hx,abs(dy)-hy
+        if gx>gy:
+            sign=1. if dx>=0 else -1.
+            return (sign,0.),gx,('x',sign)
+        sign=1. if dy>=0 else -1.
+        return (0.,sign),gy,('y',sign)
 
-    def action(self, tick, xy, heading, motion, center, half,
-               relative=False, lidar=None, angles=None, pilot=None,
-               semantic_hit=None, peers=()):
-        """Return (forward,lateral,rotation,phase,face_gap) or None.
+    def _transition(self,phase,tick):
+        if phase==self.RECOVER and self.phase!=self.RECOVER:
+            self.recoveries+=1
+        if phase==self.REVERSE and self.phase!=self.REVERSE:
+            self.reversals+=1
+        if phase==self.APPROACH and self.phase==self.RECOVER:
+            self.tangent_sign*=-1.
+            self.face=None
+        self.phase=phase
+        self.phase_tick=tick
+        self.last_movement_tick=tick
 
-        Commands are force fractions, not a direct velocity output.
-        ``semantic_hit`` is world/local coordinates computed from the current
-        semantic CENTER observation, if it is visible.
-        """
-        if center is None:
-            return None
+    def action(self,tick,xy,heading,motion,center,half,relative=False,
+               lidar=None,angles=None,pilot=None,semantic_hit=None,peers=(),
+               health_drop=0,health=None):
+        if center is None:return None
+        # Semantic camera detects actual center SURFACE, not center coordinate.
         if relative and semantic_hit is not None:
             center=semantic_hit
         n,gap,face=self._normal_and_gap(xy,center,half,relative)
-        # In a relative map the old surface point is not necessarily centered
-        # on the rectangle.  Use the latest observed hit for normal contact.
         if relative and semantic_hit is None and gap>110:
             return None
-        if self.entered is None:
-            self.entered=tick
-            self.last_phase_tick=tick
-            self.phase=0
-            self.face=face
-        # Do not change to a different side every frame because noisy pose
-        # or repeated path stage selection can make the drone oscillate.
-        if face is not None and self.face is not None and face!=self.face and gap<105:
+        # Keep a stable face while close. Switching face every step around a
+        # rectangle corner prevents a consistent tow trajectory.
+        if self.face is not None and face!=self.face and not relative and gap<125:
             axis,sgn=self.face
             n=(sgn,0.) if axis=='x' else (0.,sgn)
             gap=(xy[0]-center[0])*sgn-half[0] if axis=='x' else (xy[1]-center[1])*sgn-half[1]
-        elif face is not None and gap>=105:
+        elif face is not None and (self.face is None or gap>125):
             self.face=face
-        # phase 0: approach, 1: wall-following, 2: reverse towing,
-        # 3: step away to free a jammed bomb, then reapproach.
-        if self.phase==0 and (gap<40 or tick-self.last_phase_tick>=60):
-            self.phase,self.last_phase_tick=1,tick
-        elif self.phase==1 and tick-self.last_phase_tick>=105:
-            self.phase,self.last_phase_tick=2,tick
-            self.reversals+=1
-        elif self.phase==2 and tick-self.last_phase_tick>=80:
-            self.phase,self.last_phase_tick=3,tick
-        elif self.phase==3 and tick-self.last_phase_tick>=24:
-            self.phase,self.last_phase_tick=0,tick
-            self.tangent_sign*=-1.
-            self.face=None
-        out_n=n
+        # A direct semantic hit corrects *surface clearance* in a GPS outage;
+        # only accept detections on the same outside side of the chosen face.
+        if semantic_hit is not None and not relative:
+            hx=xy[0]-semantic_hit[0]
+            hy=xy[1]-semantic_hit[1]
+            hit_gap=hx*n[0]+hy*n[1]
+            off=abs(hx*n[1]-hy*n[0])
+            if 2<hit_gap<110 and off<48 and abs(hit_gap-gap)<70:
+                gap=.65*gap+.35*hit_gap
+        if self.entered is None:
+            self.entered=tick
+            self._transition(self.APPROACH,tick)
+            self.face=face
+        # Count actual lateral progress, not just elapsed phase time.
+        if self.movement_position is None:
+            self.movement_position=xy
+            self.last_movement_tick=tick
+        elif distance(xy,self.movement_position)>12:
+            self.movement_position=xy
+            self.last_movement_tick=tick
+        speed=math.hypot(*(finite_pair(motion) or (0.,0.)))
+        self.last_speed=speed
+        self.last_gap=gap
+        self.last_progress=(tick-self.last_movement_tick<75)
+        dt=1 if self.last_tick is None else max(1,min(10,tick-self.last_tick))
+        self.last_tick=tick
+        self.damage_pressure=max(0.,self.damage_pressure-.008*dt)+max(0.,health_drop)*1.15
+        elapsed=tick-self.phase_tick
+        # A damage-triggered recovery is much safer than repeatedly applying
+        # force against a rigid center or an adjacent wall.
+        if self.damage_pressure>2.05 and self.phase!=self.RECOVER and gap<125:
+            self._transition(self.RECOVER,tick)
+        elif self.phase==self.APPROACH and (gap<35 or elapsed>=62):
+            self._transition(self.SWEEP,tick)
+        elif self.phase==self.SWEEP and (elapsed>=100 or (elapsed>55 and not self.last_progress)):
+            self._transition(self.REVERSE,tick)
+        elif self.phase==self.REVERSE and (elapsed>=78 or (elapsed>50 and not self.last_progress)):
+            self._transition(self.RECOVER,tick)
+        elif self.phase==self.RECOVER and elapsed>=24:
+            self._transition(self.APPROACH,tick)
+            self.damage_pressure*=.40
+        # Hold a narrow standoff lane. V5 continuously pushed inward with an
+        # additive 0.23-0.28 force even after colliding with the center.
+        # Signed normal feedback avoids that high-damage persistent contact.
+        preferred_gap=15. if self.phase!=self.RECOVER else 44.
+        if health is not None and health<=8:
+            preferred_gap+=4.
         toward=(-n[0],-n[1])
         tangent=(-n[1]*self.tangent_sign,n[0]*self.tangent_sign)
-        # Near the ends of a rectangular face, change tangent direction so
-        # the load is not dragged violently around a wall corner.
+        # Turn around BEFORE dragging a load into the corner of a rectangle.
         if self.face is not None and not relative:
             axis,_=self.face
             span=half[1] if axis=='x' else half[0]
-            along=(xy[1]-center[1]) if axis=='x' else (xy[0]-center[0])
-            if abs(along)>span-18 and along*(tangent[1] if axis=='x' else tangent[0])>0:
+            along=xy[1]-center[1] if axis=='x' else xy[0]-center[0]
+            direction=tangent[1] if axis=='x' else tangent[0]
+            if abs(along)>max(18.,span-32.) and along*direction>0:
                 self.tangent_sign*=-1.
                 tangent=(-tangent[0],-tangent[1])
-        if self.phase==0:
-            # Stronger than V4's 0.36 force cap, but shorter and slower than
-            # V3's unbounded push-into-center behavior.
-            vn,vt,press,cap=4.2,1.0,.23,.67
-        elif self.phase==1:
-            vn,vt,press,cap=.75,6.0,.28,.74
-        elif self.phase==2:
-            vn,vt,press,cap=.85,-5.0,.25,.70
+        # Tangential speed remains high for efficient towing; normal speed is
+        # feedback on surface clearance. Both units are pixels / step.
+        if self.phase==self.APPROACH:
+            vn=clamp(.24*(gap-preferred_gap),-2.,6.5)
+            vt=1.1
+            cap=.76
+        elif self.phase==self.SWEEP:
+            vn=clamp(.27*(gap-preferred_gap),-3.5,5.5)
+            vt=6.4
+            cap=.74
+        elif self.phase==self.REVERSE:
+            vn=clamp(.25*(gap-preferred_gap),-3.5,5.5)
+            vt=-5.8
+            cap=.79
         else:
-            vn,vt,press,cap=-3.2,2.8,-.06,.60
-        # Avoid overdriving if still too far away from the face or already
-        # inside a collision contact.  Avoid a false stop at gap~0.
-        if gap>95:
+            vn=-clamp(.28*(44.-gap),1.8,5.2)
+            vt=3.3
+            cap=.70
+        # If multiple collisions have been observed, avoid a risky run into
+        # the surface; this is local to this drone and fully observable.
+        if self.damage_pressure>1.1 and self.phase!=self.RECOVER:
+            vn=min(vn,1.2)
+            vt*=.88
+        if gap>95 and self.phase!=self.RECOVER:
             vn=max(vn,5.5)
-            vt*=.4
-        if gap<-8 and self.phase!=3:
-            vn=-1.5
+            vt*=.35
+        if gap<4 and self.phase!=self.RECOVER:
+            vn=min(vn,-2.2)
+        if pilot is not None and lidar is not None and angles is not None:
+            a=wrap(math.atan2(tangent[1],tangent[0])-heading)
+            clearance=pilot.clearance(angles,lidar,a,half_angle=.21)
+            if clearance<44:
+                vt*=clamp((clearance-20.)/24.,0.,1.)
+                if clearance<29:
+                    self.tangent_sign*=-1.
+                    if self.phase!=self.RECOVER and elapsed>20:
+                        self._transition(self.RECOVER,tick)
+            # During recovery, check whether outward direction is itself clear.
+            if self.phase==self.RECOVER:
+                a_out=wrap(math.atan2(n[1],n[0])-heading)
+                outward=pilot.clearance(angles,lidar,a_out,half_angle=.24)
+                if outward<28:vn=0.
+        for direction,dd in peers:
+            if dd<50 and abs(wrap(direction-wrap(math.atan2(tangent[1],tangent[0])-heading)))<.85:
+                vt*=clamp((dd-20.)/30.,.30,1.)
         vx=vn*toward[0]+vt*tangent[0]
         vy=vn*toward[1]+vt*tangent[1]
-        # Look before sliding: a WALL in the tangential direction must be
-        # honored even though the center object is a legitimate contact goal.
-        if pilot is not None and angles is not None and lidar is not None:
-            rel_a=wrap(math.atan2(tangent[1],tangent[0])-heading)
-            clearance=pilot.clearance(angles,lidar,rel_a,half_angle=.20)
-            if clearance<48:
-                vx-=vt*.80*tangent[0]
-                vy-=vt*.80*tangent[1]
-                # On the next cycle reverse direction rather than camp here.
-                if clearance<34:
-                    self.tangent_sign*=-1.
-        # A peer close to the center is not a reason for ALL vehicles to stop.
-        # Only slight velocity reduction; independent parity breaks symmetry.
-        for obs_angle,obs_range in peers:
-            if obs_range<30 and self.identifier%2:
-                vx*=.78
-                vy*=.78
-                break
-        c,s=math.cos(heading),math.sin(heading)
         mv=finite_pair(motion) or (0.,0.)
-        mx,my=mv
-        fx=.14*(vx-mx)+press*toward[0]
-        fy=.14*(vy-my)+press*toward[1]
-        norm=math.hypot(fx,fy)
-        if norm>cap:
-            fx,fy=fx*cap/norm,fy*cap/norm
+        # Bounded force, actual control in body frame.
+        fx=.16*(vx-mv[0])
+        fy=.16*(vy-mv[1])
+        magnitude=math.hypot(fx,fy)
+        if magnitude>cap:
+            fx,fy=cap*fx/magnitude,cap*fy/magnitude
+        c,s=math.cos(heading),math.sin(heading)
         forward=fx*c+fy*s
         lateral=-fx*s+fy*c
-        # Keep the body roughly facing the tow direction; the engine uses
-        # separate angular-speed actuation rather than a direct torque.
-        rotation=clamp(.36*wrap(math.atan2(vy,vx)-heading),-.34,.34) if math.hypot(vx,vy)>1 else 0.
-        return clamp(forward),clamp(lateral),rotation,self.phase,gap
+        yaw=clamp(.35*wrap(math.atan2(vy,vx)-heading),-.38,.38) if math.hypot(vx,vy)>1 else 0.
+        return clamp(forward),clamp(lateral),yaw,self.phase,gap

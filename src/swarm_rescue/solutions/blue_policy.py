@@ -1,4 +1,4 @@
-"""V3 distributed blue-team rescue controller, measured sensors only.
+"""V6 distributed blue-team rescue controller, measured sensors only.
 
 Every drone stores ONLY its own observations and received radio messages.
 The public maps' *disposal center* locations are optional priors. Bomb locations
@@ -6,6 +6,7 @@ are NEVER hardcoded and are discovered through semantic sensing.
 """
 from __future__ import annotations
 
+from collections import deque
 import math
 from typing import Any, Dict, Optional, Tuple
 
@@ -103,6 +104,11 @@ class MyDroneRescue(DroneAbstract):
         self._dock_last_progress = -1
         self._dock_recovery_until = -1
         self._dock_phase_reported = -1
+        self._health_last = None
+        self._health_current = None
+        self._health_loss = 0
+        self._damage_times = deque(maxlen=20)
+        self._failed_route_count = 0
 
     def _initial_public_anchor(self):
         """If global pose is unavailable, use an internally consistent local frame.
@@ -368,6 +374,16 @@ class MyDroneRescue(DroneAbstract):
                     break
                 candidate = p
             return candidate
+        if distance(xy,target)>72:
+            # A* failing is NOT evidence that a direct line crosses no wall.
+            # V5 fell back to target unconditionally, including through known
+            # occupied cells; choose a nearby grid-reachable subgoal instead.
+            if tick==self.path_tick:
+                self._failed_route_count+=1
+                if self._failed_route_count<=3 or self._failed_route_count%20==0:
+                    print('BLUE_V6_ROUTE_FAIL drone=%d tick=%d mode=%s target=%s' %
+                          (self.did,tick,self.mode,target))
+            return self.grid.safe_local_waypoint(xy,target)
         return target
 
     def _straight_clear(self, a: Vec, b: Vec) -> bool:
@@ -413,7 +429,7 @@ class MyDroneRescue(DroneAbstract):
             if key is not None and key in self.tracks:
                 tr = self.tracks[key]
                 tr.state, tr.owner, tr.claimed_at = 'carried', self.did, tick
-            print('BLUE_V5_EVENT pickup drone=%d tick=%d track=%s' % (self.did,tick,key))
+            print('BLUE_V6_EVENT pickup drone=%d tick=%d track=%s' % (self.did,tick,key))
         elif self.was_carrying and not carrying:
             self.dock_controller.reset()
             self._dock_stage = None
@@ -429,7 +445,7 @@ class MyDroneRescue(DroneAbstract):
                 tr.state = 'done' if near_center else 'free'
                 tr.owner = self.did if near_center else -1
                 tr.last_seen = tick
-            print('BLUE_V5_EVENT released drone=%d tick=%d track=%s pos=%s' %
+            print('BLUE_V6_EVENT released drone=%d tick=%d track=%s pos=%s' %
                   (self.did,tick,key,xy))
             self.active_carry_track = None
         self.was_carrying = carrying
@@ -577,10 +593,11 @@ class MyDroneRescue(DroneAbstract):
     def _telemetry(self,tick,xy,heading,carrying,goal):
         if self.mode!=self._last_mode or tick-self.last_trace_tick>=175:
             v=math.hypot(*self.pose.motion)
-            print('BLUE_V5 drone=%d tick=%d state=%s pos=(%.1f,%.1f) speed=%.2f '
-                  'carry=%d goal_dist=%.1f route=%d uncertainty=%.1f' %
+            print('BLUE_V6 drone=%d tick=%d state=%s pos=(%.1f,%.1f) speed=%.2f '
+                  'carry=%d goal_dist=%.1f route=%d uncertainty=%.1f hp=%s' %
                   (self.did,tick,self.mode,xy[0],xy[1],v,int(carrying),
-                   distance(xy,goal) if goal else -1,len(self.path),self.pose.uncertainty))
+                   distance(xy,goal) if goal else -1,len(self.path),
+                   self.pose.uncertainty,self._health_current))
             self._last_mode,self.last_trace_tick=self.mode,tick
 
     def control(self) -> CommandsDict:
@@ -595,6 +612,19 @@ class MyDroneRescue(DroneAbstract):
             # is seeded together with a relative position above.
             xy,heading=self.pose.xy,self.pose.heading
             carrying=bool(self.grasped_bombs())
+            self._health_loss = 0
+            own_health = getattr(self, 'drone_health', None)
+            hp = own_health() if callable(own_health) else None
+            if hp is not None:
+                hp = int(hp)
+                if self._health_last is not None and hp < self._health_last:
+                    self._health_loss = self._health_last-hp
+                    self._damage_times.append(tick)
+                    print('BLUE_V6_DAMAGE drone=%d tick=%d loss=%d hp=%d mode=%s phase=%d' %
+                          (self.did,tick,self._health_loss,hp,self.mode,
+                           self.dock_controller.phase))
+                self._health_last = hp
+            self._health_current = hp
             self._receive(tick)
             if xy is None or heading is None:
                 self._prepare_message(tick,carrying)
@@ -653,11 +683,21 @@ class MyDroneRescue(DroneAbstract):
                                                    docking=docking)
             # Use odometer displacement, not measured_velocity's mislabeled
             # px/s interpretation. Engine's motion is per step.
+            # Health feedback is informative but not an episode oracle.
+            # Apply mild speed scaling only after recent collision events;
+            # otherwise preserve V5's successful transport throughput.
+            recent_damage=sum(1 for t in self._damage_times if tick-t<180)
+            safety_scale=max(.64,1.-.09*recent_damage)
+            if hp is not None and hp<=7:
+                safety_scale=min(safety_scale,.78)
+            if self.pose.uncertainty>32:
+                safety_scale=min(safety_scale,.76)
             fwd,lat,rot=self.pilot.command(
                 heading,xy,waypoint,lidar,angles,peers=peers,carrying=carrying,
                 docking=docking,velocity=motion,
                 ignore=ignored,close_target=close_target,
-                near_drone=hazards,stuck=self.escape_left>0)
+                near_drone=hazards,stuck=self.escape_left>0,
+                speed_scale=safety_scale)
             if docking:
                 # Directly command the pivot-jointed towing motion. V4's
                 # generic pilot capped force at 0.36 and combined a slow
@@ -685,15 +725,17 @@ class MyDroneRescue(DroneAbstract):
                     tick,xy,heading,motion,self.disposal,
                     None if self.relative_center else self.center_half,
                     relative=self.relative_center,lidar=lidar,angles=angles,
-                    pilot=self.pilot,semantic_hit=hit,peers=hazards)
+                    pilot=self.pilot,semantic_hit=hit,peers=hazards,
+                    health_drop=self._health_loss,health=hp)
                 if ctr is not None:
                     fwd,lat,rot,phase,face_gap=ctr
                     if (phase!=self._dock_phase_reported or
                             tick%180==self.did%10):
-                        print('BLUE_V5_DOCK drone=%d tick=%d phase=%d gap=%.1f '
-                              'speed=%.2f force=%.2f' %
+                        print('BLUE_V6_DOCK drone=%d tick=%d phase=%d gap=%.1f '
+                              'speed=%.2f force=%.2f hp=%s recoveries=%d' %
                               (self.did,tick,phase,face_gap,math.hypot(*motion),
-                               math.hypot(fwd,lat)))
+                               math.hypot(fwd,lat),hp,
+                               self.dock_controller.recoveries))
                     self._dock_phase_reported=phase
                 self.delivery_struggles+=1
             else:

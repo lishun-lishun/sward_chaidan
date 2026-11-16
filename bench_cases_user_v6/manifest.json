@@ -1,0 +1,62 @@
+[
+  {
+    "map": "Map01",
+    "case": "user_fixed",
+    "path": "E:\\code\\fusai\\swarm-eod-main\\bench_cases_user_v6\\Map01_user_fixed.json",
+    "bombs_sha256": "0958bc425137d6974cd2a7433dd7ef8d1e4a87ced1e36e9861d4459e337ffdca"
+  },
+  {
+    "map": "Map02",
+    "case": "user_fixed",
+    "path": "E:\\code\\fusai\\swarm-eod-main\\bench_cases_user_v6\\Map02_user_fixed.json",
+    "bombs_sha256": "fc7f6deb443915611abd22cb8ec2b5fbee38c03b2509ccf59e50f65ce5837149"
+  },
+  {
+    "map": "Map03",
+    "case": "user_fixed",
+    "path": "E:\\code\\fusai\\swarm-eod-main\\bench_cases_user_v6\\Map03_user_fixed.json",
+    "bombs_sha256": "9d4ddd28ca7366cd68f5a6b80babdd6155a2cba697a8d053704fd0c1b4bb8b8d"
+  },
+  {
+    "map": "Map04",
+    "case": "user_fixed",
+    "path": "E:\\code\\fusai\\swarm-eod-main\\bench_cases_user_v6\\Map04_user_fixed.json",
+    "bombs_sha256": "405919bc990bf5018e54e37bb19bae8561ef5c120729c55dcc33a988865400e1"
+  },
+  {
+    "map": "Map05",
+    "case": "user_fixed",
+    "path": "E:\\code\\fusai\\swarm-eod-main\\bench_cases_user_v6\\Map05_user_fixed.json",
+    "bombs_sha256": "9f502b6f8ae9ef4cdbe377d9169b5d7b528446205073a26704cff58c0370a11a"
+  },
+  {
+    "map": "Map06",
+    "case": "user_fixed",
+    "path": "E:\\code\\fusai\\swarm-eod-main\\bench_cases_user_v6\\Map06_user_fixed.json",
+    "bombs_sha256": "9e020a323fba2a5ccd969b875f54f9d41bded36220cb70307bdf424b7b756be4"
+  },
+  {
+    "map": "Map07",
+    "case": "user_fixed",
+    "path": "E:\\code\\fusai\\swarm-eod-main\\bench_cases_user_v6\\Map07_user_fixed.json",
+    "bombs_sha256": "24a59ee47269bf1aaabfac8627208d9be16eec926020069419c6fe9e1f8c5749"
+  },
+  {
+    "map": "Map07t4",
+    "case": "user_fixed",
+    "path": "E:\\code\\fusai\\swarm-eod-main\\bench_cases_user_v6\\Map07t4_user_fixed.json",
+    "bombs_sha256": "2da344f3c7686d7e87aeaddbd1165a359a509fd24554758f2c86ee83ac7d7822"
+  },
+  {
+    "map": "Map08",
+    "case": "user_fixed",
+    "path": "E:\\code\\fusai\\swarm-eod-main\\bench_cases_user_v6\\Map08_user_fixed.json",
+    "bombs_sha256": "478fa487526df18828764352ef8d87e38e31c1cb0ab7461d5f294e189bc3eb16"
+  },
+  {
+    "map": "Map09",
+    "case": "user_fixed",
+    "path": "E:\\code\\fusai\\swarm-eod-main\\bench_cases_user_v6\\Map09_user_fixed.json",
+    "bombs_sha256": "48ccc243d0d6ec2d27c38b32c3f7bd9ae6470a9ef5492a9bcfbc2efddb59ee93"
+  }
+]

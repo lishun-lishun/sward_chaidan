@@ -1,0 +1,490 @@
+The team 'SkySaviors' n��6, with tom, alice, bob, lea
+Default team mode: <not set>
+Evaluation Plan (from file: config_Map07t4.yml):
+==================================================
+Config ID: 1
+  Map: Map07t4
+  Zones: none
+  Number of Rounds: 1
+  Weight: 1
+  Team mode (scenario): rescue
+  Number of drones (scenario): 10
+--------------------------------------------------
+Default team mode: <not set>
+Time score: full marks at or before 30% of the timestep limit
+--------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+* Map: Map07t4, mode: rescue, special zones: none, round: 1/1
+BLUE_V6 drone=0 tick=8 state=EXPLORE pos=(524.8,385.3) speed=0.23 carry=0 goal_dist=150.1 route=6 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=13 state=EXPLORE pos=(564.2,388.8) speed=0.00 carry=0 goal_dist=169.4 route=13 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=18 state=EXPLORE pos=(605.8,384.2) speed=0.00 carry=0 goal_dist=151.8 route=14 uncertainty=4.5 hp=None
+BLUE_V6 drone=3 tick=23 state=EXPLORE pos=(649.9,387.3) speed=0.00 carry=0 goal_dist=151.5 route=6 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=28 state=EXPLORE pos=(526.3,427.1) speed=0.00 carry=0 goal_dist=201.8 route=9 uncertainty=4.5 hp=None
+BLUE_V6 drone=5 tick=33 state=EXPLORE pos=(563.3,423.4) speed=0.16 carry=0 goal_dist=188.3 route=8 uncertainty=4.5 hp=None
+BLUE_V6 drone=6 tick=38 state=EXPLORE pos=(599.8,424.7) speed=0.00 carry=0 goal_dist=169.7 route=7 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=43 state=EXPLORE pos=(651.2,427.2) speed=0.00 carry=0 goal_dist=176.1 route=8 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=48 state=EXPLORE pos=(523.9,463.4) speed=0.02 carry=0 goal_dist=143.3 route=6 uncertainty=4.5 hp=None
+BLUE_V6 drone=9 tick=53 state=EXPLORE pos=(573.5,465.5) speed=0.00 carry=0 goal_dist=167.6 route=9 uncertainty=4.5 hp=None
+BLUE_V6 drone=0 tick=183 state=EXPLORE pos=(-159.6,497.1) speed=5.29 carry=0 goal_dist=60.1 route=10 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=188 state=EXPLORE pos=(32.8,336.9) speed=4.65 carry=0 goal_dist=47.7 route=12 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=193 state=EXPLORE pos=(374.4,332.2) speed=3.31 carry=0 goal_dist=66.7 route=10 uncertainty=4.5 hp=None
+BLUE_V6 drone=3 tick=198 state=EXPLORE pos=(546.5,409.5) speed=6.90 carry=0 goal_dist=270.7 route=11 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=203 state=EXPLORE pos=(652.8,417.6) speed=4.33 carry=0 goal_dist=80.4 route=7 uncertainty=4.5 hp=None
+BLUE_V6 drone=5 tick=208 state=EXPLORE pos=(191.7,433.5) speed=7.52 carry=0 goal_dist=169.7 route=8 uncertainty=4.5 hp=None
+BLUE_V6 drone=6 tick=213 state=EXPLORE pos=(184.9,346.1) speed=2.03 carry=0 goal_dist=96.1 route=9 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=218 state=EXPLORE pos=(83.5,402.5) speed=6.04 carry=0 goal_dist=69.5 route=3 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=223 state=EXPLORE pos=(-134.7,471.7) speed=3.69 carry=0 goal_dist=84.1 route=10 uncertainty=4.5 hp=None
+BLUE_V6 drone=9 tick=228 state=EXPLORE pos=(-103.0,394.0) speed=5.36 carry=0 goal_dist=77.9 route=8 uncertainty=4.5 hp=None
+BLUE_V6 drone=0 tick=358 state=EXPLORE pos=(-707.4,216.4) speed=5.50 carry=0 goal_dist=168.4 route=8 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=363 state=EXPLORE pos=(424.8,384.1) speed=7.80 carry=0 goal_dist=694.2 route=32 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=368 state=EXPLORE pos=(146.8,324.9) speed=5.28 carry=0 goal_dist=128.9 route=34 uncertainty=4.5 hp=None
+BLUE_V6 drone=3 tick=373 state=EXPLORE pos=(-197.0,321.5) speed=1.68 carry=0 goal_dist=213.1 route=9 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=378 state=EXPLORE pos=(-80.5,334.3) speed=4.93 carry=0 goal_dist=157.4 route=13 uncertainty=4.5 hp=None
+BLUE_V6 drone=5 tick=383 state=EXPLORE pos=(-139.8,471.8) speed=1.16 carry=0 goal_dist=152.0 route=8 uncertainty=4.5 hp=None
+BLUE_V6 drone=6 tick=388 state=EXPLORE pos=(-196.2,445.2) speed=5.16 carry=0 goal_dist=170.1 route=12 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=393 state=EXPLORE pos=(-521.2,326.0) speed=7.52 carry=0 goal_dist=67.8 route=9 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=398 state=EXPLORE pos=(-794.3,228.0) speed=5.91 carry=0 goal_dist=236.4 route=10 uncertainty=4.5 hp=None
+BLUE_V6 drone=9 tick=403 state=EXPLORE pos=(-723.0,392.8) speed=4.27 carry=0 goal_dist=309.4 route=14 uncertainty=4.5 hp=None
+BLUE_V6 drone=0 tick=533 state=EXPLORE pos=(-412.2,-248.6) speed=7.63 carry=0 goal_dist=99.0 route=8 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=538 state=EXPLORE pos=(-297.9,339.2) speed=2.44 carry=0 goal_dist=305.1 route=16 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=543 state=EXPLORE pos=(637.3,379.3) speed=0.36 carry=0 goal_dist=45.5 route=2 uncertainty=4.5 hp=None
+BLUE_V6 drone=3 tick=548 state=EXPLORE pos=(-634.2,180.9) speed=7.73 carry=0 goal_dist=34.9 route=2 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=553 state=EXPLORE pos=(-428.6,329.1) speed=5.11 carry=0 goal_dist=303.1 route=22 uncertainty=4.5 hp=None
+BLUE_V6 drone=5 tick=558 state=EXPLORE pos=(427.0,407.5) speed=0.32 carry=0 goal_dist=216.8 route=44 uncertainty=4.5 hp=None
+BLUE_V6 drone=6 tick=563 state=EXPLORE pos=(-611.8,207.3) speed=5.87 carry=0 goal_dist=235.5 route=12 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=568 state=EXPLORE pos=(-255.3,-53.9) speed=6.18 carry=0 goal_dist=134.2 route=8 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=573 state=EXPLORE pos=(-120.6,190.0) speed=0.30 carry=0 goal_dist=221.6 route=10 uncertainty=4.5 hp=None
+BLUE_V6 drone=9 tick=589 state=EXPLORE pos=(-374.7,-76.2) speed=1.25 carry=0 goal_dist=405.4 route=26 uncertainty=4.5 hp=None
+BLUE_V6 drone=0 tick=708 state=EXPLORE pos=(12.8,-208.0) speed=7.45 carry=0 goal_dist=57.5 route=9 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=713 state=EXPLORE pos=(-445.6,-42.1) speed=6.86 carry=0 goal_dist=79.0 route=6 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=718 state=EXPLORE pos=(148.0,448.7) speed=7.51 carry=0 goal_dist=412.3 route=20 uncertainty=4.5 hp=None
+BLUE_V6 drone=3 tick=723 state=EXPLORE pos=(-111.8,-133.0) speed=7.33 carry=0 goal_dist=63.8 route=7 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=728 state=EXPLORE pos=(-576.9,41.1) speed=3.93 carry=0 goal_dist=145.4 route=8 uncertainty=4.5 hp=None
+BLUE_V6 drone=5 tick=733 state=EXPLORE pos=(238.9,410.4) speed=8.26 carry=0 goal_dist=774.8 route=34 uncertainty=4.5 hp=None
+BLUE_V6 drone=6 tick=738 state=EXPLORE pos=(-247.5,-52.9) speed=5.43 carry=0 goal_dist=296.2 route=13 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=743 state=EXPLORE pos=(49.4,107.9) speed=2.49 carry=0 goal_dist=305.3 route=20 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=748 state=EXPLORE pos=(-56.8,-229.3) speed=3.09 carry=0 goal_dist=136.8 route=9 uncertainty=4.5 hp=None
+BLUE_V6 drone=9 tick=764 state=EXPLORE pos=(26.6,185.8) speed=6.19 carry=0 goal_dist=140.1 route=7 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=806 state=CHASE pos=(-127.1,-272.8) speed=2.51 carry=0 goal_dist=120.2 route=5 uncertainty=4.5 hp=None
+BLUE_V6_EVENT pickup drone=8 tick=836 track=0
+BLUE_V6 drone=8 tick=836 state=DELIVER pos=(-132.1,-370.7) speed=1.46 carry=1 goal_dist=1078.8 route=43 uncertainty=4.5 hp=None
+BLUE_V6 drone=0 tick=883 state=EXPLORE pos=(-79.0,142.7) speed=6.36 carry=0 goal_dist=662.8 route=39 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=888 state=EXPLORE pos=(-346.8,-310.2) speed=5.54 carry=0 goal_dist=282.5 route=13 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=893 state=EXPLORE pos=(-480.1,320.3) speed=2.15 carry=0 goal_dist=170.0 route=8 uncertainty=4.5 hp=None
+BLUE_V6 drone=3 tick=898 state=EXPLORE pos=(87.0,-384.1) speed=5.22 carry=0 goal_dist=274.7 route=13 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=903 state=EXPLORE pos=(56.8,-46.2) speed=3.58 carry=0 goal_dist=93.6 route=4 uncertainty=4.5 hp=None
+BLUE_V6 drone=5 tick=908 state=EXPLORE pos=(-199.5,423.2) speed=3.71 carry=0 goal_dist=332.5 route=17 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=918 state=EXPLORE pos=(-378.1,-259.5) speed=6.85 carry=0 goal_dist=267.1 route=10 uncertainty=4.5 hp=None
+BLUE_V6 drone=6 tick=931 state=EXPLORE pos=(134.0,-269.6) speed=2.05 carry=0 goal_dist=215.9 route=9 uncertainty=4.5 hp=None
+BLUE_V6 drone=9 tick=947 state=EXPLORE pos=(71.0,-66.5) speed=0.97 carry=0 goal_dist=228.0 route=11 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=1011 state=DELIVER pos=(-128.0,-239.7) speed=0.65 carry=1 goal_dist=1004.7 route=40 uncertainty=4.5 hp=None
+BLUE_V6 drone=0 tick=1058 state=EXPLORE pos=(75.4,-311.2) speed=0.79 carry=0 goal_dist=221.8 route=9 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=1063 state=EXPLORE pos=(76.5,33.4) speed=7.35 carry=0 goal_dist=174.4 route=7 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=1068 state=EXPLORE pos=(-583.8,31.7) speed=0.64 carry=0 goal_dist=101.3 route=5 uncertainty=4.5 hp=None
+BLUE_V6 drone=3 tick=1073 state=EXPLORE pos=(477.3,-471.1) speed=1.48 carry=0 goal_dist=638.4 route=32 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=1078 state=EXPLORE pos=(169.4,266.3) speed=0.92 carry=0 goal_dist=370.4 route=17 uncertainty=4.5 hp=None
+BLUE_V6 drone=5 tick=1083 state=EXPLORE pos=(-410.9,104.6) speed=6.98 carry=0 goal_dist=81.5 route=4 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=1093 state=EXPLORE pos=(-544.2,-143.7) speed=6.72 carry=0 goal_dist=779.3 route=41 uncertainty=4.5 hp=None
+BLUE_V6 drone=6 tick=1106 state=EXPLORE pos=(423.0,128.2) speed=2.42 carry=0 goal_dist=81.2 route=8 uncertainty=4.5 hp=None
+BLUE_V6 drone=9 tick=1122 state=EXPLORE pos=(381.3,-391.8) speed=7.17 carry=0 goal_dist=337.4 route=18 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=1186 state=DELIVER pos=(139.5,-213.1) speed=1.98 carry=1 goal_dist=766.7 route=28 uncertainty=4.5 hp=None
+BLUE_V6 drone=0 tick=1233 state=EXPLORE pos=(358.0,-426.8) speed=1.99 carry=0 goal_dist=120.0 route=6 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=1238 state=EXPLORE pos=(82.0,-213.9) speed=7.21 carry=0 goal_dist=263.4 route=11 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=1243 state=EXPLORE pos=(-354.3,-71.9) speed=2.05 carry=0 goal_dist=233.3 route=10 uncertainty=4.5 hp=None
+BLUE_V6 drone=3 tick=1248 state=EXPLORE pos=(324.6,-385.1) speed=5.00 carry=0 goal_dist=449.9 route=23 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=1253 state=EXPLORE pos=(103.8,-170.9) speed=6.53 carry=0 goal_dist=263.0 route=14 uncertainty=4.5 hp=None
+BLUE_V6 drone=5 tick=1258 state=EXPLORE pos=(-116.5,-61.2) speed=0.23 carry=0 goal_dist=247.0 route=23 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=1268 state=EXPLORE pos=(79.9,-361.6) speed=3.89 carry=0 goal_dist=232.6 route=12 uncertainty=4.5 hp=None
+BLUE_V6 drone=6 tick=1281 state=EXPLORE pos=(559.9,-342.2) speed=6.06 carry=0 goal_dist=63.6 route=3 uncertainty=4.5 hp=None
+BLUE_V6 drone=9 tick=1297 state=EXPLORE pos=(124.2,-273.9) speed=4.50 carry=0 goal_dist=276.6 route=19 uncertainty=4.5 hp=None
+BLUE_V6 drone=6 tick=1331 state=CHASE pos=(492.7,-227.7) speed=7.75 carry=0 goal_dist=124.3 route=6 uncertainty=4.5 hp=None
+BLUE_V6_EVENT pickup drone=6 tick=1355 track=8
+BLUE_V6 drone=6 tick=1355 state=DELIVER pos=(482.3,-107.0) speed=2.06 carry=1 goal_dist=448.7 route=37 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=1361 state=DELIVER pos=(240.5,79.2) speed=1.59 carry=1 goal_dist=535.5 route=22 uncertainty=4.5 hp=None
+BLUE_V6 drone=0 tick=1408 state=EXPLORE pos=(212.5,3.7) speed=5.35 carry=0 goal_dist=377.3 route=25 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=1413 state=EXPLORE pos=(512.5,-413.4) speed=2.17 carry=0 goal_dist=88.3 route=5 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=1418 state=EXPLORE pos=(149.4,-301.1) speed=7.40 carry=0 goal_dist=205.3 route=12 uncertainty=4.5 hp=None
+BLUE_V6 drone=3 tick=1423 state=EXPLORE pos=(332.1,114.1) speed=5.81 carry=0 goal_dist=128.0 route=7 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=1428 state=EXPLORE pos=(173.5,-76.0) speed=3.74 carry=0 goal_dist=208.6 route=26 uncertainty=4.5 hp=None
+BLUE_V6 drone=5 tick=1434 state=EXPLORE pos=(69.4,-32.7) speed=1.77 carry=0 goal_dist=423.7 route=20 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=1443 state=EXPLORE pos=(103.1,-360.7) speed=4.11 carry=0 goal_dist=377.5 route=22 uncertainty=4.5 hp=None
+BLUE_V6 drone=9 tick=1472 state=EXPLORE pos=(-455.9,-337.1) speed=5.69 carry=0 goal_dist=205.9 route=8 uncertainty=4.5 hp=None
+BLUE_V6 drone=6 tick=1530 state=DELIVER pos=(510.2,-244.1) speed=1.41 carry=1 goal_dist=552.8 route=32 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=1536 state=DELIVER pos=(602.8,89.5) speed=2.53 carry=1 goal_dist=219.6 route=13 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=1577 state=CHASE pos=(277.7,-506.5) speed=6.97 carry=0 goal_dist=119.6 route=5 uncertainty=4.5 hp=None
+BLUE_V6 drone=0 tick=1583 state=EXPLORE pos=(566.2,-126.3) speed=1.08 carry=0 goal_dist=170.1 route=9 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=1593 state=EXPLORE pos=(72.7,-522.5) speed=1.50 carry=0 goal_dist=332.6 route=14 uncertainty=4.5 hp=None
+BLUE_V6 drone=3 tick=1598 state=EXPLORE pos=(565.8,-25.1) speed=5.27 carry=0 goal_dist=215.6 route=14 uncertainty=4.5 hp=None
+BLUE_V6_EVENT pickup drone=1 tick=1600 track=10
+BLUE_V6 drone=1 tick=1600 state=DELIVER pos=(160.7,-517.3) speed=2.70 carry=1 goal_dist=969.8 route=69 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=1603 state=EXPLORE pos=(481.1,103.9) speed=6.78 carry=0 goal_dist=81.3 route=4 uncertainty=4.5 hp=None
+BLUE_V6 drone=5 tick=1609 state=EXPLORE pos=(-125.5,-283.4) speed=1.27 carry=0 goal_dist=124.6 route=6 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=1626 state=EXPLORE pos=(492.9,-516.1) speed=1.76 carry=0 goal_dist=238.0 route=51 uncertainty=4.5 hp=None
+BLUE_V6 drone=9 tick=1647 state=EXPLORE pos=(-332.7,-285.6) speed=0.75 carry=0 goal_dist=188.7 route=12 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=1679 state=CHASE pos=(742.3,99.2) speed=2.44 carry=0 goal_dist=116.5 route=7 uncertainty=4.5 hp=None
+BLUE_V6 drone=6 tick=1705 state=DELIVER pos=(543.8,-181.0) speed=2.13 carry=1 goal_dist=481.5 route=24 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=1711 state=DELIVER pos=(731.5,223.7) speed=1.76 carry=1 goal_dist=35.5 route=2 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=1713 phase=0 gap=73.9 speed=1.99 force=0.75 hp=None recoveries=0
+BLUE_V6_DOCK drone=8 tick=1730 phase=1 gap=34.7 speed=2.33 force=0.74 hp=None recoveries=0
+BLUE_V6 drone=0 tick=1758 state=EXPLORE pos=(494.1,-266.7) speed=7.73 carry=0 goal_dist=637.1 route=58 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=1768 state=EXPLORE pos=(-96.4,-536.5) speed=1.84 carry=0 goal_dist=252.8 route=12 uncertainty=4.5 hp=None
+BLUE_V6 drone=3 tick=1773 state=EXPLORE pos=(477.4,-272.8) speed=5.61 carry=0 goal_dist=745.8 route=52 uncertainty=4.5 hp=None
+BLUE_V6_EVENT pickup drone=4 tick=1780 track=26
+BLUE_V6 drone=4 tick=1780 state=DELIVER pos=(681.7,191.0) speed=2.32 carry=1 goal_dist=91.4 route=4 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=1783 state=DELIVER pos=(339.8,-516.4) speed=1.37 carry=1 goal_dist=872.7 route=60 uncertainty=4.5 hp=None
+BLUE_V6 drone=5 tick=1791 state=EXPLORE pos=(-125.6,-418.0) speed=0.86 carry=0 goal_dist=341.6 route=23 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=1805 state=EXPLORE pos=(351.4,-483.0) speed=1.65 carry=0 goal_dist=383.7 route=43 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=1808 phase=1 gap=22.4 speed=1.98 force=0.74 hp=None recoveries=0
+BLUE_V6 drone=9 tick=1822 state=EXPLORE pos=(-119.3,-339.2) speed=1.06 carry=0 goal_dist=93.6 route=5 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=1830 phase=2 gap=17.9 speed=1.72 force=0.79 hp=None recoveries=0
+BLUE_V6_DOCK drone=4 tick=1847 phase=0 gap=72.0 speed=1.69 force=0.76 hp=None recoveries=0
+BLUE_V6 drone=6 tick=1880 state=DELIVER pos=(659.5,64.0) speed=2.05 carry=1 goal_dist=210.6 route=11 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=1886 state=DELIVER pos=(716.6,276.9) speed=1.45 carry=1 goal_dist=154.9 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=1908 phase=3 gap=25.4 speed=1.87 force=0.70 hp=None recoveries=1
+BLUE_V6_DOCK drone=4 tick=1910 phase=1 gap=69.1 speed=2.02 force=0.74 hp=None recoveries=0
+BLUE_V6_ROUTE_FAIL drone=5 tick=1911 mode=EXPLORE target=(-698.0, -141.0)
+BLUE_V6 drone=0 tick=1933 state=EXPLORE pos=(201.0,-26.5) speed=7.10 carry=0 goal_dist=497.6 route=30 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=1936 phase=3 gap=55.8 speed=1.23 force=0.73 hp=None recoveries=1
+BLUE_V6 drone=3 tick=1948 state=EXPLORE pos=(620.0,167.7) speed=2.41 carry=0 goal_dist=111.1 route=7 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=1955 state=DELIVER pos=(714.0,257.8) speed=0.60 carry=1 goal_dist=174.1 route=0 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=1959 state=EXPLORE pos=(-126.5,-538.1) speed=1.03 carry=0 goal_dist=191.2 route=8 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=1960 state=DELIVER pos=(446.4,-508.7) speed=0.54 carry=1 goal_dist=821.3 route=57 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=1960 phase=0 gap=46.9 speed=0.82 force=0.76 hp=None recoveries=1
+BLUE_V6 drone=5 tick=1971 state=EXPLORE pos=(-122.0,-365.0) speed=0.35 carry=0 goal_dist=233.2 route=46 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=6 tick=1973 phase=0 gap=77.0 speed=1.76 force=0.76 hp=None recoveries=0
+BLUE_V6 drone=7 tick=1980 state=EXPLORE pos=(398.7,-503.3) speed=0.55 carry=0 goal_dist=314.4 route=42 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=1984 phase=0 gap=40.1 speed=1.80 force=0.70 hp=None recoveries=1
+BLUE_V6_DOCK drone=6 tick=1986 phase=0 gap=54.1 speed=1.94 force=0.75 hp=None recoveries=0
+BLUE_V6_DOCK drone=4 tick=1989 phase=1 gap=33.5 speed=1.37 force=0.74 hp=None recoveries=1
+BLUE_V6 drone=9 tick=1997 state=EXPLORE pos=(-151.7,-229.4) speed=2.52 carry=0 goal_dist=200.5 route=25 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=6 tick=2001 phase=1 gap=34.6 speed=0.62 force=0.74 hp=None recoveries=0
+BLUE_V6 drone=6 tick=2055 state=DELIVER pos=(766.7,275.2) speed=0.52 carry=1 goal_dist=155.2 route=0 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=2061 state=DELIVER pos=(732.3,205.7) speed=0.93 carry=1 goal_dist=52.2 route=3 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=2089 phase=2 gap=25.8 speed=0.97 force=0.79 hp=None recoveries=1
+BLUE_V6_DOCK drone=6 tick=2100 phase=3 gap=28.5 speed=0.00 force=0.67 hp=None recoveries=1
+BLUE_V6 drone=0 tick=2108 state=EXPLORE pos=(-125.3,-330.7) speed=0.53 carry=0 goal_dist=77.1 route=3 uncertainty=4.5 hp=None
+BLUE_V6 drone=3 tick=2123 state=EXPLORE pos=(453.5,251.0) speed=0.10 carry=0 goal_dist=287.6 route=12 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=6 tick=2124 phase=0 gap=42.0 speed=1.57 force=0.76 hp=None recoveries=1
+BLUE_V6 drone=4 tick=2130 state=DELIVER pos=(698.3,276.9) speed=1.58 carry=1 goal_dist=159.4 route=0 uncertainty=4.5 hp=None
+BLUE_V6 drone=3 tick=2133 state=CHASE pos=(442.3,260.1) speed=2.99 carry=0 goal_dist=84.7 route=4 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=2134 state=EXPLORE pos=(-408.8,-214.1) speed=6.10 carry=0 goal_dist=313.2 route=13 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=2135 state=DELIVER pos=(477.7,-488.3) speed=0.83 carry=1 goal_dist=791.2 route=55 uncertainty=4.5 hp=None
+BLUE_V6 drone=5 tick=2146 state=EXPLORE pos=(-122.2,-343.1) speed=1.25 carry=0 goal_dist=205.2 route=29 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=6 tick=2151 phase=1 gap=33.7 speed=1.31 force=0.74 hp=None recoveries=1
+BLUE_V6 drone=7 tick=2155 state=EXPLORE pos=(380.7,-513.4) speed=0.96 carry=0 goal_dist=394.4 route=57 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=2164 phase=2 gap=22.1 speed=0.24 force=0.79 hp=None recoveries=1
+BLUE_V6_DOCK drone=6 tick=2166 phase=1 gap=17.5 speed=0.68 force=0.74 hp=None recoveries=1
+BLUE_V6_DOCK drone=4 tick=2167 phase=3 gap=21.9 speed=0.00 force=0.70 hp=None recoveries=2
+BLUE_V6 drone=9 tick=2172 state=EXPLORE pos=(-672.4,-90.1) speed=3.32 carry=0 goal_dist=449.9 route=33 uncertainty=4.5 hp=None
+BLUE_V6_EVENT pickup drone=3 tick=2187 track=53
+BLUE_V6 drone=3 tick=2187 state=DELIVER pos=(435.5,199.3) speed=0.70 carry=1 goal_dist=295.2 route=17 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=6 tick=2190 phase=3 gap=17.1 speed=0.47 force=0.33 hp=None recoveries=2
+BLUE_V6_DOCK drone=4 tick=2191 phase=0 gap=40.7 speed=1.07 force=0.76 hp=None recoveries=2
+BLUE_V6_DOCK drone=8 tick=2197 phase=0 gap=73.2 speed=1.17 force=0.76 hp=None recoveries=2
+BLUE_V6_DOCK drone=6 tick=2214 phase=0 gap=42.9 speed=1.19 force=0.76 hp=None recoveries=2
+BLUE_V6_DOCK drone=8 tick=2218 phase=3 gap=43.0 speed=1.72 force=0.76 hp=None recoveries=3
+BLUE_V6 drone=6 tick=2230 state=DELIVER pos=(761.4,254.2) speed=0.66 carry=1 goal_dist=175.4 route=0 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=2236 state=DELIVER pos=(723.0,268.5) speed=0.90 carry=1 goal_dist=162.2 route=2 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=6 tick=2244 phase=1 gap=34.9 speed=0.83 force=0.74 hp=None recoveries=2
+BLUE_V6_DOCK drone=6 tick=2279 phase=3 gap=24.0 speed=0.12 force=0.53 hp=None recoveries=3
+BLUE_V6_DOCK drone=8 tick=2279 phase=0 gap=60.3 speed=0.51 force=0.76 hp=None recoveries=4
+BLUE_V6 drone=0 tick=2283 state=EXPLORE pos=(-400.0,-481.7) speed=5.74 carry=0 goal_dist=216.1 route=12 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=6 tick=2303 phase=0 gap=41.5 speed=1.83 force=0.76 hp=None recoveries=3
+BLUE_V6 drone=4 tick=2305 state=DELIVER pos=(747.4,202.5) speed=1.10 carry=1 goal_dist=53.5 route=3 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=2309 state=EXPLORE pos=(-508.4,-300.7) speed=2.88 carry=0 goal_dist=441.7 route=32 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=2310 phase=1 gap=33.5 speed=1.44 force=0.60 hp=None recoveries=4
+BLUE_V6 drone=1 tick=2311 state=DELIVER pos=(459.4,-492.8) speed=0.99 carry=1 goal_dist=801.7 route=54 uncertainty=4.5 hp=None
+BLUE_V6 drone=5 tick=2321 state=EXPLORE pos=(227.6,-352.1) speed=5.72 carry=0 goal_dist=151.4 route=7 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=2330 state=EXPLORE pos=(311.0,-396.7) speed=5.97 carry=0 goal_dist=313.6 route=38 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=2332 phase=3 gap=26.4 speed=0.18 force=0.52 hp=None recoveries=5
+BLUE_V6_DOCK drone=6 tick=2333 phase=1 gap=33.3 speed=1.35 force=0.74 hp=None recoveries=3
+BLUE_V6_DOCK drone=6 tick=2346 phase=1 gap=27.3 speed=0.73 force=0.74 hp=None recoveries=3
+BLUE_V6 drone=9 tick=2347 state=EXPLORE pos=(-281.5,268.8) speed=3.57 carry=0 goal_dist=111.5 route=6 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=2348 phase=3 gap=41.6 speed=1.70 force=0.34 hp=None recoveries=5
+BLUE_V6_DOCK drone=8 tick=2356 phase=0 gap=47.7 speed=1.35 force=0.76 hp=None recoveries=5
+BLUE_V6 drone=3 tick=2362 state=DELIVER pos=(420.6,236.9) speed=1.89 carry=1 goal_dist=277.7 route=15 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=2376 phase=1 gap=78.1 speed=1.60 force=0.74 hp=None recoveries=2
+BLUE_V6 drone=6 tick=2405 state=DELIVER pos=(754.5,271.1) speed=0.32 carry=1 goal_dist=158.1 route=0 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=2411 state=DELIVER pos=(668.9,237.5) speed=1.06 carry=1 goal_dist=79.2 route=3 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=6 tick=2433 phase=2 gap=33.0 speed=0.09 force=0.79 hp=None recoveries=3
+BLUE_V6 drone=0 tick=2458 state=EXPLORE pos=(-653.9,-103.8) speed=6.97 carry=0 goal_dist=451.6 route=17 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=2476 phase=2 gap=59.9 speed=0.79 force=0.79 hp=None recoveries=2
+BLUE_V6 drone=4 tick=2480 state=DELIVER pos=(767.1,241.0) speed=0.57 carry=1 goal_dist=189.2 route=0 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=2484 state=EXPLORE pos=(112.3,-228.9) speed=2.40 carry=0 goal_dist=418.3 route=20 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=2488 state=DELIVER pos=(412.9,-496.1) speed=0.57 carry=1 goal_dist=822.5 route=59 uncertainty=4.5 hp=None
+BLUE_V6 drone=5 tick=2496 state=EXPLORE pos=(290.1,-388.7) speed=0.09 carry=0 goal_dist=463.7 route=27 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=2505 state=EXPLORE pos=(207.2,-326.2) speed=5.30 carry=0 goal_dist=463.8 route=24 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=6 tick=2511 phase=3 gap=23.7 speed=0.20 force=0.70 hp=None recoveries=4
+BLUE_V6_DOCK drone=4 tick=2522 phase=3 gap=44.7 speed=1.52 force=0.68 hp=None recoveries=3
+BLUE_V6 drone=9 tick=2522 state=EXPLORE pos=(-136.7,-220.0) speed=5.04 carry=0 goal_dist=211.6 route=12 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=2524 phase=3 gap=42.4 speed=1.27 force=0.65 hp=None recoveries=3
+BLUE_V6_DOCK drone=6 tick=2526 phase=3 gap=33.6 speed=1.54 force=0.47 hp=None recoveries=4
+BLUE_V6_DOCK drone=6 tick=2535 phase=0 gap=43.9 speed=1.25 force=0.76 hp=None recoveries=4
+BLUE_V6 drone=3 tick=2537 state=DELIVER pos=(422.3,244.1) speed=0.25 carry=1 goal_dist=271.4 route=16 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=2546 phase=0 gap=38.6 speed=1.27 force=0.76 hp=None recoveries=3
+BLUE_V6_DOCK drone=4 tick=2565 phase=1 gap=34.5 speed=0.86 force=0.74 hp=None recoveries=3
+BLUE_V6 drone=6 tick=2580 state=DELIVER pos=(772.6,222.9) speed=0.00 carry=1 goal_dist=42.5 route=2 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=2586 state=DELIVER pos=(723.8,198.9) speed=1.23 carry=1 goal_dist=61.3 route=3 uncertainty=4.5 hp=None
+Drone 0 destroyed, too much collision !
+BLUE_V6_DOCK drone=6 tick=2601 phase=1 gap=68.4 speed=0.40 force=0.74 hp=None recoveries=4
+BLUE_V6 drone=4 tick=2655 state=DELIVER pos=(741.9,285.6) speed=0.23 carry=1 goal_dist=143.5 route=0 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=2659 state=EXPLORE pos=(425.8,-389.0) speed=5.64 carry=0 goal_dist=244.0 route=42 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=2663 state=DELIVER pos=(495.7,-456.2) speed=0.45 carry=1 goal_dist=754.9 route=54 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=2665 phase=2 gap=17.4 speed=1.04 force=0.79 hp=None recoveries=3
+BLUE_V6 drone=5 tick=2671 state=EXPLORE pos=(74.1,-451.0) speed=0.34 carry=0 goal_dist=163.8 route=6 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=2680 state=EXPLORE pos=(204.9,-19.7) speed=1.44 carry=0 goal_dist=282.7 route=17 uncertainty=4.5 hp=None
+BLUE_V6 drone=9 tick=2697 state=EXPLORE pos=(162.7,16.8) speed=5.21 carry=0 goal_dist=162.7 route=7 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=2704 phase=2 gap=27.6 speed=0.68 force=0.79 hp=None recoveries=3
+BLUE_V6 drone=3 tick=2712 state=DELIVER pos=(424.0,245.4) speed=0.23 carry=1 goal_dist=269.3 route=15 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=2743 phase=3 gap=24.9 speed=0.00 force=0.70 hp=None recoveries=4
+BLUE_V6_DOCK drone=8 tick=2752 phase=1 gap=77.3 speed=1.28 force=0.74 hp=None recoveries=5
+BLUE_V6 drone=6 tick=2755 state=DELIVER pos=(697.9,209.4) speed=0.54 carry=1 goal_dist=67.0 route=3 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=2761 state=DELIVER pos=(743.7,234.0) speed=1.33 carry=1 goal_dist=195.0 route=2 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=2767 phase=0 gap=43.0 speed=1.23 force=0.76 hp=None recoveries=4
+BLUE_V6_DOCK drone=8 tick=2807 phase=3 gap=15.4 speed=0.97 force=0.16 hp=None recoveries=6
+BLUE_V6 drone=4 tick=2830 state=DELIVER pos=(709.7,216.2) speed=1.26 carry=1 goal_dist=53.9 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=2831 phase=0 gap=39.4 speed=1.75 force=0.76 hp=None recoveries=6
+BLUE_V6 drone=2 tick=2834 state=EXPLORE pos=(201.9,35.7) speed=4.70 carry=0 goal_dist=211.8 route=11 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=2838 state=DELIVER pos=(271.6,-428.1) speed=2.48 carry=1 goal_dist=832.5 route=44 uncertainty=4.5 hp=None
+BLUE_V6 drone=5 tick=2846 state=EXPLORE pos=(-577.6,-149.7) speed=7.99 carry=0 goal_dist=120.7 route=5 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=2855 state=EXPLORE pos=(546.0,-267.0) speed=7.56 carry=0 goal_dist=179.8 route=7 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=2863 phase=1 gap=34.9 speed=1.13 force=0.74 hp=None recoveries=6
+BLUE_V6 drone=7 tick=2867 state=CHASE pos=(626.8,-224.1) speed=8.12 carry=0 goal_dist=117.3 route=7 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=2872 state=CHASE pos=(380.2,4.1) speed=7.13 carry=0 goal_dist=116.6 route=4 uncertainty=4.5 hp=None
+BLUE_V6 drone=9 tick=2872 state=EXPLORE pos=(409.6,93.5) speed=6.39 carry=0 goal_dist=241.3 route=10 uncertainty=4.5 hp=None
+BLUE_V6 drone=9 tick=2874 state=CHASE pos=(422.6,89.2) speed=6.41 carry=0 goal_dist=97.5 route=9 uncertainty=4.5 hp=None
+BLUE_V6 drone=3 tick=2887 state=DELIVER pos=(424.8,247.9) speed=0.75 carry=1 goal_dist=267.0 route=16 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=2888 phase=1 gap=24.9 speed=1.38 force=0.74 hp=None recoveries=6
+BLUE_V6_DOCK drone=4 tick=2911 phase=1 gap=53.3 speed=1.35 force=0.74 hp=None recoveries=4
+Drone 9 destroyed, too much collision !
+BLUE_V6 drone=6 tick=2930 state=DELIVER pos=(747.8,209.2) speed=0.88 carry=1 goal_dist=46.8 route=3 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=2935 phase=3 gap=35.6 speed=1.08 force=0.04 hp=None recoveries=7
+BLUE_V6 drone=8 tick=2936 state=DELIVER pos=(767.0,267.0) speed=1.18 carry=1 goal_dist=163.3 route=0 uncertainty=4.5 hp=None
+BLUE_V6_EVENT pickup drone=2 tick=2950 track=42
+BLUE_V6 drone=2 tick=2950 state=DELIVER pos=(489.9,-4.3) speed=2.12 carry=1 goal_dist=365.1 route=30 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=2959 phase=0 gap=40.4 speed=0.19 force=0.76 hp=None recoveries=7
+BLUE_V6_DOCK drone=4 tick=2972 phase=3 gap=20.5 speed=0.43 force=0.24 hp=None recoveries=5
+BLUE_V6_DOCK drone=8 tick=2973 phase=1 gap=34.6 speed=1.14 force=0.74 hp=None recoveries=7
+BLUE_V6_EVENT pickup drone=7 tick=2983 track=34
+BLUE_V6 drone=7 tick=2983 state=DELIVER pos=(665.7,-112.0) speed=2.41 carry=1 goal_dist=376.7 route=28 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=2996 phase=0 gap=40.9 speed=1.40 force=0.76 hp=None recoveries=5
+BLUE_V6 drone=1 tick=3013 state=DELIVER pos=(223.0,-253.2) speed=1.76 carry=1 goal_dist=729.9 route=38 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=3021 state=DELIVER pos=(689.9,249.2) speed=0.67 carry=1 goal_dist=56.5 route=3 uncertainty=4.5 hp=None
+BLUE_V6 drone=5 tick=3021 state=EXPLORE pos=(-313.9,-351.5) speed=3.63 carry=0 goal_dist=241.7 route=29 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=6 tick=3029 phase=2 gap=77.5 speed=0.35 force=0.79 hp=None recoveries=4
+BLUE_V6_DOCK drone=8 tick=3051 phase=3 gap=31.0 speed=1.22 force=0.74 hp=None recoveries=8
+BLUE_V6 drone=3 tick=3062 state=DELIVER pos=(424.6,232.9) speed=0.19 carry=1 goal_dist=277.6 route=110 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=6 tick=3066 phase=2 gap=37.6 speed=1.92 force=0.78 hp=None recoveries=4
+BLUE_V6_DOCK drone=8 tick=3068 phase=3 gap=40.2 speed=0.66 force=0.54 hp=None recoveries=8
+BLUE_V6_DOCK drone=8 tick=3075 phase=0 gap=45.3 speed=0.86 force=0.76 hp=None recoveries=8
+BLUE_V6_DOCK drone=8 tick=3098 phase=1 gap=34.7 speed=1.07 force=0.74 hp=None recoveries=8
+BLUE_V6 drone=6 tick=3105 state=DELIVER pos=(658.5,270.4) speed=0.90 carry=1 goal_dist=181.2 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=6 tick=3107 phase=3 gap=31.5 speed=0.05 force=0.70 hp=None recoveries=5
+BLUE_V6 drone=8 tick=3111 state=DELIVER pos=(738.6,280.5) speed=1.32 carry=1 goal_dist=148.7 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=3121 phase=3 gap=21.4 speed=2.17 force=0.15 hp=None recoveries=9
+BLUE_V6 drone=2 tick=3125 state=DELIVER pos=(395.8,14.8) speed=1.66 carry=1 goal_dist=425.2 route=28 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=3158 state=DELIVER pos=(645.5,-200.4) speed=0.85 carry=1 goal_dist=467.3 route=22 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=3188 state=DELIVER pos=(230.0,43.7) speed=0.15 carry=1 goal_dist=558.0 route=23 uncertainty=4.5 hp=None
+Drone 5 destroyed, too much collision !
+BLUE_V6 drone=4 tick=3196 state=DELIVER pos=(773.5,220.1) speed=0.37 carry=1 goal_dist=45.3 route=3 uncertainty=4.5 hp=None
+BLUE_V6 drone=3 tick=3237 state=DELIVER pos=(429.6,249.5) speed=0.06 carry=1 goal_dist=316.5 route=20 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=3241 phase=0 gap=51.2 speed=0.33 force=0.76 hp=None recoveries=13
+BLUE_V6_DOCK drone=8 tick=3248 phase=0 gap=48.5 speed=0.76 force=0.76 hp=None recoveries=13
+BLUE_V6_DOCK drone=8 tick=3260 phase=1 gap=34.3 speed=1.00 force=0.74 hp=None recoveries=13
+BLUE_V6_DOCK drone=4 tick=3261 phase=1 gap=78.7 speed=1.00 force=0.74 hp=None recoveries=5
+BLUE_V6 drone=6 tick=3280 state=DELIVER pos=(698.9,197.1) speed=0.94 carry=1 goal_dist=75.4 route=3 uncertainty=4.5 hp=None
+BLUE_V6 drone=8 tick=3286 state=DELIVER pos=(688.9,280.8) speed=0.74 carry=1 goal_dist=158.9 route=0 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=3300 state=DELIVER pos=(440.8,69.7) speed=2.87 carry=1 goal_dist=357.6 route=19 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=3319 phase=3 gap=26.5 speed=0.00 force=0.61 hp=None recoveries=6
+BLUE_V6 drone=7 tick=3333 state=DELIVER pos=(717.4,-125.2) speed=2.69 carry=1 goal_dist=382.3 route=26 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=3339 phase=3 gap=27.9 speed=0.47 force=0.60 hp=None recoveries=14
+BLUE_V6_DOCK drone=4 tick=3343 phase=0 gap=44.5 speed=1.57 force=0.76 hp=None recoveries=6
+BLUE_V6_DOCK drone=8 tick=3363 phase=0 gap=36.5 speed=2.03 force=0.76 hp=None recoveries=14
+BLUE_V6 drone=1 tick=3364 state=DELIVER pos=(216.7,65.3) speed=1.07 carry=1 goal_dist=562.6 route=24 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=3368 phase=1 gap=34.9 speed=1.38 force=0.74 hp=None recoveries=6
+BLUE_V6 drone=4 tick=3371 state=DELIVER pos=(759.5,271.4) speed=1.08 carry=1 goal_dist=158.2 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=3381 phase=1 gap=34.5 speed=0.86 force=0.74 hp=None recoveries=14
+BLUE_V6_DOCK drone=4 tick=3405 phase=3 gap=22.6 speed=1.08 force=0.37 hp=None recoveries=7
+BLUE_V6_DOCK drone=6 tick=3411 phase=0 gap=78.0 speed=0.70 force=0.76 hp=None recoveries=6
+BLUE_V6 drone=3 tick=3412 state=DELIVER pos=(427.4,246.2) speed=0.37 carry=1 goal_dist=318.7 route=21 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=3424 phase=3 gap=35.7 speed=1.48 force=0.23 hp=None recoveries=7
+BLUE_V6_DOCK drone=6 tick=3426 phase=0 gap=51.6 speed=1.51 force=0.76 hp=None recoveries=6
+BLUE_V6_DOCK drone=8 tick=3427 phase=3 gap=28.6 speed=0.56 force=0.26 hp=None recoveries=15
+BLUE_V6_DOCK drone=8 tick=3428 phase=3 gap=28.8 speed=0.16 force=0.55 hp=None recoveries=15
+BLUE_V6_DOCK drone=4 tick=3429 phase=0 gap=38.5 speed=1.04 force=0.76 hp=None recoveries=7
+Drone 6 destroyed, too much collision !
+BLUE_V6_DOCK drone=4 tick=3448 phase=1 gap=34.9 speed=0.49 force=0.74 hp=None recoveries=7
+BLUE_V6 drone=8 tick=3461 state=DELIVER pos=(719.5,265.6) speed=1.36 carry=1 goal_dist=165.5 route=0 uncertainty=4.5 hp=None
+BLUE_V6 drone=2 tick=3475 state=DELIVER pos=(723.8,175.1) speed=1.87 carry=1 goal_dist=83.8 route=4 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=3508 state=DELIVER pos=(660.2,-189.3) speed=0.24 carry=1 goal_dist=453.5 route=22 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=2 tick=3509 phase=0 gap=76.4 speed=1.58 force=0.76 hp=None recoveries=0
+BLUE_V6_DOCK drone=2 tick=3532 phase=1 gap=34.4 speed=1.80 force=0.74 hp=None recoveries=0
+BLUE_V6 drone=1 tick=3539 state=DELIVER pos=(374.7,49.8) speed=2.69 carry=1 goal_dist=424.8 route=21 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=3546 state=DELIVER pos=(697.6,277.0) speed=1.03 carry=1 goal_dist=159.6 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=3548 phase=2 gap=26.0 speed=1.42 force=0.79 hp=None recoveries=7
+BLUE_V6_DOCK drone=2 tick=3556 phase=3 gap=15.8 speed=1.01 force=0.16 hp=None recoveries=1
+BLUE_V6 drone=3 tick=3587 state=DELIVER pos=(427.7,239.8) speed=0.08 carry=1 goal_dist=318.8 route=20 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=2 tick=3602 phase=3 gap=59.8 speed=1.08 force=0.48 hp=None recoveries=2
+BLUE_V6_DOCK drone=2 tick=3604 phase=0 gap=61.1 speed=1.09 force=0.76 hp=None recoveries=2
+BLUE_V6_DOCK drone=4 tick=3604 phase=2 gap=30.2 speed=0.96 force=0.79 hp=None recoveries=7
+BLUE_V6_DOCK drone=4 tick=3626 phase=3 gap=30.7 speed=0.00 force=0.53 hp=None recoveries=8
+BLUE_V6 drone=2 tick=3650 state=DELIVER pos=(751.7,250.7) speed=1.13 carry=1 goal_dist=178.4 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=3650 phase=0 gap=24.0 speed=0.59 force=0.44 hp=None recoveries=8
+Drone 2 destroyed, too much collision !
+BLUE_V6_DOCK drone=4 tick=3651 phase=1 gap=24.2 speed=0.34 force=0.74 hp=None recoveries=8
+BLUE_V6 drone=8 tick=3653 state=DELIVER pos=(682.3,236.8) speed=1.09 carry=1 goal_dist=66.6 route=3 uncertainty=4.5 hp=None
+BLUE_V6 drone=7 tick=3683 state=DELIVER pos=(595.7,-162.4) speed=2.53 carry=1 goal_dist=444.6 route=18 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=3714 state=DELIVER pos=(729.8,152.9) speed=1.59 carry=1 goal_dist=104.4 route=5 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=3721 state=DELIVER pos=(771.3,281.8) speed=2.09 carry=1 goal_dist=149.3 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=3751 phase=2 gap=17.1 speed=2.27 force=0.79 hp=None recoveries=8
+BLUE_V6_DOCK drone=1 tick=3755 phase=0 gap=78.5 speed=2.17 force=0.71 hp=None recoveries=0
+BLUE_V6 drone=3 tick=3762 state=DELIVER pos=(334.8,204.1) speed=0.87 carry=1 goal_dist=364.0 route=113 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=1 tick=3781 phase=1 gap=33.8 speed=2.03 force=0.74 hp=None recoveries=0
+BLUE_V6_DOCK drone=4 tick=3784 phase=2 gap=27.6 speed=0.77 force=0.79 hp=None recoveries=8
+BLUE_V6_DOCK drone=8 tick=3803 phase=0 gap=75.0 speed=0.72 force=0.76 hp=None recoveries=17
+BLUE_V6 drone=8 tick=3828 state=DELIVER pos=(728.4,266.6) speed=1.78 carry=1 goal_dist=163.4 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=3829 phase=3 gap=21.6 speed=0.00 force=0.70 hp=None recoveries=9
+BLUE_V6_DOCK drone=8 tick=3829 phase=1 gap=34.5 speed=2.26 force=0.74 hp=None recoveries=17
+BLUE_V6_DOCK drone=1 tick=3844 phase=3 gap=21.1 speed=1.29 force=0.34 hp=None recoveries=1
+BLUE_V6_DOCK drone=4 tick=3853 phase=0 gap=47.9 speed=0.99 force=0.76 hp=None recoveries=9
+BLUE_V6 drone=7 tick=3858 state=DELIVER pos=(622.3,137.1) speed=1.81 carry=1 goal_dist=171.6 route=11 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=1 tick=3868 phase=0 gap=39.2 speed=1.14 force=0.76 hp=None recoveries=1
+BLUE_V6 drone=1 tick=3889 state=DELIVER pos=(777.2,264.8) speed=0.65 carry=1 goal_dist=167.1 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=1 tick=3893 phase=1 gap=34.3 speed=1.17 force=0.74 hp=None recoveries=1
+BLUE_V6 drone=4 tick=3896 state=DELIVER pos=(692.0,206.4) speed=1.54 carry=1 goal_dist=73.3 route=3 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=3909 phase=3 gap=19.8 speed=0.16 force=0.39 hp=None recoveries=18
+BLUE_V6 drone=3 tick=3937 state=DELIVER pos=(421.3,212.3) speed=1.48 carry=1 goal_dist=294.7 route=111 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=3955 phase=1 gap=78.3 speed=1.50 force=0.74 hp=None recoveries=9
+BLUE_V6_DOCK drone=1 tick=3961 phase=1 gap=20.3 speed=1.09 force=0.74 hp=None recoveries=1
+BLUE_V6_DOCK drone=4 tick=3964 phase=1 gap=64.8 speed=1.45 force=0.74 hp=None recoveries=9
+BLUE_V6_DOCK drone=1 tick=3970 phase=3 gap=22.9 speed=0.31 force=0.46 hp=None recoveries=2
+BLUE_V6_DOCK drone=4 tick=3980 phase=3 gap=38.6 speed=1.12 force=0.71 hp=None recoveries=10
+BLUE_V6_DOCK drone=1 tick=3994 phase=0 gap=41.1 speed=1.30 force=0.76 hp=None recoveries=2
+BLUE_V6_DOCK drone=4 tick=4004 phase=0 gap=42.5 speed=0.67 force=0.76 hp=None recoveries=10
+BLUE_V6 drone=8 tick=4010 state=DELIVER pos=(700.4,186.2) speed=0.92 carry=1 goal_dist=83.4 route=4 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=4025 phase=1 gap=34.7 speed=1.24 force=0.74 hp=None recoveries=10
+BLUE_V6 drone=7 tick=4045 state=DELIVER pos=(714.2,112.0) speed=0.62 carry=1 goal_dist=147.5 route=7 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=4064 state=DELIVER pos=(678.6,225.6) speed=1.63 carry=1 goal_dist=73.9 route=3 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=4071 state=DELIVER pos=(694.7,280.6) speed=0.50 carry=1 goal_dist=157.0 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=4081 phase=0 gap=73.0 speed=0.54 force=0.76 hp=None recoveries=18
+BLUE_V6_DOCK drone=4 tick=4106 phase=3 gap=18.6 speed=0.97 force=0.20 hp=None recoveries=11
+BLUE_V6 drone=3 tick=4112 state=DELIVER pos=(430.3,252.3) speed=0.95 carry=1 goal_dist=315.7 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=8 tick=4127 phase=1 gap=34.2 speed=1.68 force=0.74 hp=None recoveries=18
+BLUE_V6_DOCK drone=4 tick=4130 phase=0 gap=39.8 speed=1.40 force=0.76 hp=None recoveries=11
+BLUE_V6_DOCK drone=4 tick=4144 phase=0 gap=48.8 speed=0.69 force=0.76 hp=None recoveries=11
+BLUE_V6_DOCK drone=8 tick=4148 phase=1 gap=23.8 speed=0.85 force=0.74 hp=None recoveries=18
+BLUE_V6_DOCK drone=4 tick=4161 phase=1 gap=34.6 speed=1.41 force=0.74 hp=None recoveries=11
+BLUE_V6_DOCK drone=8 tick=4180 phase=3 gap=17.3 speed=1.14 force=0.20 hp=None recoveries=19
+BLUE_V6 drone=8 tick=4185 state=DELIVER pos=(772.3,285.6) speed=0.63 carry=1 goal_dist=145.8 route=2 uncertainty=4.5 hp=NoneException ignored from cffi callback <function ext_cpCollisionPreSolveFunc at 0x000001FBA60C8860>:
+Traceback (most recent call last):
+  File "E:\envs\swarm_rescue\Lib\site-packages\pymunk\_callbacks.py", line 187, in ext_cpCollisionPreSolveFunc
+    x = handler._pre_solve(Arbiter(_arb, handler._space), handler._space, handler.data)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 38, in grasper_grasps_bomb
+    grasper, bomb = get_colliding_entities(playground, arbiter)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\collision_handlers.py", line 27, in get_colliding_entities
+    entity_1 = playground.get_entity_from_shape(shape_1)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\code\fusai\swarm-eod-main\src\swarm_rescue\simulation\gui_map\playground.py", line 970, in get_entity_from_shape
+    assert shape in self._shapes_to_entities
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 
+
+BLUE_V6_DOCK drone=8 tick=4204 phase=0 gap=36.3 speed=1.39 force=0.76 hp=None recoveries=19
+BLUE_V6_DOCK drone=8 tick=4212 phase=1 gap=34.8 speed=0.76 force=0.74 hp=None recoveries=19
+BLUE_V6 drone=7 tick=4220 state=DELIVER pos=(763.3,216.8) speed=0.77 carry=1 goal_dist=42.8 route=2 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=4226 phase=3 gap=32.1 speed=0.53 force=0.74 hp=None recoveries=12
+BLUE_V6 drone=1 tick=4239 state=DELIVER pos=(695.6,224.4) speed=1.31 carry=1 goal_dist=59.5 route=3 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=4246 state=DELIVER pos=(688.8,266.5) speed=1.22 carry=1 goal_dist=172.3 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=4250 phase=0 gap=39.0 speed=0.45 force=0.76 hp=None recoveries=12
+BLUE_V6_DOCK drone=4 tick=4277 phase=1 gap=33.9 speed=1.10 force=0.74 hp=None recoveries=12
+BLUE_V6_DOCK drone=7 tick=4287 phase=0 gap=75.0 speed=1.53 force=0.76 hp=None recoveries=0
+BLUE_V6 drone=3 tick=4288 state=DELIVER pos=(415.6,250.6) speed=0.63 carry=1 goal_dist=330.4 route=21 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=4306 phase=3 gap=25.3 speed=0.51 force=0.46 hp=None recoveries=13
+BLUE_V6_DOCK drone=7 tick=4312 phase=1 gap=34.6 speed=1.73 force=0.57 hp=None recoveries=0
+BLUE_V6_DOCK drone=8 tick=4312 phase=2 gap=25.7 speed=0.27 force=0.44 hp=None recoveries=19
+BLUE_V6_DOCK drone=4 tick=4324 phase=3 gap=37.3 speed=0.96 force=0.47 hp=None recoveries=13
+BLUE_V6_DOCK drone=7 tick=4327 phase=1 gap=26.6 speed=0.14 force=0.55 hp=None recoveries=0
+BLUE_V6_DOCK drone=8 tick=4328 phase=2 gap=25.5 speed=0.60 force=0.58 hp=None recoveries=19
+BLUE_V6_DOCK drone=4 tick=4330 phase=0 gap=40.1 speed=1.06 force=0.76 hp=None recoveries=13
+BLUE_V6_DOCK drone=4 tick=4353 phase=3 gap=36.0 speed=0.90 force=0.67 hp=None recoveries=14
+BLUE_V6_DOCK drone=7 tick=4355 phase=3 gap=26.1 speed=1.18 force=0.45 hp=None recoveries=1
+BLUE_V6 drone=8 tick=4360 state=DELIVER pos=(756.1,281.7) speed=1.07 carry=1 goal_dist=147.6 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=7 tick=4379 phase=0 gap=44.5 speed=1.00 force=0.76 hp=None recoveries=1
+BLUE_V6_DOCK drone=8 tick=4390 phase=3 gap=21.8 speed=1.04 force=0.27 hp=None recoveries=20
+BLUE_V6 drone=7 tick=4395 state=DELIVER pos=(730.7,255.2) speed=0.42 carry=1 goal_dist=174.5 route=0 uncertainty=4.5 hp=None
+Drone 8 destroyed, too much collision !
+BLUE_V6 drone=1 tick=4414 state=DELIVER pos=(779.5,222.7) speed=1.17 carry=1 goal_dist=47.2 route=3 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=7 tick=4415 phase=1 gap=34.8 speed=0.84 force=0.74 hp=None recoveries=1
+BLUE_V6 drone=4 tick=4421 state=DELIVER pos=(689.4,225.5) speed=1.98 carry=1 goal_dist=64.3 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=1 tick=4431 phase=1 gap=63.0 speed=1.11 force=0.74 hp=None recoveries=2
+BLUE_V6 drone=3 tick=4465 state=DELIVER pos=(423.0,255.3) speed=0.56 carry=1 goal_dist=323.0 route=21 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=7 tick=4503 phase=2 gap=28.4 speed=0.00 force=0.54 hp=None recoveries=1
+BLUE_V6_DOCK drone=7 tick=4507 phase=2 gap=27.4 speed=0.20 force=0.52 hp=None recoveries=1
+BLUE_V6_DOCK drone=1 tick=4532 phase=2 gap=60.0 speed=1.55 force=0.79 hp=None recoveries=2
+BLUE_V6 drone=7 tick=4570 state=DELIVER pos=(724.6,264.1) speed=0.65 carry=1 goal_dist=166.3 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=7 tick=4581 phase=3 gap=35.3 speed=0.75 force=0.65 hp=None recoveries=2
+BLUE_V6 drone=1 tick=4590 state=DELIVER pos=(702.1,241.2) speed=0.88 carry=1 goal_dist=46.3 route=2 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=4596 state=DELIVER pos=(737.1,186.6) speed=1.06 carry=1 goal_dist=70.0 route=4 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=7 tick=4605 phase=0 gap=48.7 speed=0.74 force=0.76 hp=None recoveries=2
+BLUE_V6_DOCK drone=7 tick=4627 phase=1 gap=34.9 speed=1.04 force=0.74 hp=None recoveries=2
+BLUE_V6_DOCK drone=4 tick=4635 phase=0 gap=63.8 speed=1.23 force=0.76 hp=None recoveries=15
+BLUE_V6 drone=3 tick=4642 state=DELIVER pos=(425.7,252.0) speed=0.77 carry=1 goal_dist=320.3 route=21 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=4653 phase=1 gap=34.7 speed=1.71 force=0.74 hp=None recoveries=15
+BLUE_V6_DOCK drone=4 tick=4684 phase=1 gap=24.6 speed=0.55 force=0.74 hp=None recoveries=15
+BLUE_V6_DOCK drone=7 tick=4687 phase=1 gap=24.2 speed=0.84 force=0.74 hp=None recoveries=2
+BLUE_V6_DOCK drone=7 tick=4701 phase=3 gap=21.7 speed=1.40 force=0.25 hp=None recoveries=3
+BLUE_V6_DOCK drone=4 tick=4704 phase=3 gap=21.5 speed=1.64 force=0.23 hp=None recoveries=16
+BLUE_V6_DOCK drone=7 tick=4725 phase=0 gap=40.0 speed=1.29 force=0.76 hp=None recoveries=3
+BLUE_V6_DOCK drone=4 tick=4728 phase=0 gap=44.9 speed=0.93 force=0.76 hp=None recoveries=16
+BLUE_V6 drone=7 tick=4745 state=DELIVER pos=(686.3,265.7) speed=1.23 carry=1 goal_dist=173.9 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=7 tick=4748 phase=1 gap=34.0 speed=0.96 force=0.74 hp=None recoveries=3
+BLUE_V6_DOCK drone=1 tick=4752 phase=3 gap=74.5 speed=1.18 force=0.47 hp=None recoveries=3
+BLUE_V6 drone=1 tick=4765 state=DELIVER pos=(725.9,234.4) speed=1.04 carry=1 goal_dist=195.7 route=2 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=4785 state=DELIVER pos=(768.7,224.6) speed=0.79 carry=1 goal_dist=38.7 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=4806 phase=1 gap=78.7 speed=1.41 force=0.74 hp=None recoveries=16
+BLUE_V6_DOCK drone=7 tick=4815 phase=3 gap=22.0 speed=1.44 force=0.36 hp=None recoveries=4
+BLUE_V6 drone=3 tick=4819 state=DELIVER pos=(435.1,255.9) speed=0.36 carry=1 goal_dist=310.9 route=20 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=4864 phase=1 gap=38.8 speed=0.58 force=0.74 hp=None recoveries=16
+BLUE_V6_DOCK drone=4 tick=4906 phase=2 gap=31.5 speed=0.26 force=0.79 hp=None recoveries=16
+BLUE_V6 drone=7 tick=4920 state=DELIVER pos=(775.0,239.7) speed=0.68 carry=1 goal_dist=33.3 route=2 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=7 tick=4923 phase=0 gap=65.3 speed=1.25 force=0.76 hp=None recoveries=5
+BLUE_V6 drone=1 tick=4940 state=DELIVER pos=(715.5,212.1) speed=1.51 carry=1 goal_dist=53.5 route=3 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=7 tick=4958 phase=1 gap=34.9 speed=1.57 force=0.74 hp=None recoveries=5
+BLUE_V6 drone=4 tick=4960 state=DELIVER pos=(679.9,272.6) speed=1.47 carry=1 goal_dist=169.8 route=0 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=4984 phase=3 gap=24.1 speed=0.21 force=0.70 hp=None recoveries=17
+BLUE_V6_DOCK drone=7 tick=4988 phase=3 gap=30.6 speed=0.33 force=0.74 hp=None recoveries=6
+BLUE_V6 drone=3 tick=4996 state=DELIVER pos=(415.6,247.6) speed=1.08 carry=1 goal_dist=330.6 route=23 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=5008 phase=0 gap=47.2 speed=1.73 force=0.76 hp=None recoveries=17
+BLUE_V6_DOCK drone=7 tick=5045 phase=0 gap=71.9 speed=1.05 force=0.76 hp=None recoveries=6
+BLUE_V6_DOCK drone=7 tick=5047 phase=0 gap=71.1 speed=0.69 force=0.76 hp=None recoveries=6
+BLUE_V6_DOCK drone=4 tick=5063 phase=3 gap=47.8 speed=0.42 force=0.76 hp=None recoveries=18
+BLUE_V6_DOCK drone=7 tick=5074 phase=1 gap=33.6 speed=1.38 force=0.74 hp=None recoveries=6
+BLUE_V6 drone=7 tick=5095 state=DELIVER pos=(758.7,273.1) speed=0.69 carry=1 goal_dist=156.4 route=0 uncertainty=4.5 hp=None
+BLUE_V6 drone=1 tick=5115 state=DELIVER pos=(743.8,201.3) speed=0.77 carry=1 goal_dist=54.8 route=3 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=7 tick=5130 phase=3 gap=23.4 speed=0.50 force=0.50 hp=None recoveries=7
+BLUE_V6 drone=4 tick=5135 state=DELIVER pos=(704.8,240.4) speed=0.40 carry=1 goal_dist=44.0 route=2 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=5152 phase=0 gap=57.7 speed=0.68 force=0.76 hp=None recoveries=18
+BLUE_V6_DOCK drone=7 tick=5154 phase=0 gap=46.4 speed=1.47 force=0.76 hp=None recoveries=7
+BLUE_V6 drone=3 tick=5173 state=DELIVER pos=(430.3,252.8) speed=0.63 carry=1 goal_dist=315.8 route=20 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=5177 phase=1 gap=33.6 speed=1.40 force=0.74 hp=None recoveries=18
+BLUE_V6_DOCK drone=7 tick=5188 phase=1 gap=33.9 speed=1.46 force=0.74 hp=None recoveries=7
+Drone 7 destroyed, too much collision !
+BLUE_V6_DOCK drone=4 tick=5224 phase=1 gap=25.4 speed=1.30 force=0.63 hp=None recoveries=18
+BLUE_V6_DOCK drone=4 tick=5231 phase=3 gap=24.4 speed=0.54 force=0.48 hp=None recoveries=19
+BLUE_V6_DOCK drone=4 tick=5255 phase=0 gap=42.0 speed=1.26 force=0.76 hp=None recoveries=19
+BLUE_V6_DOCK drone=4 tick=5286 phase=1 gap=34.2 speed=1.38 force=0.74 hp=None recoveries=19
+BLUE_V6 drone=1 tick=5290 state=DELIVER pos=(761.3,215.7) speed=0.59 carry=1 goal_dist=43.1 route=3 uncertainty=4.5 hp=None
+BLUE_V6 drone=4 tick=5310 state=DELIVER pos=(722.4,277.7) speed=1.19 carry=1 goal_dist=153.2 route=0 uncertainty=4.5 hp=None
+BLUE_V6 drone=3 tick=5350 state=DELIVER pos=(424.9,243.7) speed=0.88 carry=1 goal_dist=321.3 route=21 uncertainty=4.5 hp=None
+BLUE_V6_DOCK drone=4 tick=5386 phase=2 gap=23.0 speed=2.17 force=0.79 hp=None recoveries=19
+count_reachable v3 = 1624793
+	* Round n��1/1: 
+		rescued nb: 0/10 (disposal score: 0.0%), health return score: 5.6%, time score: 0.0%, explor. score: 98.8% (weight 0%), walltime elapsed: 78s/180s, elapse timestep: 5400/5400 steps, time to dispose all: 0 steps.
+		score breakdown (competition weights): disposal 0.0 x 60% = 0.0, health 5.6 x 20% = 1.1, time 0.0 x 20% = 0.0, total 1.1/100.
+		percentage of drones destroyed: 70.0 %, mean percentage of drones health : 5.6 %.
+		round score: 1.1%, frequency: 69.06 steps/s.
+--------------------------------------------------------------------------------------------
