@@ -96,29 +96,33 @@ class MyDroneRescue(DroneAbstract):
         self.dock_sweep = 0
         self.dock_side = 1 if self.did % 2 else -1
         self._semantic_cache = []
+        self.relative_center = False
+        self.center_observations = 0
+        self._dock_history = []
+        self._dock_last_progress = -1
+        self._dock_recovery_until = -1
 
     def _initial_public_anchor(self):
-        """Fallback public spawn estimate only if GPS is unavailable at reset.
+        """If global pose is unavailable, use an internally consistent local frame.
 
-        This is not a true-position query. It must be disabled if competition
-        rules prohibit published map/spawn priors.
+        An arbitrary global spawn prior plus an arbitrary heading=0 is *not*
+        a valid world-frame estimate. Never use known global center coordinates
+        to route in that unobservable frame.
         """
-        dims = tuple(self.size_area or ())
-        candidates = [(spawn,center,half) for size,spawn,center,half
-                      in CENTER_PRIORS if size == dims]
-        if not candidates:return
-        if dims == (1700,1100) and len(candidates)>1:
-            # Map06 has normal GPS. If GPS is absent from initialization on
-            # this map size, use the public Map09 spawn rather than Map06.
-            spawn,center,half = candidates[-1]
-        else:
-            # Same spawn/center on Map07t4 and Map08.
-            spawn,center,half = candidates[-1] if dims == (1660,1122) else candidates[0]
-        self.pose.seed(spawn)
-        if self.disposal is None:
-            self.disposal,self.center_half=center,half
+        if self.pose.xy is not None and self.pose.heading is not None:
+            return
+        self.pose.seed_relative()
+        self.relative_center = True
+        self.home = (0.0, 0.0)
+        # Relative frame needs a larger workspace; public wall geometry is
+        # never loaded. The cell grid remains built exclusively by LiDAR.
+        w, h = self.size_area or (1700, 1100)
+        self.grid = Occupancy(int(w*2.0), int(h*2.0))
+        self.disposal = None
 
     def _select_center(self, xy: Vec):
+        if self.relative_center:
+            return
         if self.disposal is not None:
             return
         matches = [(distance(xy, spawn), center, hs)
@@ -143,8 +147,12 @@ class MyDroneRescue(DroneAbstract):
                 continue
             if did == self.did or not (0 <= did < 100) or not (-3 <= age <= 240):
                 continue
+            # Relative odometric frames of different drones are unrelated.
+            # Do not merge positions/occupancy unless both are world aligned.
+            if bool(msg.get('relative',False)) or self.relative_center:
+                continue
             self.peers[did] = msg
-            if self.disposal is None:
+            if self.disposal is None and not self.relative_center:
                 p = finite_pair(msg.get('home'))
                 if p is not None:
                     self.disposal = p
@@ -209,7 +217,19 @@ class MyDroneRescue(DroneAbstract):
             if kind == DroneSemanticSensor.TypeEntity.DISPOSAL_CENTER:
                 # The semantic sensor detects the VISIBLE SURFACE, not the center.
                 # If public map prior exists, keep it, else use surface as an approach target.
-                if self.disposal is None and dist < 125:
+                if self.relative_center and dist < 129:
+                    # Surface observation in the SAME odometric frame as pose.
+                    # Keep the earliest stable landmark and refine it locally;
+                    # do not mix radio coordinates from other local frames.
+                    if self.disposal is None:
+                        self.disposal = world
+                        self.center_observations = 1
+                    elif distance(self.disposal, world)<65:
+                        alpha=.12 if self.center_observations<20 else .03
+                        self.disposal = ((1-alpha)*self.disposal[0]+alpha*world[0],
+                                         (1-alpha)*self.disposal[1]+alpha*world[1])
+                        self.center_observations += 1
+                elif self.disposal is None and dist < 125:
                     self.disposal = world
             elif kind == DroneSemanticSensor.TypeEntity.BOMB:
                 key = self._nearest_track(world)
@@ -278,7 +298,7 @@ class MyDroneRescue(DroneAbstract):
             self.mode = 'DELIVER'
             self.target_track = None
             self.frontier_id = None
-            self.target = self.disposal
+            self.target = self.disposal or (self.home if self.relative_center else None)
             return
         # Avoid oscillating between targets while approaching an observed bomb.
         target_key = None
@@ -382,7 +402,7 @@ class MyDroneRescue(DroneAbstract):
             if key is not None and key in self.tracks:
                 tr = self.tracks[key]
                 tr.state, tr.owner, tr.claimed_at = 'carried', self.did, tick
-            print('BLUE_V3_EVENT pickup drone=%d tick=%d track=%s' % (self.did,tick,key))
+            print('BLUE_V4_EVENT pickup drone=%d tick=%d track=%s' % (self.did,tick,key))
         elif self.was_carrying and not carrying:
             key = self.active_carry_track
             if key is not None and key in self.tracks:
@@ -395,7 +415,7 @@ class MyDroneRescue(DroneAbstract):
                 tr.state = 'done' if near_center else 'free'
                 tr.owner = self.did if near_center else -1
                 tr.last_seen = tick
-            print('BLUE_V3_EVENT released drone=%d tick=%d track=%s pos=%s' %
+            print('BLUE_V4_EVENT released drone=%d tick=%d track=%s pos=%s' %
                   (self.did,tick,key,xy))
             self.active_carry_track = None
         self.was_carrying = carrying
@@ -405,7 +425,7 @@ class MyDroneRescue(DroneAbstract):
             return None
         # Called by official framework; never invokes global state or true_*.
         return self.latest_msg or {
-            'v': 1, 'id': self.did, 'tick': int(self.elapsed_timestep),
+            'v': 1, 'id': self.did, 'tick': int(self.elapsed_timestep), 'relative': self.relative_center,
             'pos': list(self.pose.xy) if self.pose.xy else None,
             'home': list(self.disposal) if self.disposal else None,
             'mode': self.mode, 'goal': list(self.target) if self.target else None,
@@ -415,7 +435,7 @@ class MyDroneRescue(DroneAbstract):
     def _prepare_message(self, tick: int, carrying: bool):
         tracks = sorted(self.tracks.values(), key=lambda t: -t.last_seen)[:25]
         self.latest_msg = {
-            'v': 1, 'id': self.did, 'tick': tick,
+            'v': 1, 'id': self.did, 'tick': tick, 'relative': self.relative_center,
             'pos': list(self.pose.xy) if self.pose.xy else None,
             'home': list(self.disposal) if self.disposal else None,
             'goal': list(self.target) if self.target else None,
@@ -444,6 +464,11 @@ class MyDroneRescue(DroneAbstract):
         public map definitions already used by this strategy.
         """
         if self.disposal is None:return None,False
+        if self.relative_center:
+            # Center is a point on the *observed surface*, not the global
+            # rectangle center. Approach it first and allow contact on sight.
+            near=distance(xy,self.disposal)<115
+            return self.disposal,near
         cx,cy=self.disposal
         hx,hy=self.center_half
         dx,dy=xy[0]-cx,xy[1]-cy
@@ -500,7 +525,7 @@ class MyDroneRescue(DroneAbstract):
         The public center rectangle is a landmark; sensed hit points are NOT
         the rectangle center. Reject inconsistent data and never use truth pose.
         """
-        if self.disposal is None or self.pose.gps_lost_steps<5:
+        if self.relative_center or self.disposal is None or self.pose.gps_lost_steps<5:
             return xy
         cx,cy=self.disposal
         hx,hy=self.center_half
@@ -538,7 +563,7 @@ class MyDroneRescue(DroneAbstract):
     def _telemetry(self,tick,xy,heading,carrying,goal):
         if self.mode!=self._last_mode or tick-self.last_trace_tick>=175:
             v=math.hypot(*self.pose.motion)
-            print('BLUE_V3 drone=%d tick=%d state=%s pos=(%.1f,%.1f) speed=%.2f '
+            print('BLUE_V4 drone=%d tick=%d state=%s pos=(%.1f,%.1f) speed=%.2f '
                   'carry=%d goal_dist=%.1f route=%d uncertainty=%.1f' %
                   (self.did,tick,self.mode,xy[0],xy[1],v,int(carrying),
                    distance(xy,goal) if goal else -1,len(self.path),self.pose.uncertainty))
@@ -552,11 +577,8 @@ class MyDroneRescue(DroneAbstract):
                              self.measured_compass_angle(),self.odometer_values())
             if self.pose.xy is None:
                 self._initial_public_anchor()
-            if self.pose.heading is None and tick>=8:
-                # If no absolute compass was ever available, local odometry
-                # still supports a relative frame; this does NOT provide an
-                # absolute heading and should be validated on Map08/09.
-                self.pose.heading=0.
+            # No arbitrary world-frame heading assignment: relative heading
+            # is seeded together with a relative position above.
             xy,heading=self.pose.xy,self.pose.heading
             carrying=bool(self.grasped_bombs())
             self._receive(tick)
@@ -568,6 +590,8 @@ class MyDroneRescue(DroneAbstract):
             self._finish_previous_carry(tick,xy,carrying)
             lidar,angles=self.lidar_values(),self.lidar_rays_angles()
             self._semantic_cache=self.semantic_values() or []
+            # Correct GPS-outage drift only when a globally anchored center is
+            # known. Local-frame center detection occurs in _observe below.
             xy=self._correct_center_by_semantics(xy,heading)
             mask=self._target_avoidance_mask()
             self.pose.scan_match(self.grid,tick,lidar,angles,ignore=mask)
@@ -621,22 +645,54 @@ class MyDroneRescue(DroneAbstract):
                 ignore=ignored,close_target=close_target,
                 near_drone=hazards,stuck=self.escape_left>0)
             if docking:
-                # Preserve velocity feedback while allowing center contact;
-                # a blind constant push caused the repeated delivery deaths.
+                # A pivot-jointed bomb trails the drone. Simply pushing the
+                # drone into a collidable rectangle can stall forever while
+                # the bomb remains outside. Use controlled perimeter towing.
                 self.delivery_struggles+=1
-                a=wrap(math.atan2(self.disposal[1]-xy[1],
-                                  self.disposal[0]-xy[0])-heading)
-                if self.delivery_struggles>90:
-                    # A slow tangent sweep can bring a trailing bomb across
-                    # the center boundary. Keep component pushing inward.
-                    sign=1 if (self.did+(self.delivery_struggles//90))%2 else -1
-                    fwd+=.14*math.cos(a+sign*math.pi/2)
-                    lat+=.14*math.sin(a+sign*math.pi/2)
-                # Other drones cannot be pushed through; yield instead.
+                cx,cy=self.disposal
+                inward=math.atan2(cy-xy[1],cx-xy[0])
+                edge_distance=distance(xy,self.disposal)
+                if self.relative_center:
+                    # Surface target: center contact must be sensor confirmed.
+                    center_seen=any(o.entity_type==DroneSemanticSensor.TypeEntity.DISPOSAL_CENTER
+                                    and math.isfinite(float(o.distance)) and float(o.distance)<100
+                                    for o in self._semantic_cache)
+                    dock_near=center_seen or edge_distance<80
+                else:
+                    dx,dy=xy[0]-cx,xy[1]-cy
+                    dock_near=(abs(dx)<self.center_half[0]+85 and
+                               abs(dy)<self.center_half[1]+85)
+                if dock_near and self.delivery_struggles>35:
+                    phase=(self.delivery_struggles//115)%4
+                    sign=1. if (self.did+phase)%2 else -1.
+                    tangent=inward+sign*math.pi/2
+                    # Two phases trace the center wall; one phase reverses
+                    # briefly to release a pivot/obstacle entanglement.
+                    v_tangent=3.4 if carrying else 2.0
+                    v_inward=1.1
+                    if phase==3:
+                        v_tangent=-2.2
+                        v_inward=-1.2
+                    heading_c,heading_s=math.cos(heading),math.sin(heading)
+                    tvx=v_inward*math.cos(inward)+v_tangent*math.cos(tangent)
+                    tvy=v_inward*math.sin(inward)+v_tangent*math.sin(tangent)
+                    vf=motion[0]*heading_c+motion[1]*heading_s
+                    vl=-motion[0]*heading_s+motion[1]*heading_c
+                    bf=tvx*heading_c+tvy*heading_s
+                    bl=-tvx*heading_s+tvy*heading_c
+                    fwd=clamp(.10*(bf-vf),-.36,.36)
+                    lat=clamp(.10*(bl-vl),-.36,.36)
+                    rot=clamp(.45*wrap(inward-heading),-.42,.42)
+                    if tick%180==self.did%10:
+                        print('BLUE_V4_DOCK drone=%d tick=%d phase=%d dist=%.1f speed=%.1f' %
+                              (self.did,tick,phase,edge_distance,math.hypot(*motion)))
+                # Yield to a nearby robot, but do not freeze both drones
+                # indefinitely: low-id tie breaker retains motion.
                 for obj in self._semantic_cache:
                     if obj.entity_type!=DroneSemanticSensor.TypeEntity.DRONE:continue
                     try:
-                        if float(obj.distance)<41 and abs(wrap(float(obj.angle)-a))<.6:
+                        if (float(obj.distance)<31 and
+                            self.did%2==1 and self.delivery_struggles%80<24):
                             fwd,lat=0.,0.
                             break
                     except (ValueError,TypeError):continue

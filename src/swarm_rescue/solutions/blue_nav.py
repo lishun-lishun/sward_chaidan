@@ -43,6 +43,10 @@ class PoseTracker:
         self.gps_lost_steps = 0
         self.last_tick = -1
         self.last_match_tick = -999
+        # If both global sensors are unavailable at the first observation,
+        # maintain an internally consistent odometric coordinate frame.
+        self.relative_frame = False
+        self.global_from_local = None  # (heading offset, translation x/y)
 
     def seed(self, xy, heading=None):
         """Optional public spawn prior if GPS is disabled at initialization."""
@@ -51,6 +55,16 @@ class PoseTracker:
             self.uncertainty = 23.0
         if heading is not None and self.heading is None:
             self.heading = wrap(heading)
+
+    def seed_relative(self):
+        if self.relative_frame:
+            return
+        if self.xy is None or self.heading is None:
+            # An isolated GPS measurement without compass does not define the
+            # orientation of the local LiDAR/odometry map; start a local frame.
+            self.xy, self.heading = (0.0, 0.0), (self.heading if self.heading is not None else 0.0)
+            self.uncertainty = 12.0
+            self.relative_frame = True
 
     def update(self, tick, gps, compass, odometer):
         if tick == self.last_tick:
@@ -63,6 +77,26 @@ class PoseTracker:
                 h = wrap(float(compass))
         except (ValueError, TypeError):
             pass
+        # A GPS coordinate is unusable in a local-only map until the global
+        # orientation is known. Infer one SE(2) transform if GPS and compass
+        # return together, and convert measurements to the stored local frame.
+        if self.relative_frame:
+            if self.global_from_local is None and g is not None and h is not None and self.xy is not None and self.heading is not None:
+                delta = wrap(h - self.heading)
+                c, sn = math.cos(delta), math.sin(delta)
+                tx = g[0] - (c * self.xy[0] - sn * self.xy[1])
+                ty = g[1] - (sn * self.xy[0] + c * self.xy[1])
+                self.global_from_local = (delta, tx, ty)
+            if self.global_from_local is not None:
+                delta, tx, ty = self.global_from_local
+                c, sn = math.cos(delta), math.sin(delta)
+                if g is not None:
+                    gx, gy = g[0] - tx, g[1] - ty
+                    g = (c * gx + sn * gy, -sn * gx + c * gy)
+                if h is not None:
+                    h = wrap(h - delta)
+            else:
+                g, h = None, None
         if self.heading is None and h is not None:
             self.heading = h
         if self.xy is None and g is not None:
@@ -408,19 +442,25 @@ class LocalPilot:
         vf=c*motion[0]+s*motion[1]
         vl=-s*motion[0]+c*motion[1]
         speed=math.hypot(vf,vl)
-        safe=34. if carrying else 29.
+        safe=39. if carrying else 34.
         if docking:safe=24.
         if close_target:safe=16.
         decel=.95 if carrying else 1.65
         braking=safe+8. + speed*.65 + speed*speed/(2.*decel)
         options=[desired]+[wrap(desired+x) for x in (-.25,.25,-.5,.5,-.85,.85,-1.15,1.15,-1.55,1.55,2.1,-2.1,math.pi)]
         best=(-float('inf'),desired,230.)
+        # A moving robot cannot instantaneously rotate its inertia vector.
+        # Penalize steering into a hazard along the CURRENT travel direction.
+        travel_heading=wrap(math.atan2(vl,vf)) if speed>1.0 else desired
+        travel_clearance=self.clearance(angles,ranges,travel_heading,ignore=ignore)
         for direction in options:
             free=self.clearance(angles,ranges,direction,ignore=ignore)
             # Barrier risk, without forbidding navigation near a bomb or center.
             risk=max(0.,braking-free)/max(1.,braking)
             score=2.3*math.cos(wrap(direction-desired)) - 5.0*risk*risk
             if free<safe:score-=5.+.22*(safe-free)
+            if speed>3 and travel_clearance < braking:
+                score -= 1.7 * (1.0 - min(1.0, travel_clearance/max(1.0,braking)))
             for peer in peers:
                 p=finite_pair(peer.get('pos'))
                 if p is None:continue
@@ -434,12 +474,16 @@ class LocalPilot:
             if score>best[0]:best=(score,direction,free)
         _,direction,free=best
         self.last_dir=direction
-        cruise=11.0 if carrying else 17.0
+        cruise=9.5 if carrying else 14.5
         if docking:cruise=3.5
         if close_target:cruise=4.8
         if force_speed is not None:cruise=float(force_speed)
         # Velocity envelope from stopping distance: v_safe <= sqrt(2*a*d).
         allowed=max(0.,free-safe-9.)
+        # Never accelerate through the dynamic stopping envelope of the
+        # current measured velocity, even if the selected new direction is free.
+        if speed>2 and travel_clearance<braking:
+            allowed=min(allowed,max(0.,travel_clearance-safe-9.))
         v_safe=max(0.,math.sqrt(2*decel*allowed)-.65*decel)
         desired_speed=min(cruise,v_safe)
         if dist<min(100.,2.5*cruise) and not close_target and not docking:
