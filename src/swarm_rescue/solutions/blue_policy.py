@@ -13,7 +13,7 @@ from swarm_rescue.simulation.drone.controller import CommandsDict
 from swarm_rescue.simulation.drone.drone_abstract import DroneAbstract
 from swarm_rescue.simulation.ray_sensors.drone_semantic_sensor import DroneSemanticSensor
 from swarm_rescue.solutions.blue_nav import (
-    LocalPilot, Occupancy, PoseTracker, clamp, distance, finite_pair, wrap,
+    CenterDockController, LocalPilot, Occupancy, PoseTracker, clamp, distance, finite_pair, wrap,
 )
 
 Vec = Tuple[float, float]
@@ -60,6 +60,7 @@ class MyDroneRescue(DroneAbstract):
         self.grid = Occupancy(int(width), int(height))
         self.pose = PoseTracker()
         self.pilot = LocalPilot()
+        self.dock_controller = CenterDockController(self.did)
         self.tracks: Dict[int, Track] = {}
         self.track_serial = 0
         self.peers: Dict[int, dict] = {}
@@ -101,6 +102,7 @@ class MyDroneRescue(DroneAbstract):
         self._dock_history = []
         self._dock_last_progress = -1
         self._dock_recovery_until = -1
+        self._dock_phase_reported = -1
 
     def _initial_public_anchor(self):
         """If global pose is unavailable, use an internally consistent local frame.
@@ -332,7 +334,12 @@ class MyDroneRescue(DroneAbstract):
             self.goal_tick = tick
         else:
             self.frontier_id = None
-            # No frontier yet: push toward a deterministic id-specific spoke.
+            patrol=self.grid.patrol(xy,self.did,tick)
+            if patrol is not None:
+                self.target=patrol
+                self.goal_tick=tick
+                return
+            # No reachable frontier or patrol point: use id-specific spoke.
             a = 2 * math.pi * (self.did + 0.5) / 10.0
             tx = xy[0] + 120 * math.cos(a)
             ty = xy[1] + 120 * math.sin(a)
@@ -393,6 +400,10 @@ class MyDroneRescue(DroneAbstract):
 
     def _finish_previous_carry(self, tick: int, xy: Optional[Vec], carrying: bool):
         if carrying and not self.was_carrying:
+            self.dock_controller.reset()
+            self._dock_stage = None
+            self._dock_stage_tick = -1000
+            self._dock_phase_reported = -1
             # The task selected immediately before pickup is the only bomb
             # to mark as carried; other discovered bombs remain available.
             key = self.target_track
@@ -402,8 +413,11 @@ class MyDroneRescue(DroneAbstract):
             if key is not None and key in self.tracks:
                 tr = self.tracks[key]
                 tr.state, tr.owner, tr.claimed_at = 'carried', self.did, tick
-            print('BLUE_V4_EVENT pickup drone=%d tick=%d track=%s' % (self.did,tick,key))
+            print('BLUE_V5_EVENT pickup drone=%d tick=%d track=%s' % (self.did,tick,key))
         elif self.was_carrying and not carrying:
+            self.dock_controller.reset()
+            self._dock_stage = None
+            self._dock_phase_reported = -1
             key = self.active_carry_track
             if key is not None and key in self.tracks:
                 tr = self.tracks[key]
@@ -415,7 +429,7 @@ class MyDroneRescue(DroneAbstract):
                 tr.state = 'done' if near_center else 'free'
                 tr.owner = self.did if near_center else -1
                 tr.last_seen = tick
-            print('BLUE_V4_EVENT released drone=%d tick=%d track=%s pos=%s' %
+            print('BLUE_V5_EVENT released drone=%d tick=%d track=%s pos=%s' %
                   (self.did,tick,key,xy))
             self.active_carry_track = None
         self.was_carrying = carrying
@@ -475,8 +489,8 @@ class MyDroneRescue(DroneAbstract):
         inside=max(abs(dx)-hx,abs(dy)-hy)<48
         if inside:
             return self.disposal,True
-        if self._dock_stage is None or tick-self._dock_stage_tick>180:
-            margin=53.
+        if self._dock_stage is None or tick-self._dock_stage_tick>470:
+            margin=47.
             candidates=[(cx+hx+margin,cy),(cx-hx-margin,cy),
                         (cx,cy+hy+margin),(cx,cy-hy-margin)]
             candidates=[p for p in candidates if self.grid.index(*p) is not None]
@@ -563,7 +577,7 @@ class MyDroneRescue(DroneAbstract):
     def _telemetry(self,tick,xy,heading,carrying,goal):
         if self.mode!=self._last_mode or tick-self.last_trace_tick>=175:
             v=math.hypot(*self.pose.motion)
-            print('BLUE_V4 drone=%d tick=%d state=%s pos=(%.1f,%.1f) speed=%.2f '
+            print('BLUE_V5 drone=%d tick=%d state=%s pos=(%.1f,%.1f) speed=%.2f '
                   'carry=%d goal_dist=%.1f route=%d uncertainty=%.1f' %
                   (self.did,tick,self.mode,xy[0],xy[1],v,int(carrying),
                    distance(xy,goal) if goal else -1,len(self.path),self.pose.uncertainty))
@@ -645,58 +659,46 @@ class MyDroneRescue(DroneAbstract):
                 ignore=ignored,close_target=close_target,
                 near_drone=hazards,stuck=self.escape_left>0)
             if docking:
-                # A pivot-jointed bomb trails the drone. Simply pushing the
-                # drone into a collidable rectangle can stall forever while
-                # the bomb remains outside. Use controlled perimeter towing.
-                self.delivery_struggles+=1
-                cx,cy=self.disposal
-                inward=math.atan2(cy-xy[1],cx-xy[0])
-                edge_distance=distance(xy,self.disposal)
-                if self.relative_center:
-                    # Surface target: center contact must be sensor confirmed.
-                    center_seen=any(o.entity_type==DroneSemanticSensor.TypeEntity.DISPOSAL_CENTER
-                                    and math.isfinite(float(o.distance)) and float(o.distance)<100
-                                    for o in self._semantic_cache)
-                    dock_near=center_seen or edge_distance<80
-                else:
-                    dx,dy=xy[0]-cx,xy[1]-cy
-                    dock_near=(abs(dx)<self.center_half[0]+85 and
-                               abs(dy)<self.center_half[1]+85)
-                if dock_near and self.delivery_struggles>35:
-                    phase=(self.delivery_struggles//115)%4
-                    sign=1. if (self.did+phase)%2 else -1.
-                    tangent=inward+sign*math.pi/2
-                    # Two phases trace the center wall; one phase reverses
-                    # briefly to release a pivot/obstacle entanglement.
-                    v_tangent=3.4 if carrying else 2.0
-                    v_inward=1.1
-                    if phase==3:
-                        v_tangent=-2.2
-                        v_inward=-1.2
-                    heading_c,heading_s=math.cos(heading),math.sin(heading)
-                    tvx=v_inward*math.cos(inward)+v_tangent*math.cos(tangent)
-                    tvy=v_inward*math.sin(inward)+v_tangent*math.sin(tangent)
-                    vf=motion[0]*heading_c+motion[1]*heading_s
-                    vl=-motion[0]*heading_s+motion[1]*heading_c
-                    bf=tvx*heading_c+tvy*heading_s
-                    bl=-tvx*heading_s+tvy*heading_c
-                    fwd=clamp(.10*(bf-vf),-.36,.36)
-                    lat=clamp(.10*(bl-vl),-.36,.36)
-                    rot=clamp(.45*wrap(inward-heading),-.42,.42)
-                    if tick%180==self.did%10:
-                        print('BLUE_V4_DOCK drone=%d tick=%d phase=%d dist=%.1f speed=%.1f' %
-                              (self.did,tick,phase,edge_distance,math.hypot(*motion)))
-                # Yield to a nearby robot, but do not freeze both drones
-                # indefinitely: low-id tie breaker retains motion.
-                for obj in self._semantic_cache:
-                    if obj.entity_type!=DroneSemanticSensor.TypeEntity.DRONE:continue
+                # Directly command the pivot-jointed towing motion. V4's
+                # generic pilot capped force at 0.36 and combined a slow
+                # inward speed with weak tangential motion; this left many
+                # carriers stalled against the disposal rectangle for 1000+
+                # steps. Do not confuse a DRONE touching the center with
+                # the BOMB touching it: disposal requires the latter.
+                hit=None
+                center_rays=[]
+                for item in self._semantic_cache:
                     try:
-                        if (float(obj.distance)<31 and
-                            self.did%2==1 and self.delivery_struggles%80<24):
-                            fwd,lat=0.,0.
-                            break
-                    except (ValueError,TypeError):continue
+                        if item.entity_type!=DroneSemanticSensor.TypeEntity.DISPOSAL_CENTER:
+                            continue
+                        rr,aa=float(item.distance),float(item.angle)
+                        if not(math.isfinite(rr) and math.isfinite(aa) and 2.<rr<130.):
+                            continue
+                        point=(xy[0]+rr*math.cos(heading+aa),
+                               xy[1]+rr*math.sin(heading+aa))
+                        center_rays.append((rr,point))
+                    except (ValueError,TypeError,AttributeError):
+                        continue
+                if center_rays:
+                    hit=min(center_rays,key=lambda it:it[0])[1]
+                ctr=self.dock_controller.action(
+                    tick,xy,heading,motion,self.disposal,
+                    None if self.relative_center else self.center_half,
+                    relative=self.relative_center,lidar=lidar,angles=angles,
+                    pilot=self.pilot,semantic_hit=hit,peers=hazards)
+                if ctr is not None:
+                    fwd,lat,rot,phase,face_gap=ctr
+                    if (phase!=self._dock_phase_reported or
+                            tick%180==self.did%10):
+                        print('BLUE_V5_DOCK drone=%d tick=%d phase=%d gap=%.1f '
+                              'speed=%.2f force=%.2f' %
+                              (self.did,tick,phase,face_gap,math.hypot(*motion),
+                               math.hypot(fwd,lat)))
+                    self._dock_phase_reported=phase
+                self.delivery_struggles+=1
             else:
+                # Preserve the state within an approach, but do not apply
+                # stale docking forces when we are navigating a corridor.
                 self.delivery_struggles=0
             if self.mode=='CHASE' and self.target_track in self.tracks:
                 tr=self.tracks[self.target_track]
