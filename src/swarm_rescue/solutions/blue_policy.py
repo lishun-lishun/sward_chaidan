@@ -84,6 +84,9 @@ class MyDroneRescue(DroneAbstract):
         self.latest_msg: Dict[str, Any] = {}
         self.last_tick = -1
         self.delivery_struggles = 0
+        self._dock_stage = None
+        self._dock_stage_tick = -1000
+        self._last_known_heading = None
 
     def _select_center(self, xy: Vec):
         if self.disposal is not None:
@@ -127,7 +130,7 @@ class MyDroneRescue(DroneAbstract):
                     continue
                 if tick - seen > 750:
                     continue
-                key = self._nearest_track(xy, radius=32.0)
+                key = self._nearest_track(xy, radius=22.0)
                 if key is None:
                     key = self._new_track(xy, seen)
                 track = self.tracks[key]
@@ -135,21 +138,15 @@ class MyDroneRescue(DroneAbstract):
                     track.state, track.owner = 'done', owner
                     track.last_seen = max(track.last_seen, seen)
                 elif track.state != 'done':
-                    incoming = state if state in ('free', 'claimed', 'carried') else 'free'
-                    # A physical grasp dominates a mere claim. Concurrent
-                    # claims use a stable lowest-id tie break instead of a
-                    # last-message-wins timestamp race.
-                    accept = incoming == 'carried' or (
-                        track.state != 'carried' and incoming == 'claimed' and
-                        (track.state == 'free' or track.owner < 0
-                         or (owner >= 0 and owner < track.owner)
-                         or tick - track.claimed_at >= 210)) or (
-                        incoming == 'free' and track.state == 'free')
+                    # Physical pickup dominates simultaneous claims. Claims use
+                    # deterministic owner ID to avoid a last-message-wins race.
+                    incoming = state if state in ('free','claimed','carried') else 'free'
+                    accept = incoming == 'carried' or (incoming == 'claimed' and
+                        track.state != 'carried' and (track.owner < 0 or
+                        owner < track.owner or tick-track.claimed_at > 180))
                     if accept:
-                        track.state = incoming
-                        track.owner, track.claimed_at = owner, claimed
-                        if incoming == 'free' or distance(track.xy, xy) > 3:
-                            track.xy = xy
+                        track.state,track.owner,track.claimed_at=incoming,owner,claimed
+                        if incoming=='free':track.xy=xy
                 track.last_seen = max(track.last_seen, seen)
         self.peers = {k: p for k, p in self.peers.items()
                       if tick - int(p.get('tick', -99999)) < 150}
@@ -160,7 +157,7 @@ class MyDroneRescue(DroneAbstract):
         self.tracks[key] = Track(xy, tick)
         return key
 
-    def _nearest_track(self, xy: Vec, radius: float = 32.0) -> Optional[int]:
+    def _nearest_track(self, xy: Vec, radius: float = 22.0) -> Optional[int]:
         choices = [(distance(t.xy, xy), k) for k, t in self.tracks.items()
                    if distance(t.xy, xy) < radius]
         return min(choices)[1] if choices else None
@@ -208,10 +205,12 @@ class MyDroneRescue(DroneAbstract):
         tr = self.tracks[key]
         if tr.state == 'done' or tr.state == 'carried':
             return True
-        if tr.owner not in (-1, self.did) and tick - tr.claimed_at < 210:
+        if tr.owner not in (-1, self.did) and tick - tr.claimed_at < 160:
             peer = self.peers.get(tr.owner)
-            if peer is not None and tick - int(peer.get('tick', -9999)) < 90:
-                return True
+            if peer is not None and not peer.get('carrying'):
+                peer_xy = finite_pair(peer.get('pos'))
+                if peer_xy is not None and distance(peer_xy, tr.xy) + 12 < distance(xy, tr.xy):
+                    return True
         for pid, peer in self.peers.items():
             if peer.get('mode') != 'CHASE' or peer.get('carrying'):
                 continue
@@ -255,8 +254,7 @@ class MyDroneRescue(DroneAbstract):
             self.mode = 'CHASE'
             self.target_track = target_key
             tr = self.tracks[target_key]
-            if tr.owner != self.did or tr.state != 'claimed':
-                tr.owner, tr.claimed_at, tr.state = self.did, tick, 'claimed'
+            tr.owner, tr.claimed_at, tr.state = self.did, tick, 'claimed'
             self.target = tr.xy
             return
         self.target_track = None
@@ -284,7 +282,7 @@ class MyDroneRescue(DroneAbstract):
     def _route(self, tick: int, xy: Vec, target: Vec):
         changed = self.path_target is None or distance(target, self.path_target) > 34
         if changed or tick - self.path_tick >= 37 or not self.path:
-            self.path = self.grid.astar(xy, target)
+            self.path = self.grid.astar(xy, target, carrying=self.mode=='DELIVER')
             self.path_target = target
             self.path_tick = tick
         # Pop passed waypoints, then safely look ahead along traversable grid.
@@ -305,7 +303,7 @@ class MyDroneRescue(DroneAbstract):
             fraction = min(1.0, k * 12 / max(d, 1))
             p = (a[0] + fraction * (b[0]-a[0]), a[1] + fraction*(b[1]-a[1]))
             idx = self.grid.index(*p)
-            if idx is None or not self.grid.passable(idx):
+            if idx is None or not self.grid.passable(idx,carrying=self.mode=='DELIVER'):
                 return False
         return True
 
@@ -316,7 +314,7 @@ class MyDroneRescue(DroneAbstract):
         if distance(xy, self.prev_position) >= 24:
             self.prev_position, self.progress_tick = xy, tick
         elif tick - self.progress_tick > 65 and distance(xy, goal) > 36:
-            self.escape_left = max(self.escape_left, 30)
+            self.escape_left = max(self.escape_left, 22)
             self.escape_dir *= -1
             self.progress_tick = tick
             self.prev_position = xy
@@ -336,10 +334,8 @@ class MyDroneRescue(DroneAbstract):
             if key is not None and key in self.tracks:
                 tr = self.tracks[key]
                 tr.state, tr.owner, tr.claimed_at = 'carried', self.did, tick
-            print(f"BLUE_EVENT pickup drone={self.did} tick={tick} pos={xy}")
         elif self.was_carrying and not carrying:
             key = self.active_carry_track
-            near_center = False
             if key is not None and key in self.tracks:
                 tr = self.tracks[key]
                 # Empty grasper close to the disposal center normally means
@@ -351,8 +347,6 @@ class MyDroneRescue(DroneAbstract):
                 tr.owner = self.did if near_center else -1
                 tr.last_seen = tick
             self.active_carry_track = None
-            print(f"BLUE_EVENT release drone={self.did} tick={tick} pos={xy} "
-                  f"near_center={near_center}")
         self.was_carrying = carrying
 
     def define_message_for_all(self) -> Any:
@@ -380,137 +374,145 @@ class MyDroneRescue(DroneAbstract):
             'cells': self.grid.export(110) if tick % 9 == self.did % 9 else [],
         }
 
+    def _target_avoidance_mask(self):
+        """Avoid falsely marking bombs/drones/center as static walls."""
+        mask=[]
+        for d in self.semantic_values() or []:
+            try:
+                if d.entity_type in (DroneSemanticSensor.TypeEntity.BOMB,
+                                     DroneSemanticSensor.TypeEntity.DRONE,
+                                     DroneSemanticSensor.TypeEntity.DISPOSAL_CENTER):
+                    mask.append((float(d.angle),float(d.distance)))
+            except (TypeError,ValueError,AttributeError):pass
+        return mask
+
+    def _dock_target(self,xy,tick):
+        """Plan to a reachable face before contacting the physical center.
+
+        No simulation object is accessed; center dimensions come from the
+        public map definitions already used by this strategy.
+        """
+        if self.disposal is None:return None,False
+        cx,cy=self.disposal
+        hx,hy=self.center_half
+        dx,dy=xy[0]-cx,xy[1]-cy
+        inside=max(abs(dx)-hx,abs(dy)-hy)<48
+        if inside:
+            return self.disposal,True
+        if self._dock_stage is None or tick-self._dock_stage_tick>90:
+            margin=35.
+            candidates=[(cx+hx+margin,cy),(cx-hx-margin,cy),
+                        (cx,cy+hy+margin),(cx,cy-hy-margin)]
+            candidates=[p for p in candidates if self.grid.index(*p) is not None]
+            ranked=[]
+            for pt in candidates:
+                path=self.grid.astar(xy,pt,carrying=True,max_expansions=3800)
+                if path and distance(path[-1],pt)<56:
+                    length=sum(distance(a,b) for a,b in zip([xy]+path,path))
+                    ranked.append((length,pt))
+            if ranked:
+                self._dock_stage=min(ranked)[1]
+            elif candidates:
+                self._dock_stage=min(candidates,key=lambda p:distance(xy,p))
+            self._dock_stage_tick=tick
+        if self._dock_stage is not None and distance(xy,self._dock_stage)>39:
+            return self._dock_stage,False
+        return self.disposal,True
+
     def control(self) -> CommandsDict:
-        tick = int(self.elapsed_timestep)
-        self.last_tick = tick
+        tick=int(self.elapsed_timestep)
+        self.last_tick=tick
         try:
-            self.pose.update(tick, self.measured_gps_position(),
-                             self.measured_compass_angle(), self.odometer_values())
-            xy, heading = self.pose.xy, self.pose.heading
-            carrying = bool(self.grasped_bombs())
+            self.pose.update(tick,self.measured_gps_position(),
+                             self.measured_compass_angle(),self.odometer_values())
+            xy,heading=self.pose.xy,self.pose.heading
+            carrying=bool(self.grasped_bombs())
             self._receive(tick)
             if xy is None or heading is None:
-                self._prepare_message(tick, carrying)
-                return safe_command(rotation=0.35, grasper=int(carrying))
-            if self.home is None:
-                self.home = xy
+                self._prepare_message(tick,carrying)
+                return safe_command(rotation=.25,grasper=int(carrying))
+            if self.home is None:self.home=xy
             self._select_center(xy)
-            self._finish_previous_carry(tick, xy, carrying)
-            lidar = self.lidar_values()
-            angles = self.lidar_rays_angles()
-            velocity = finite_pair(self.measured_velocity())
-            # Mapping with no GPS is disabled only after odometric uncertainty grows;
-            # the local reactive pilot and known path remain available.
-            if self.pose.uncertainty < 65.0:
-                self.grid.scan(xy, heading, lidar, angles, tick)
-            visible = self._observe(tick, xy, heading)
-            # Clear stale claims when they are no longer being pursued.
-            for k, tr in self.tracks.items():
-                if tr.state == 'claimed' and tr.owner == self.did and k != self.target_track:
-                    tr.state = 'free'
-                    tr.owner = -1
-            self._make_goal(tick, xy, visible, carrying)
-            target = self.target
+            self._finish_previous_carry(tick,xy,carrying)
+            lidar,angles=self.lidar_values(),self.lidar_rays_angles()
+            if self.pose.uncertainty<38.:
+                self.grid.scan(xy,heading,lidar,angles,tick,ignore=self._target_avoidance_mask())
+            visible=self._observe(tick,xy,heading)
+            for key,tr in self.tracks.items():
+                if tr.state=='claimed' and tr.owner==self.did and key!=self.target_track:
+                    tr.state,tr.owner='free',-1
+            self._make_goal(tick,xy,visible,carrying)
+            target=self.target
             if target is None:
-                self._prepare_message(tick, carrying)
-                return safe_command(rotation=0.2, grasper=int(carrying))
-            # Stagger departure from the compact spawn grid. This greatly
-            # reduces early drone-drone impacts while messages propagate.
-            if tick < 8 + self.did * 5 and not carrying:
-                self._prepare_message(tick, carrying)
-                if velocity is None:
-                    return safe_command(rotation=0.08 * self.escape_dir)
-                c, s = math.cos(heading), math.sin(heading)
-                vf = velocity[0] * c + velocity[1] * s
-                vl = -velocity[0] * s + velocity[1] * c
-                return safe_command(-0.012 * vf, -0.012 * vl,
-                                    0.08 * self.escape_dir)
-            self._update_stuck(tick, xy, target)
-            docking = carrying and self.disposal is not None and distance(xy, self.disposal) < 145
-            if self.escape_left > 0 and not docking:
-                self.escape_left -= 1
-                # deterministic rescue; check rear/side lidar in pilot next step
-                self._prepare_message(tick, carrying)
-                direction = float(self.escape_dir)
-                return safe_command(forward=-0.15, lateral=0.55 * direction,
-                                    rotation=0.18 * direction, grasper=int(carrying))
-            waypoint = target if docking else self._route(tick, xy, target)
-            peer_list = [p for p in self.peers.values() if tick-int(p.get('tick', -9999)) < 75]
-            if carrying and tick % 400 == 0:
-                print(f"BLUE_EVENT carry drone={self.did} tick={tick} pos={xy} "
-                      f"target={target} waypoint={waypoint} path={len(self.path)} "
-                      f"docking={docking} velocity={velocity}")
-            fwd, lat, rotation = self.pilot.command(heading, xy, waypoint, lidar, angles,
-                                                   peers=peer_list, carrying=carrying,
-                                                   docking=docking,
-                                                   velocity=velocity)
-            if docking:
-                # The disposal center is a collidable object. Its own LiDAR
-                # return must not repel the loaded drone from successful contact.
-                a = wrap(math.atan2(target[1]-xy[1], target[0]-xy[0]) - heading)
-                push = 0.38 if distance(xy, target) > 52 else 0.28
-                vf = vl = 0.0
-                if velocity is not None:
-                    c, s = math.cos(heading), math.sin(heading)
-                    vf = velocity[0] * c + velocity[1] * s
-                    vl = -velocity[0] * s + velocity[1] * c
-                fwd = push * math.cos(a) - 0.010 * vf
-                lat = push * math.sin(a) - 0.010 * vl
-                rotation = 0.0
-                # Serialise conflicting approaches only when another drone is
-                # directly in the entry corridor. Semantic DRONE is legal.
-                for obj in self.semantic_values() or []:
-                    if obj.entity_type != DroneSemanticSensor.TypeEntity.DRONE:
-                        continue
-                    try:
-                        ddr = float(obj.distance)
-                        if ddr < 38 and abs(wrap(float(obj.angle) - a)) < 0.62:
-                            fwd = -0.10 * math.cos(a)
-                            lat = (0.22 if self.did % 2 else -0.22)
-                            break
-                    except (TypeError, ValueError):
-                        continue
-            # Hold 1 while approaching a bomb, and throughout transport; do NOT
-            # release upon a guessed arrival. The engine disposes on collision.
-            grab = 1 if carrying or self.mode == 'CHASE' else 0
-            # Grabbing is deliberately frontal in final ~50 px, to keep tow load
-            # stable. The holonomic pilot is retained for obstacle evasion.
-            if self.mode == 'CHASE' and self.target_track is not None:
-                tr = self.tracks.get(self.target_track)
-                if tr is not None and distance(xy, tr.xy) < 55:
-                    a = wrap(math.atan2(tr.xy[1]-xy[1], tr.xy[0]-xy[0]) - heading)
-                    rotation = clamp(1.8 * a, -1, 1)
-                    # Do not stop simply because lidar detects the bomb itself.
-                    if math.hypot(fwd, lat) < 0.22:
-                        fwd, lat = 0.25 * math.cos(a), 0.25 * math.sin(a)
-            if carrying:
-                # Track the claimed bomb, and maintain positive grasp until
-                # the engine removes it after actual disposal-center collision.
-                if self.active_carry_track in self.tracks:
-                    tr = self.tracks[self.active_carry_track]
-                    tr.state, tr.owner, tr.claimed_at = 'carried', self.did, tick
-                if docking:
-                    self.delivery_struggles += 1
-                    if self.delivery_struggles > 70:
-                        # The drone body cannot enter the collidable center.
-                        # Pull the trailing bomb across its surface by combining
-                        # inward pressure with a tangential orbit, reversing the
-                        # orbit periodically if the load snags at a corner.
-                        sign = 1.0 if (self.did + self.delivery_struggles // 110) % 2 else -1.0
-                        tangent = wrap(a + sign * math.pi / 2.0)
-                        fwd = (0.30 * math.cos(a) + 0.48 * math.cos(tangent)
-                               - 0.010 * vf)
-                        lat = (0.30 * math.sin(a) + 0.48 * math.sin(tangent)
-                               - 0.010 * vl)
-                    if self.delivery_struggles > 430:
-                        self.delivery_struggles = 0
-                else:
-                    self.delivery_struggles = 0
+                self._prepare_message(tick,carrying)
+                return safe_command(rotation=.22,grasper=int(carrying))
+            # Stagger launch to avoid initial dense formation collision.
+            motion=self.pose.motion
+            if tick<8+self.did*5 and not carrying:
+                self._prepare_message(tick,carrying)
+                return safe_command(rotation=.08 if self.did%2 else -.08)
+            self._update_stuck(tick,xy,target)
+            docking=False
+            if carrying and self.disposal is not None:
+                target,docking=self._dock_target(xy,tick)
             else:
-                self.delivery_struggles = 0
-            self._prepare_message(tick, carrying)
-            return safe_command(fwd, lat, rotation, grab)
-        except (TypeError, ValueError, ArithmeticError):
-            # Maintain safe actuator contract on malformed sensor measurements.
+                self._dock_stage=None
+            if self.escape_left>0 and not docking:
+                self.escape_left-=1
+                self._prepare_message(tick,carrying)
+                sign=float(self.escape_dir)
+                rear=self.pilot.clearance(angles,lidar,math.pi)
+                side=self.pilot.clearance(angles,lidar,sign*math.pi/2)
+                if rear>48:
+                    return safe_command(forward=-.28,rotation=.12*sign,grasper=int(carrying))
+                if side>52:
+                    return safe_command(lateral=.25*sign,rotation=.12*sign,grasper=int(carrying))
+                return safe_command(rotation=.28*sign,grasper=int(carrying))
+            waypoint=target if docking else self._route(tick,xy,target)
+            peers=[p for p in self.peers.values()
+                   if tick-int(p.get('tick',-99999))<75]
+            # Use odometer displacement, not measured_velocity's mislabeled
+            # px/s interpretation. Engine's motion is per step.
+            fwd,lat,rot=self.pilot.command(
+                heading,xy,waypoint,lidar,angles,peers=peers,carrying=carrying,
+                docking=docking,velocity=motion,
+                ignore_target=docking,stuck=self.escape_left>0)
+            if docking:
+                # Preserve velocity feedback while allowing center contact;
+                # a blind constant push caused the repeated delivery deaths.
+                self.delivery_struggles+=1
+                a=wrap(math.atan2(self.disposal[1]-xy[1],
+                                  self.disposal[0]-xy[0])-heading)
+                if self.delivery_struggles>90:
+                    # A slow tangent sweep can bring a trailing bomb across
+                    # the center boundary. Keep component pushing inward.
+                    sign=1 if (self.did+(self.delivery_struggles//90))%2 else -1
+                    fwd+=.11*math.cos(a+sign*math.pi/2)
+                    lat+=.11*math.sin(a+sign*math.pi/2)
+                # Other drones cannot be pushed through; yield instead.
+                for obj in self.semantic_values() or []:
+                    if obj.entity_type!=DroneSemanticSensor.TypeEntity.DRONE:continue
+                    try:
+                        if float(obj.distance)<41 and abs(wrap(float(obj.angle)-a))<.6:
+                            fwd,lat=0.,0.
+                            break
+                    except (ValueError,TypeError):continue
+            else:
+                self.delivery_struggles=0
+            if self.mode=='CHASE' and self.target_track in self.tracks:
+                tr=self.tracks[self.target_track]
+                near=distance(xy,tr.xy)
+                if near<34:
+                    a=wrap(math.atan2(tr.xy[1]-xy[1],tr.xy[0]-xy[0])-heading)
+                    rot=clamp(1.0*a,-.65,.65)
+                    if math.hypot(fwd,lat)<.15 and near>11:
+                        fwd+=.16*math.cos(a)
+                        lat+=.16*math.sin(a)
+            if carrying and self.active_carry_track in self.tracks:
+                tr=self.tracks[self.active_carry_track]
+                tr.state,tr.owner,tr.claimed_at='carried',self.did,tick
+            self._prepare_message(tick,carrying)
+            return safe_command(fwd,lat,rot,int(carrying or self.mode=='CHASE'))
+        except (TypeError,ValueError,ArithmeticError,IndexError,AttributeError):
             return safe_command(grasper=int(bool(self.grasped_bombs())))
 

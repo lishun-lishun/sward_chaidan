@@ -1,432 +1,363 @@
-"""Blue-team navigation and perception. Only measured sensor data may enter here.
+"""Legal-sensor navigation. No map-file access, engine ground truth or shared globals.
 
-Occupancy grid + weighted A*, frontier utility, holonomic LiDAR velocity sampling.
-No simulator objects, static walls, bomb lists, true poses, or shared class state.
+Occupancy is built only from the drone's laser and received radio updates.
+Velocities supplied by the simulator's odometer are displacement PER STEP.
 """
 from __future__ import annotations
-
 import heapq
 import math
-from collections import deque
-from typing import Dict, List, Optional, Tuple
+from typing import Optional, Tuple
 
 Vec = Tuple[float, float]
 
 
-def clamp(x: float, low: float = -1.0, high: float = 1.0) -> float:
-    return max(low, min(high, float(x)))
+def clamp(x, lo=-1.0, hi=1.0):
+    return max(lo, min(hi, float(x)))
 
 
-def wrap(a: float) -> float:
-    return (float(a) + math.pi) % (2.0 * math.pi) - math.pi
+def wrap(a):
+    return (float(a) + math.pi) % (2 * math.pi) - math.pi
 
 
-def distance(a: Vec, b: Vec) -> float:
-    return math.hypot(a[0] - b[0], a[1] - b[1])
+def distance(a, b):
+    return math.hypot(a[0]-b[0], a[1]-b[1])
 
 
-def finite_pair(v) -> Optional[Vec]:
+def finite_pair(v):
     try:
-        x, y = float(v[0]), float(v[1])
-        return (x, y) if math.isfinite(x) and math.isfinite(y) else None
-    except (TypeError, ValueError, IndexError):
+        a, b = float(v[0]), float(v[1])
+        return (a,b) if math.isfinite(a) and math.isfinite(b) else None
+    except (ValueError, TypeError, IndexError):
         return None
 
 
 class PoseTracker:
-    """GPS+compass corrected dead reckoning with odometer during NO_GPS_ZONE.
-
-    Uses odometer displacement as defined by official engine (travel, alpha, theta).
-    The odometer displacement orientation is referenced to the PREVIOUS heading.
-    """
-
     def __init__(self):
-        self.xy: Optional[Vec] = None
-        self.heading: Optional[float] = None
+        self.xy = None
+        self.heading = None
         self.uncertainty = float('inf')
         self.last_tick = -1
         self.gps_lost_steps = 0
+        self.motion = (0., 0.)  # odometry displacement in world pixels / step
 
-    def update(self, tick: int, gps, compass, odometer):
+    def update(self, tick, gps, compass, odometer):
         if tick == self.last_tick:
             return
         self.last_tick = tick
-        gps_pos = finite_pair(gps)
-        compass_angle = None
+        g = finite_pair(gps)
+        h = None
         try:
             if compass is not None and math.isfinite(float(compass)):
-                compass_angle = wrap(float(compass))
-        except (TypeError, ValueError):
+                h = wrap(compass)
+        except (ValueError, TypeError):
             pass
-        if self.heading is None and compass_angle is not None:
-            self.heading = compass_angle
-        if self.xy is None and gps_pos is not None:
-            self.xy = gps_pos
-            self.uncertainty = 8.0
-        if odometer is not None and self.heading is not None and self.xy is not None:
+        if self.heading is None and h is not None:
+            self.heading = h
+        if self.xy is None and g is not None:
+            self.xy, self.uncertainty = g, 7.
+        self.motion = (0., 0.)
+        if odometer is not None and self.xy is not None and self.heading is not None:
             try:
-                d, alpha, theta = (float(z) for z in odometer[:3])
-                if all(math.isfinite(v) for v in (d, alpha, theta)):
-                    d = clamp(d, 0.0, 10.0)
-                    direction = self.heading + alpha
-                    self.xy = (self.xy[0] + d * math.cos(direction),
-                               self.xy[1] + d * math.sin(direction))
-                    self.heading = wrap(self.heading + clamp(theta, -0.20, 0.20))
-                    self.uncertainty = min(220.0, self.uncertainty + 0.018 + 0.095 * d)
+                ds, alpha, theta = map(float, odometer[:3])
+                if all(map(math.isfinite, (ds, alpha, theta))):
+                    ds = clamp(ds, 0., 12.)
+                    previous_heading = self.heading
+                    self.motion = (ds*math.cos(previous_heading+alpha),
+                                   ds*math.sin(previous_heading+alpha))
+                    self.xy = (self.xy[0]+self.motion[0], self.xy[1]+self.motion[1])
+                    self.heading = wrap(self.heading+clamp(theta, -.5, .5))
+                    self.uncertainty = min(250., self.uncertainty + .055 + .045*ds)
             except (TypeError, ValueError, IndexError):
                 pass
-        if compass_angle is not None:
-            if self.heading is None:
-                self.heading = compass_angle
-            else:
-                self.heading = wrap(self.heading + 0.22 * wrap(compass_angle - self.heading))
-        if gps_pos is not None:
+        if h is not None:
+            self.heading = h if self.heading is None else wrap(self.heading + .35 * wrap(h-self.heading))
+        if g is not None:
             if self.xy is None:
-                self.xy = gps_pos
+                self.xy = g
             else:
-                # Smooth AR(1) noise; correct accumulated odometry drift.
-                a = 0.16 if self.gps_lost_steps == 0 else 0.36
-                if distance(gps_pos, self.xy) > 100:
-                    a = 0.50
-                self.xy = (self.xy[0] * (1 - a) + gps_pos[0] * a,
-                           self.xy[1] * (1 - a) + gps_pos[1] * a)
+                alpha = .13 if self.gps_lost_steps == 0 else .32
+                if distance(g,self.xy) > 90: alpha = .50
+                self.xy = (self.xy[0]*(1-alpha)+g[0]*alpha,
+                           self.xy[1]*(1-alpha)+g[1]*alpha)
             self.gps_lost_steps = 0
-            self.uncertainty = max(5.0, self.uncertainty * 0.67)
+            self.uncertainty = max(5., min(20., self.uncertainty*.75))
         else:
             self.gps_lost_steps += 1
 
 
 class Occupancy:
-    """Grid in world coordinates; never initialized from map/engine truth.
-
-    Values (-6..6) model log odds. `seen` is deliberately separate from occupied:
-    it prevents stale visited places being re-explored when no radio is available.
-    """
-
     CELL = 24
-
-    def __init__(self, width: int, height: int):
-        self.width = int(width)
-        self.height = int(height)
-        self.nx = int(math.ceil(self.width / self.CELL))
-        self.ny = int(math.ceil(self.height / self.CELL))
-        self.n = self.nx * self.ny
-        self.log = [0] * self.n
+    def __init__(self, width, height):
+        self.width, self.height = int(width), int(height)
+        self.nx = math.ceil(self.width/self.CELL)
+        self.ny = math.ceil(self.height/self.CELL)
+        self.n = self.nx*self.ny
+        self.log = [0]*self.n
         self.seen = bytearray(self.n)
-        self.visits = [0] * self.n
-        self.dirty: Dict[int, Tuple[int, int]] = {}
-        self.counter = 0
+        self.visits = [0]*self.n
+        self.dirty = {}
+        self.seq = 0
 
-    def index(self, x: float, y: float) -> Optional[int]:
-        ix = int((x + self.width * 0.5) // self.CELL)
-        iy = int((y + self.height * 0.5) // self.CELL)
-        if 0 <= ix < self.nx and 0 <= iy < self.ny:
-            return iy * self.nx + ix
-        return None
+    def index(self, x, y):
+        ix=int((x+self.width/2)//self.CELL)
+        iy=int((y+self.height/2)//self.CELL)
+        return iy*self.nx+ix if 0<=ix<self.nx and 0<=iy<self.ny else None
 
-    def center(self, idx: int) -> Vec:
-        return (((idx % self.nx) + 0.5) * self.CELL - self.width * 0.5,
-                ((idx // self.nx) + 0.5) * self.CELL - self.height * 0.5)
+    def center(self, idx):
+        return ((idx%self.nx+.5)*self.CELL-self.width/2,
+                (idx//self.nx+.5)*self.CELL-self.height/2)
 
-    def _update(self, idx: int, new: int, present: bool = True):
-        old = self.log[idx]
-        self.log[idx] = max(-6, min(6, new))
-        if present:
-            self.seen[idx] = 1
-        if self.log[idx] != old or present:
-            self.dirty[idx] = (self.log[idx], int(self.seen[idx]))
+    def update(self,idx,value,seen=True):
+        value=int(clamp(value,-6,6))
+        if self.log[idx]!=value or (seen and not self.seen[idx]):
+            self.log[idx]=value
+            if seen:self.seen[idx]=1
+            self.seq+=1
+            self.dirty[idx]=(self.log[idx],int(self.seen[idx]))
 
-    def visit(self, xy: Vec):
-        i = self.index(*xy)
-        if i is None:
-            return
-        self.visits[i] = min(255, self.visits[i] + 1)
-        self._update(i, min(self.log[i], -3))
-
-    def ray(self, origin: Vec, heading: float, angle: float, measured: float,
-            sensor_range: float = 230.0):
-        if not math.isfinite(measured):
-            return
-        r = max(0.0, min(sensor_range, measured))
-        ca, sa = math.cos(heading + angle), math.sin(heading + angle)
-        prev = None
-        # Stop short of an observed endpoint. Avoid carving the endpoint as free.
-        for step in range(1, int(max(0.0, r - 10.0) // (self.CELL * 0.60)) + 1):
-            s = step * (self.CELL * 0.60)
-            idx = self.index(origin[0] + s * ca, origin[1] + s * sa)
-            if idx is not None and idx != prev:
-                self._update(idx, self.log[idx] - 1)
-            prev = idx
-        if 9.0 < r < sensor_range - 6.0:
-            hit = self.index(origin[0] + r * ca, origin[1] + r * sa)
-            if hit is not None:
-                self._update(hit, self.log[hit] + 2)
-
-    def scan(self, xy: Vec, heading: float, values, angles, tick: int):
-        self.visit(xy)
-        if values is None or angles is None or tick % 5 != 0:
-            return
-        for j in range(0, min(len(values), len(angles)), 3):
+    def scan(self,xy,heading,values,angles,tick,ignore=()):
+        idx=self.index(*xy)
+        if idx is not None:
+            self.visits[idx]=min(255,self.visits[idx]+1)
+            self.update(idx,min(-3,self.log[idx]))
+        if values is None or angles is None or tick%5:return
+        for k in range(0,min(len(values),len(angles)),3):
             try:
-                self.ray(xy, heading, float(angles[j]), float(values[j]))
-            except (ValueError, TypeError):
+                r, a=float(values[k]),float(angles[k])
+                if not math.isfinite(r) or not math.isfinite(a):continue
+            except (ValueError,TypeError):continue
+            if any(abs(wrap(a-c))<.24 and r>=d-22 for c,d in ignore):
                 continue
+            r=clamp(r,0,230)
+            direction=heading+a
+            ca,sa=math.cos(direction),math.sin(direction)
+            prev=None
+            for t in range(1,int(max(0,r-14)/13)+1):
+                cell=self.index(xy[0]+13*t*ca,xy[1]+13*t*sa)
+                if cell is not None and cell!=prev:
+                    self.update(cell,self.log[cell]-1)
+                prev=cell
+            if 12<r<222:
+                end=self.index(xy[0]+r*ca,xy[1]+r*sa)
+                if end is not None:self.update(end,self.log[end]+2)
 
-    def merge(self, updates):
-        if not isinstance(updates, list):
-            return
-        for record in updates[:220]:
-            try:
-                idx, val, seen = (int(z) for z in record)
-            except (ValueError, TypeError):
-                continue
-            if not (0 <= idx < self.n and -6 <= val <= 6):
-                continue
-            # Do not overwrite a confident local obstacle with a remote free ray.
-            old_log, old_seen = self.log[idx], self.seen[idx]
-            if abs(val) > abs(self.log[idx]) or (val < 0 and self.log[idx] < 3):
-                self.log[idx] = val
-            if seen:
-                self.seen[idx] = 1
-            if old_log != self.log[idx] or old_seen != self.seen[idx]:
-                self.dirty[idx] = (self.log[idx], int(self.seen[idx]))
+    def merge(self,updates):
+        if not isinstance(updates,list):return
+        for item in updates[:160]:
+            try:idx,val,seen=(int(i) for i in item)
+            except (ValueError,TypeError):continue
+            if not 0<=idx<self.n or not -6<=val<=6:continue
+            old=self.log[idx]
+            if (val>=3 and old<3) or (abs(val)>abs(old) and not(old>=3 and val<0)):
+                self.update(idx,val,bool(seen))
+            elif seen and not self.seen[idx]:self.update(idx,old)
 
-    def export(self, limit: int = 110):
-        if not self.dirty:
-            return []
-        items = list(self.dirty.items())[:limit]
-        for i, _ in items:
-            self.dirty.pop(i, None)
-        return [[i, v, seen] for i, (v, seen) in items]
+    def export(self,limit=100):
+        data=list(self.dirty.items())[:limit]
+        for idx,_ in data:self.dirty.pop(idx,None)
+        return [[i,*v] for i,v in data]
 
-    def _adj(self, idx: int):
-        x, y = idx % self.nx, idx // self.nx
-        for dx, dy, c in ((1, 0, 1), (-1, 0, 1), (0, 1, 1), (0, -1, 1),
-                          (1, 1, 1.414), (1, -1, 1.414), (-1, 1, 1.414), (-1, -1, 1.414)):
-            tx, ty = x + dx, y + dy
-            if 0 <= tx < self.nx and 0 <= ty < self.ny:
-                yield ty * self.nx + tx, c
+    def obstacle(self,idx):
+        x,y=idx%self.nx,idx//self.nx
+        return x<1 or y<1 or x>=self.nx-1 or y>=self.ny-1 or self.log[idx]>=3
 
-    def passable(self, idx: int) -> bool:
-        x, y = idx % self.nx, idx // self.nx
-        if x == 0 or y == 0 or x == self.nx - 1 or y == self.ny - 1:
-            return False
-        return self.log[idx] < 4
+    def clearance(self,idx):
+        """Grid proximity to known obstacles, not simulator geometry."""
+        x,y=idx%self.nx,idx//self.nx
+        nearest=3
+        for dy in range(-2,3):
+            for dx in range(-2,3):
+                xx,yy=x+dx,y+dy
+                if not 0<=xx<self.nx or not 0<=yy<self.ny:continue
+                other=yy*self.nx+xx
+                if self.log[other]>=3:
+                    nearest=min(nearest,math.hypot(dx,dy))
+        return nearest*self.CELL
 
-    def astar(self, start: Vec, goal: Vec, max_expansions: int = 8500) -> List[Vec]:
-        src = self.index(*start)
-        dst = self.index(*goal)
-        if src is None or dst is None:
-            return []
-        if src == dst:
-            return [goal]
-        q = [(0.0, src)]
-        best = {src: 0.0}
-        came = {}
-        end = src
-        near_d = float('inf')
-        expansions = 0
-        while q and expansions < max_expansions:
-            _, here = heapq.heappop(q)
-            expansions += 1
-            h = distance(self.center(here), goal) / self.CELL
-            if h < near_d:
-                near_d, end = h, here
-            if here == dst:
-                end = here
-                break
-            for there, step in self._adj(here):
-                if not self.passable(there):
-                    continue
-                # Allow unknown cells, but prefer verified free corridors.
-                val = self.log[there]
-                cost = step * (1.0 + (1.1 if not self.seen[there] else 0.0)
-                               + (5.0 if val >= 2 else 0.0))
-                cand = best[here] + cost
-                if cand < best.get(there, float('inf')):
-                    best[there] = cand
-                    came[there] = here
-                    gx, gy = self.center(there)
-                    hh = math.hypot(goal[0] - gx, goal[1] - gy) / self.CELL
-                    heapq.heappush(q, (cand + hh, there))
-        path = []
-        while end in came and len(path) < self.n:
-            path.append(self.center(end))
-            end = came[end]
-        path.reverse()
-        if end == src and path and distance(path[-1], goal) < 2 * self.CELL:
-            path.append(goal)
-        return path
+    def passable(self,idx,carrying=False):
+        if self.obstacle(idx):return False
+        # Avoid cutting through a known wall: moderate inflation, rather than
+        # closing every narrow gate on a 24px discretization.
+        return self.clearance(idx)>=(30 if carrying else 24)
 
-    def frontier(self, pos: Vec, home: Vec, ident: int, peers, avoided: Dict[int, int], tick: int):
-        """Known-free cell at the boundary of unexplored space, with utility."""
-        options = []
-        nx = self.nx
-        my_bearing = -math.pi + (ident + 0.5) * 2 * math.pi / 10.0
+    def neighbors(self,idx,carrying=False):
+        x,y=idx%self.nx,idx//self.nx
+        for dx,dy in ((1,0),(-1,0),(0,1),(0,-1),(1,1),(1,-1),(-1,1),(-1,-1)):
+            nx,ny=x+dx,y+dy
+            if not 0<=nx<self.nx or not 0<=ny<self.ny:continue
+            nxt=ny*self.nx+nx
+            if not self.passable(nxt,carrying):continue
+            if dx and dy:
+                # No diagonal squeezing between blocked cells.
+                if not self.passable(y*self.nx+nx,carrying):continue
+                if not self.passable(ny*self.nx+x,carrying):continue
+            yield nxt,math.hypot(dx,dy)
+
+    def astar(self,start,goal,carrying=False,max_expansions=8500):
+        src,dst=self.index(*start),self.index(*goal)
+        if src is None or dst is None:return []
+        if src==dst:return [goal]
+        # The actual target (a bomb / docking surface) may sit next to an
+        # obstacle. Search to the closest safe cell instead of failing outright.
+        if not self.passable(dst,carrying):
+            good=[]
+            tx,ty=dst%self.nx,dst//self.nx
+            for radius in range(1,5):
+                for dy in range(-radius,radius+1):
+                    for dx in range(-radius,radius+1):
+                        xx,yy=tx+dx,ty+dy
+                        if 1<=xx<self.nx-1 and 1<=yy<self.ny-1:
+                            k=yy*self.nx+xx
+                            if self.passable(k,carrying):good.append(k)
+                if good:break
+            if not good:return []
+            dst=min(good,key=lambda k:distance(self.center(k),goal))
+        cost={src:0.};prev={}
+        queue=[(0.,src)]
+        visited=set()
+        best=src;near=float('inf')
+        for _ in range(max_expansions):
+            if not queue:break
+            _,here=heapq.heappop(queue)
+            if here in visited:continue
+            visited.add(here)
+            hh=distance(self.center(here),self.center(dst))/self.CELL
+            if hh<near:best,near=here,hh
+            if here==dst:best=here;break
+            for nxt,step in self.neighbors(here,carrying):
+                unknown=not self.seen[nxt]
+                proximity=max(0,54-self.clearance(nxt))/54
+                val=self.log[nxt]
+                risk=1.0+(.9 if unknown else 0.)+3.5*proximity**2+(2.0 if val>=1 else 0.)
+                proposed=cost[here]+step*risk
+                if proposed<cost.get(nxt,float('inf')):
+                    cost[nxt]=proposed;prev[nxt]=here
+                    hn=distance(self.center(nxt),self.center(dst))/self.CELL
+                    heapq.heappush(queue,(proposed+hn,nxt))
+        if best==src:return []
+        route=[];node=best
+        while node!=src and len(route)<self.n:
+            route.append(self.center(node))
+            node=prev.get(node,src)
+        route.reverse()
+        if best==dst and distance(route[-1],goal)<self.CELL*1.5:route.append(goal)
+        return route
+
+    def frontier(self,pos,home,ident,peers,avoided,tick):
+        candidates=[]
+        sector=-math.pi+(ident+.5)*2*math.pi/10
         for i in range(self.n):
-            if not self.seen[i] or self.log[i] > -1:
-                continue
-            x, y = i % nx, i // nx
-            if x < 2 or y < 2 or x > nx - 3 or y > self.ny - 3:
-                continue
-            near = [i - 1, i + 1, i - nx, i + nx]
-            unexplored = sum(not self.seen[j] for j in near)
-            if unexplored == 0:
-                continue
-            xy = self.center(i)
-            travel = distance(pos, xy)
-            if travel < 45.0 or travel > 850.0:
-                continue
-            bearing = math.atan2(xy[1] - home[1], xy[0] - home[0])
-            sector_penalty = 42.0 * abs(wrap(bearing - my_bearing))
-            peer_penalty = 0.0
+            if not self.seen[i] or self.log[i]>-1 or not self.passable(i):continue
+            x,y=i%self.nx,i//self.nx
+            if x<2 or y<2 or x>self.nx-3 or y>self.ny-3:continue
+            neighbors=[i-1,i+1,i-self.nx,i+self.nx]
+            unk=sum(not self.seen[k] for k in neighbors)
+            if not unk:continue
+            point=self.center(i)
+            travel=distance(pos,point)
+            if travel<50 or travel>1000:continue
+            bearing=math.atan2(point[1]-home[1],point[0]-home[0])
+            penalty=48*abs(wrap(bearing-sector))
+            penalty+=180 if avoided.get(i,-99999)>tick-300 else 0
             for peer in peers:
-                goal = peer.get('goal')
-                if goal and finite_pair(goal) is not None and distance(goal, xy) < 130:
-                    peer_penalty += 165.0
-            penalty = 220.0 if avoided.get(i, -10000) > tick - 280 else 0.0
-            gain = 0
-            for yy in range(max(1, y-3), min(self.ny-1, y+4), 2):
-                for xx in range(max(1, x-3), min(self.nx-1, x+4), 2):
-                    if not self.seen[yy * nx + xx]:
-                        gain += 1
-            utility = gain * 14.0 + unexplored * 30.0 - travel * 0.27 - sector_penalty - peer_penalty - penalty
-            options.append((utility, i, xy))
-        if not options:
-            return None, None
-        top = heapq.nlargest(8, options)
-        for _, idx, xy in top:
-            if self.astar(pos, xy):
-                return idx, xy
-        return top[0][1], top[0][2]
+                g=finite_pair(peer.get('goal'))
+                if g is not None and distance(point,g)<155:penalty+=145
+            gain=0
+            for yy in range(max(1,y-4),min(self.ny-1,y+5),2):
+                for xx in range(max(1,x-4),min(self.nx-1,x+5),2):
+                    if not self.seen[yy*self.nx+xx]:gain+=1
+            candidates.append((gain*12+unk*36-.23*travel-penalty,i,point))
+        if not candidates:return None,None
+        for _,i,p in heapq.nlargest(12,candidates):
+            if self.astar(pos,p):return i,p
+        return None,None
 
 
 class LocalPilot:
-    """Holonomic direction sampling (ORCA-inspired, not a full ORCA solver)."""
+    """Velocity-error force control with swept-distance laser safety.
 
+    The requested speed and the odometry are BOTH measured in px/step.
+    """
     def __init__(self):
-        self.last_dir = 0.0
-        self.last_action = (0.0, 0.0)
+        self.last_dir=0.
+        self.last_action=(0.,0.)
 
     @staticmethod
-    def clearance(angles, ranges, direction: float, half_angle: float = 0.25):
-        if angles is None or ranges is None:
-            return 230.0
-        val = 230.0
-        count = 0
-        for j in range(0, min(len(angles), len(ranges)), 2):
-            a, r = float(angles[j]), float(ranges[j])
-            if math.isfinite(r) and abs(wrap(a - direction)) < half_angle:
-                val = min(val, r)
-                count += 1
-        return val if count else 230.0
-
-    def command(self, heading: float, xy: Vec, waypoint: Vec, ranges, angles,
-                peers=(), carrying=False, docking=False, stuck=False,
-                velocity: Optional[Vec] = None):
-        dx, dy = waypoint[0] - xy[0], waypoint[1] - xy[1]
-        dist = math.hypot(dx, dy)
-        theta = wrap(math.atan2(dy, dx) - heading)
-        if dist < 12 and not docking:
-            return (0.0, 0.0, 0.0)
-        # The drone has considerable inertia (commands are forces, not
-        # velocities), so clearance must include a braking margin.
-        safe = 44.0 if carrying else 38.0
-        if docking:
-            safe = 24.0
-        preferred = theta
-        candidates = [preferred] + [wrap(preferred + t) for t in
-                                    (-0.30, .30, -.60, .60, -.95, .95, -1.35, 1.35, -1.85, 1.85, math.pi)]
-        if stuck:
-            candidates.extend([wrap(preferred + math.pi/2), wrap(preferred-math.pi/2)])
-        best_dir, best_score, best_clear = preferred, -float('inf'), 230.0
-        for a in candidates:
-            free = self.clearance(angles, ranges, a)
-            # Steering samples only; use local reactive collision margin.
-            hazard = max(0.0, safe + 40.0 - free) / (safe + 40.0)
-            score = 2.0 * math.cos(wrap(a - preferred)) - 4.1 * hazard ** 2
-            if free < safe:
-                score -= 3.5 + 0.20 * (safe - free)
-            # Peers only from received radio messages, never global object list.
-            for peer in peers:
-                p = finite_pair(peer.get('pos'))
-                if p is None:
-                    continue
-                dd = distance(xy, p)
-                if dd > 120:
-                    continue
-                peer_dir = wrap(math.atan2(p[1]-xy[1],p[0]-xy[0]) - heading)
-                if abs(wrap(a - peer_dir)) < 0.55:
-                    score -= 4.0 * max(0.0, (85.0 - dd) / 85.0)
-            if abs(wrap(a - self.last_dir)) < 0.28:
-                score += 0.12
-            if score > best_score:
-                best_score, best_dir, best_clear = score, a, free
-        self.last_dir = best_dir
-        scale = 1.0
-        if best_clear < safe + 55.0:
-            scale = clamp((best_clear - safe + 10.0) / 55.0, 0.0, 1.0)
-        if best_clear < safe:
-            scale = 0.0
-        if dist < 65.0 and not docking:
-            scale = min(scale, max(0.18, dist / 65.0))
-        if stuck and scale < 0.2:
-            # Prefer retreat/side-step instead of blindly charging an obstacle.
-            best_dir = wrap(best_dir + math.pi / 2)
-            scale = 0.40
-        if docking and dist < 85.0:
-            scale = min(scale, 0.56)
-        # Engine command is FORCE, not velocity. Close the loop on the legal
-        # odometer-derived velocity instead of continuously accelerating.
-        vx = vy = 0.0
-        if velocity is not None:
+    def clearance(angles,ranges,direction,half_angle=.23):
+        if angles is None or ranges is None:return 230.
+        choices=[]
+        for a,r in zip(angles,ranges):
             try:
-                wx, wy = float(velocity[0]), float(velocity[1])
-                if math.isfinite(wx) and math.isfinite(wy):
-                    vx = wx * math.cos(heading) + wy * math.sin(heading)
-                    vy = -wx * math.sin(heading) + wy * math.cos(heading)
-            except (TypeError, ValueError, IndexError):
-                pass
-        speed = math.hypot(vx, vy)
-        desired_speed = 48.0 if carrying else 58.0
-        if docking:
-            desired_speed = 16.0
-        if dist < 90.0:
-            desired_speed *= clamp(dist / 90.0, 0.28, 1.0)
-        # Stop requesting forward speed when the current momentum cannot be
-        # shed inside the observed free corridor.
-        brake_margin = safe + 12.0 + 0.55 * speed
-        if best_clear < brake_margin:
-            desired_speed *= clamp((best_clear - safe) / max(1.0, brake_margin - safe), 0.0, 1.0)
-        desired_speed *= scale
-        # A grasped bomb has twice the drone's mass and is coupled by a pivot;
-        # it needs substantially more force to achieve the same translation.
-        gain = 0.024 if carrying else 0.014
-        fwd = gain * (desired_speed * math.cos(best_dir) - vx)
-        lat = gain * (desired_speed * math.sin(best_dir) - vy)
-        # Nearby radio peers contribute a gentle repulsive force. This remains
-        # best-effort under partitions and uses no shared process state.
-        for peer in peers:
-            p = finite_pair(peer.get('pos'))
-            if p is None:
-                continue
-            dd = distance(xy, p)
-            if 1.0 < dd < 52.0:
-                away = wrap(math.atan2(xy[1] - p[1], xy[0] - p[0]) - heading)
-                repulse = 0.22 * (52.0 - dd) / 52.0
-                fwd += repulse * math.cos(away)
-                lat += repulse * math.sin(away)
-        rot = clamp(1.45 * theta, -0.90, 0.90)
-        if docking:
-            rot = clamp(0.8 * theta, -0.5, .5)
-        # Keep force commands conservative; the velocity loop supplies braking
-        # by changing sign when momentum exceeds the requested speed.
-        norm = math.hypot(fwd, lat)
-        cap = 0.72 if carrying else 0.62
-        if docking:
-            cap = 0.24
-        if norm > cap:
-            fwd, lat = fwd * cap / norm, lat * cap / norm
-        self.last_action = (fwd, lat)
-        return clamp(fwd), clamp(lat), rot
+                a,r=float(a),float(r)
+                if math.isfinite(a) and math.isfinite(r) and abs(wrap(a-direction))<half_angle:
+                    choices.append(r)
+            except (ValueError,TypeError):pass
+        return max(0,min(230,min(choices))) if choices else 230.
+
+    def command(self,heading,xy,waypoint,ranges,angles,peers=(),carrying=False,
+                docking=False,stuck=False,velocity=None,ignore_target=False,
+                force_speed=None):
+        dx,dy=waypoint[0]-xy[0],waypoint[1]-xy[1]
+        dist=math.hypot(dx,dy)
+        desired=wrap(math.atan2(dy,dx)-heading) if dist>1 else 0.
+        # Simulator's measured_velocity derives from odometer and is px/step.
+        v=finite_pair(velocity) or (0.,0.)
+        cv,sv=math.cos(heading),math.sin(heading)
+        vf=cv*v[0]+sv*v[1]
+        vl=-sv*v[0]+cv*v[1]
+        spd=math.hypot(vf,vl)
+        safety=36 if carrying else 29
+        if docking:safety=20
+        # Stopping distance is proportional to current momentum and payload.
+        braking=safety+18+spd*(19 if carrying else 13)
+        choices=[desired]+[wrap(desired+d) for d in (-.32,.32,-.65,.65,-1.05,1.05,-1.48,1.48,-2.1,2.1,math.pi)]
+        if stuck:choices.extend([wrap(desired+math.pi/2),wrap(desired-math.pi/2)])
+        best=None
+        for direction in choices:
+            free=self.clearance(angles,ranges,direction)
+            if docking and ignore_target and abs(wrap(direction-desired))<.22:
+                # Center is a physical collider, but bomb-to-center contact
+                # is desired. Only suppress the *center-facing* laser sector.
+                free=max(free,85.)
+            penalty=4.*max(0.,braking-free)/max(braking,1.)
+            if free<safety:penalty+=5.+.18*(safety-free)
+            for peer in peers:
+                p=finite_pair(peer.get('pos'))
+                if p is None:continue
+                separation=distance(p,xy)
+                if separation<95 and abs(wrap(math.atan2(p[1]-xy[1],p[0]-xy[0])-heading-direction))<.65:
+                    penalty+=3.4*(95-separation)/95
+            score=2.0*math.cos(wrap(direction-desired))-penalty
+            if abs(wrap(direction-self.last_dir))<.3:score+=.12
+            if best is None or score>best[0]:best=(score,direction,free)
+        _,direction,free=best
+        self.last_dir=direction
+        max_speed=1.55 if carrying else 2.45
+        if docking:max_speed=.9
+        if force_speed is not None:max_speed=force_speed
+        max_speed*=clamp(dist/(90 if carrying else 80),.0,1.)
+        if free<braking:
+            max_speed*=clamp((free-safety)/max(1,braking-safety),0,1)
+        if free<safety:max_speed=0.
+        if docking and ignore_target:
+            max_speed=max(max_speed,.55 if dist>35 else .22)
+        if dist<11 and not docking:max_speed=0.
+        if stuck and max_speed<.2:
+            # Avoid uncontrolled force side-stepping while already close to wall.
+            direction=wrap(direction+(.8 if math.sin(direction-self.last_dir)>=0 else -.8))
+            max_speed=.55 if free>safety+10 else 0.
+        tx,ty=max_speed*math.cos(direction),max_speed*math.sin(direction)
+        gain=.36 if carrying else .29
+        fwd=gain*(tx-vf)
+        lat=gain*(ty-vl)
+        cap=.61 if carrying else .56
+        if docking:cap=.42
+        magnitude=math.hypot(fwd,lat)
+        if magnitude>cap:fwd,lat=fwd*cap/magnitude,lat*cap/magnitude
+        # Stopped/blocked state must actually brake; nonzero odometry leads
+        # to sign-reversing force so the robot does not drift into a wall.
+        rotation=clamp(1.0*desired,-.7,.7)
+        if docking:rotation=clamp(.6*desired,-.4,.4)
+        self.last_action=(fwd,lat)
+        return clamp(fwd),clamp(lat),rotation
 
